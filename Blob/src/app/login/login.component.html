@@ -1,1 +1,45 @@
-<p>login works!</p>
+<div class="login">
+  <div class="login-wrapper">
+      
+    <form
+      nz-form
+      [formGroup]="loginForm"
+      class="login-form"
+      (ngSubmit)="submitForm()"
+    >
+    <h2>BLOB</h2>
+      <h1>Login</h1>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Bitte geben Sie Ihr Username ein!">
+          <nz-input-group nzPrefixIcon="user">
+            <input
+              type="text"
+              nz-input
+              formControlName="username"
+              placeholder="Username"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Bitte geben Sie Ihr Passwort ein!">
+          <nz-input-group nzPrefixIcon="lock">
+            <input
+              type="password"
+              nz-input
+              formControlName="password"
+              placeholder="Passwort"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <button
+        nz-button
+        class="login-form-button login-form-margin"
+        [nzType]="'primary'"
+      >
+        Login
+      </button>
+    </form>
+  </div>
+</div>
