@@ -1,7 +1,13 @@
+<!----------------------------------------->
+<!-- Produkt hinzufügen Button           -->
+<!----------------------------------------->
 <button nz-button nzType="primary" class="product-add-button">
   <i nz-icon nzType="plus" nzTheme="outline"></i> Produkt hinzufügen
 </button>
 
+<!----------------------------------------->
+<!-- Produkttabelle                      -->
+<!----------------------------------------->
 <nz-table #nzTable [nzData]="listOfDisplayData" nzTableLayout="fixed">
   <thead>
     <tr>
@@ -31,6 +37,9 @@
     </tr>
   </tbody>
 </nz-table>
+<!----------------------------------------->
+<!-- Produktsuche Dropdown               -->
+<!----------------------------------------->
 <nz-dropdown-menu #menu="nzDropdownMenu">
   <div class="ant-table-filter-dropdown">
     <div class="search-box">

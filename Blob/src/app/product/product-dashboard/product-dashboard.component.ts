@@ -11,8 +11,15 @@ export class ProductDashboardComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  /********************************************
+   ** Variablen                              **
+   *******************************************/
   searchValue = '';
   visible = false;
+
+  /********************************************
+   ** Liste aller Produkte                   **
+   *******************************************/
   listOfData: IProductItem[] = [
     {
       product: 'Product 1',
@@ -34,8 +41,10 @@ export class ProductDashboardComponent implements OnInit {
     },
   ];
 
+  /********************************************
+   ** Produktsuche                           **
+   *******************************************/
   listOfDisplayData = [...this.listOfData];
-
   search() {
     this.visible = false;
     this.listOfDisplayData = this.listOfData.filter(
@@ -43,6 +52,9 @@ export class ProductDashboardComponent implements OnInit {
     );
   }
 
+  /********************************************
+  ** Produktsuche zurücksetzten              **
+  ********************************************/
   reset() {
     this.searchValue = '';
     this.search();

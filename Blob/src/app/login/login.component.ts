@@ -25,6 +25,5 @@ export class LoginComponent implements OnInit {
   }
 
   submitForm() {
-
   }
 }
