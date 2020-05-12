@@ -15,7 +15,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     // Check if authenticated, if not redirect to login
     if (this.authService.isAuthenticated) {
-      this.router.navigate(['/login']);
+      
       return true;
     }
 

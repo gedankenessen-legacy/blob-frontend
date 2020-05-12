@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  private debuggee = false;
+
   /**
    * Checks if the user is Authenticated.
    * @returns True if the user is Authenticated.
@@ -12,7 +16,11 @@ export class AuthService {
     return this.isTokenValid();
   }
 
-  constructor() {}
+  /* public get isAuthenticated(): Observable<boolean> {
+    return of(this.isTokenValid());
+  } */
+
+  constructor(private router: Router) {}
 
   /**
    * This method checks if the Token is expired.
@@ -20,7 +28,7 @@ export class AuthService {
    */
   private isTokenValid(): boolean {
     // TODO: Check if the token is expired
-    return true; //! DEBUG: only for debugging!
+    return this.debuggee; //! DEBUG: only for debugging!
 
     return false;
   }
@@ -33,7 +41,8 @@ export class AuthService {
   public signIn(username: string, password: string): boolean {
     // TODO: Create a http req on the auth api.
     // TODO: Store the token if the req was successful.
-    // TODO: Redirect to homepage.
+    this.debuggee = true;
+    this.router.navigate(['/']);
     return true; //! DEBUG: only for debugging!
   }
 
@@ -43,7 +52,8 @@ export class AuthService {
    */
   public signOut(): boolean {
     // TODO: Remove the stored token from the browser storage.
-    // TODO: Redirect to "/login".
+    this.debuggee = false;
+    this.router.navigate(['/login']);
     return true; //! DEBUG: only for debugging!
   }
 }
