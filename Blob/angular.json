@@ -131,5 +131,8 @@
       }
     }
   },
-  "defaultProject": "Blob"
+  "defaultProject": "Blob",
+  "cli": {
+    "analytics": "fc2914bc-232f-47b5-b904-4dd4774fed1e"
+  }
 }

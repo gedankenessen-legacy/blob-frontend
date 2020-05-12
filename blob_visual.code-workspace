@@ -17,7 +17,7 @@
       "**/tslint*": true
     },
     "prettier.jsxSingleQuote": true,
-    "prettier.printWidth": 512,
+    "prettier.printWidth": 150,
     "prettier.singleQuote": true
   }
 }
