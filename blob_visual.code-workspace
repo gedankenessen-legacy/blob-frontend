@@ -1,8 +1,23 @@
 {
-	"folders": [
-		{
-			"path": "Blob"
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "path": "Blob"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.*": true,
+      "**/.vscode": true,
+      "**/*lock.json*": true,
+      "**/browserslist": true,
+      "**/e2e": true,
+      "**/karma*": true,
+      "**/node_modules": true,
+      "**/tsconfig*": true,
+      "**/tslint*": true
+    },
+    "prettier.jsxSingleQuote": true,
+    "prettier.printWidth": 512,
+    "prettier.singleQuote": true
+  }
 }
