@@ -2,13 +2,28 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { CustomerRoutingModule } from './customer-routing.module';
+import { CutomerDashboardComponent } from './cutomer-dashboard/cutomer-dashboard.component';
+import { NzTableModule, NzButtonModule, NzDropDownModule, NzIconModule, NzFormModule, NzInputModule, NzSelectModule, NzDividerModule, NzRadioModule} from 'ng-zorro-antd';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [CutomerDashboardComponent],
   imports: [
     CommonModule,
-    CustomerRoutingModule
+    CustomerRoutingModule,
+    NzTableModule,
+    NzButtonModule,
+    NzDropDownModule,
+    FormsModule,
+    NzIconModule,
+    NzFormModule,
+    NzInputModule,
+    NzTableModule,
+    ReactiveFormsModule,
+    NzSelectModule,
+    NzDividerModule,
+    NzRadioModule
   ]
 })
 export class CustomerModule { }
