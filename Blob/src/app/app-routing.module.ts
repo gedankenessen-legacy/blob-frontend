@@ -9,6 +9,11 @@ const routes: Routes = [
     component: LoginComponent,
   },
   {
+    path: 'management',
+    loadChildren: () =>
+      import('./management/management.module').then((m) => m.ManagementModule),
+  },
+  {
     path: '**',
     component: NotFoundComponent,
   },
