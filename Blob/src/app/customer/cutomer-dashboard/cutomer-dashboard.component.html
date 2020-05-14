@@ -1,9 +1,10 @@
 <!----------------------------------------->
 <!-- Kunden hinzufügen Button           -->
 <!----------------------------------------->
-<button nz-button nzType="primary" class="element-add-button">
-<i nz-icon nzType="plus" nzTheme="outline"></i> Kunde hinzufügen
+<button nz-button nzType="primary" class="element-add-button" (click)="showPopup()">
+  <i nz-icon nzType="plus" nzTheme="outline"></i> Kunde hinzufügen
 </button>
+<h1>T</h1>
   
   <!----------------------------------------->
   <!-- Kundentabelle                      -->
@@ -38,7 +39,7 @@
     </tbody>
   </nz-table>
   <!----------------------------------------->
-  <!-- Kundensuche Dropdown               -->
+  <!-- Kundensuche Dropdown                -->
   <!----------------------------------------->
   <nz-dropdown-menu #menu="nzDropdownMenu">
     <div class="ant-table-filter-dropdown">
@@ -51,3 +52,18 @@
       </div>
     </div>
   </nz-dropdown-menu>
+
+  <!----------------------------------------->
+  <!-- Popup um Kunden hinzuzufügen        -->
+  <!----------------------------------------->
+  <nz-modal
+      nzWrapClassName="vertical-center-modal"
+      [(nzVisible)]="isPopupVisible"
+      nzTitle="Kunden hinzufügen"
+      (nzOnCancel)="handlePopupCancel()"
+      (nzOnOk)="handlePopupOk()"
+    >
+      <p>some contents...</p>
+      <p>some contents...</p>
+      <p>some contents...</p>
+    </nz-modal>
