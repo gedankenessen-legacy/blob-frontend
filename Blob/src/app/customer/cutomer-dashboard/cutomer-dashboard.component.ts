@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ICustomerItem } from 'src/app/interfaces/customer/icustomer-item';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { TitleService } from 'src/app/title.service';
 
 @Component({
   selector: 'app-cutomer-dashboard',
@@ -10,6 +12,21 @@ export class CutomerDashboardComponent implements OnInit {
   searchValue: string = '';
   visible: boolean = false;
   isPopupVisible: boolean = false;
+  addForm: FormGroup;
+
+  constructor(private fb:FormBuilder, private titleService:TitleService) {}
+
+  ngOnInit(): void {
+    this.addForm = this.fb.group({
+      prename: new FormControl(null, Validators.required),
+      lastname: new FormControl(null, Validators.required),
+      street: new FormControl(null, Validators.required),
+      zip: new FormControl(null, [Validators.required]),
+      city: new FormControl(null, Validators.required)
+    })
+
+    this.titleService.Title = 'Kunden';
+  }
 
   /********************************************
    ** Liste aller Kunden                   **
@@ -54,10 +71,6 @@ export class CutomerDashboardComponent implements OnInit {
     this.search();
   }
 
-  constructor() {}
-
-  ngOnInit(): void {}
-
   /********************************************
    ** Popup aktionen                          **
    ********************************************/
@@ -71,5 +84,11 @@ export class CutomerDashboardComponent implements OnInit {
 
   handlePopupCancel(): void {
     this.isPopupVisible = false;
+  }
+
+  submitAddForm(): void{
+    console.log("Add clicked");
+    this.isPopupVisible = false;
+    
   }
 }
