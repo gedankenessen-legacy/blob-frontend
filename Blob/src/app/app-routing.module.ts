@@ -10,6 +10,11 @@ const routes: Routes = [
     component: LoginComponent,
   },
   {
+    path: "customer",
+    canActivate: [AuthGuard],
+    loadChildren: () => import("./customer/customer.module").then((m) => m.CustomerModule),
+  },
+  {
     path: 'products',
     canActivate: [AuthGuard],
     loadChildren: () => import('./product/product.module').then(m => m.ProductModule)
