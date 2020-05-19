@@ -2,18 +2,14 @@
 Spalte weg bekommen
 Rest Request -->
 
-<form
-  nz-form
-  [formGroup]="productForm"
-  class="product-addedit-form"
-  (ngSubmit)="submitForm()"
->
+<form nz-form [formGroup]="productForm" class="product-addedit-form" (ngSubmit)="submitForm()">
   <!----------------------------------------->
   <!-- Produkt oder Service Auswahl        -->
   <!----------------------------------------->
   <h3>Produkt/Service</h3>
   <nz-form-item>
-    <nz-radio-group [(ngModel)]="selectProductService">
+    <nz-radio-group>
+      <!-- [(ngModel)]="selectProductService" -->
       <label nz-radio nzValue="product">Produkt</label>
       <label nz-radio nzValue="service">Service</label>
     </nz-radio-group>
@@ -26,12 +22,7 @@ Rest Request -->
   <nz-form-item>
     <nz-form-control nzErrorTip="Bitte geben Sie den Produktnamen an!">
       <nz-input-group nzPrefixIcon="code-sandbox">
-        <input
-          type="text"
-          nz-input
-          formControlName="productname"
-          placeholder="Produktname"
-        />
+        <input type="text" nz-input formControlName="productname" placeholder="Produktname" />
       </nz-input-group>
     </nz-form-control>
   </nz-form-item>
@@ -43,12 +34,7 @@ Rest Request -->
   <nz-form-item>
     <nz-form-control nzErrorTip="Bitte geben Sie den Preis an!">
       <nz-input-group nzPrefixIcon="euro">
-        <input
-          type="number"
-          nz-input
-          formControlName="price"
-          placeholder="Preis"
-        />
+        <input type="number" nz-input formControlName="price" placeholder="Preis" />
       </nz-input-group>
     </nz-form-control>
   </nz-form-item>
@@ -65,113 +51,6 @@ Rest Request -->
     </nz-form-control>
   </nz-form-item>
 
-  <!----------------------------------------->
-  <!-- Eigenschaften                       -->
-  <!----------------------------------------->
-  <h3>Eigenschaften</h3>
-  <!-- TODO: Workaround 'NoResult' need to be fixed -->
-  <nz-table
-    #propertyTable
-    nzBordered
-    [nzData]="listOfProperty"
-    [nzNoResult]="null"
-  >
-    <thead>
-      <tr>
-        <th nzSpan="12">Eigenschaft</th>
-        <th nzSpan="12">Wert</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let data of propertyTable.data" class="editable-row">
-        <td>
-          <div class="editable-cell" [hidden]="editIdProperty === data.id">
-            {{ data.name }}
-          </div>
-          <input type="text" nz-input [(ngModel)]="data.name" />
-        </td>
-
-        <td>
-          <div class="editable-cell" [hidden]="editIdProperty === data.id">
-            {{ data.value }}
-          </div>
-          <input type="text" nz-input [(ngModel)]="data.value" />
-        </td>
-      </tr>
-    </tbody>
-  </nz-table>
-  <button nz-button (click)="addRowProperty()" nzType="primary">
-    Hinzufügen
-  </button>
-  <br /><br />
-
-  <!----------------------------------------->
-  <!-- Kategorien Auswahl                  -->
-  <!----------------------------------------->
-  <h3>Kategorie</h3>
-  <nz-select
-    nzShowSearch
-    nzAllowClear
-    [nzDropdownRender]="renderTemplate"
-    nzPlaceHolder="Kategorie"
-    class="category"
-  >
-    <nz-option
-      *ngFor="let item of listOfCategory"
-      [nzLabel]="item"
-      [nzValue]="item"
-    ></nz-option>
-  </nz-select>
-  <ng-template #renderTemplate>
-    <nz-divider></nz-divider>
-    <div class="container">
-      <input type="text" nz-input #inputElement formControlName="category" />
-      <a class="add-item" (click)="addItem(inputElement)"
-        ><i nz-icon nzType="plus"></i> Neue Kategorie</a
-      >
-    </div>
-  </ng-template>
-  <br /><br />
-
-  <!----------------------------------------->
-  <!-- Standort                            -->
-  <!----------------------------------------->
-  <h3>Standorte</h3>
-  <!-- TODO: Workaround 'NoResult' need to be fixed -->
-  <nz-table
-    #locationTable
-    nzBordered
-    [nzData]="listOfLocation"
-    [nzNoResult]="null"
-  >
-    <thead>
-      <tr>
-        <th nzSpan="12">Standort</th>
-        <th nzSpan="12">Bestand</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let data of locationTable.data" class="editable-row">
-        <td>
-          <div class="editable-cell" [hidden]="editIdLocation === data.id">
-            {{ data.name }}
-          </div>
-          <input type="text" nz-input [(ngModel)]="data.name" />
-        </td>
-
-        <td>
-          <div class="editable-cell" [hidden]="editIdLocation === data.id">
-            {{ data.value }}
-          </div>
-          <input type="text" nz-input [(ngModel)]="data.value" />
-        </td>
-      </tr>
-    </tbody>
-  </nz-table>
-  <button nz-button (click)="addRowLocation()" nzType="primary">
-    Hinzufügen
-  </button>
-  <br /><br />
 
   <!----------------------------------------->
   <!-- Speichern Button                    -->
@@ -182,3 +61,89 @@ Rest Request -->
     </nz-form-control>
   </nz-form-item>
 </form>
+
+<!----------------------------------------->
+<!-- Eigenschaften                       -->
+<!----------------------------------------->
+<h3>Eigenschaften</h3>
+<!-- TODO: Workaround 'NoResult' need to be fixed -->
+<nz-table #propertyTable nzBordered [nzData]="listOfProperty" [nzNoResult]="null">
+  <thead>
+    <tr>
+      <th nzSpan="12">Eigenschaft</th>
+      <th nzSpan="12">Wert</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of propertyTable.data" class="editable-row">
+      <td>
+        <div class="editable-cell" [hidden]="editIdProperty === data.id">
+          {{ data.name }}
+        </div>
+        <input type="text" nz-input [(ngModel)]="data.name" />
+      </td>
+
+      <td>
+        <div class="editable-cell" [hidden]="editIdProperty === data.id">
+          {{ data.value }}
+        </div>
+        <input type="text" nz-input [(ngModel)]="data.value" />
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+<button nz-button (click)="addRowProperty()" nzType="primary">
+  Hinzufügen
+</button>
+<br /><br />
+
+<!----------------------------------------->
+<!-- Kategorien Auswahl                  -->
+<!----------------------------------------->
+<h3>Kategorie</h3>
+<nz-select nzShowSearch nzAllowClear [nzDropdownRender]="renderTemplate" nzPlaceHolder="Kategorie" class="category">
+  <nz-option *ngFor="let item of listOfCategory" [nzLabel]="item" [nzValue]="item"></nz-option>
+</nz-select>
+<ng-template #renderTemplate>
+  <nz-divider></nz-divider>
+  <div class="container">
+    <input type="text" nz-input #inputElement formControlName="category" />
+    <a class="add-item" (click)="addItem(inputElement)"><i nz-icon nzType="plus"></i> Neue Kategorie</a>
+  </div>
+</ng-template>
+<br /><br />
+
+<!----------------------------------------->
+<!-- Standort                            -->
+<!----------------------------------------->
+<h3>Standorte</h3>
+<!-- TODO: Workaround 'NoResult' need to be fixed -->
+<nz-table #locationTable nzBordered [nzData]="listOfLocation" [nzNoResult]="null">
+  <thead>
+    <tr>
+      <th nzSpan="12">Standort</th>
+      <th nzSpan="12">Bestand</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of locationTable.data" class="editable-row">
+      <td>
+        <div class="editable-cell" [hidden]="editIdLocation === data.id">
+          {{ data.name }}
+        </div>
+        <input type="text" nz-input [(ngModel)]="data.name" />
+      </td>
+
+      <td>
+        <div class="editable-cell" [hidden]="editIdLocation === data.id">
+          {{ data.value }}
+        </div>
+        <input type="text" nz-input [(ngModel)]="data.value" />
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+<button nz-button (click)="addRowLocation()" nzType="primary">
+  Hinzufügen
+</button>
+<br /><br />

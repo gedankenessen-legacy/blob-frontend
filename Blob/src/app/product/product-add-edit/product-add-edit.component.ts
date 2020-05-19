@@ -11,12 +11,12 @@ import { ILocationItem } from 'src/app/interfaces/ILocationItem';
 @Component({
   selector: 'app-product-add-edit',
   templateUrl: './product-add-edit.component.html',
-  styleUrls: ['./product-add-edit.component.less']
+  styleUrls: ['./product-add-edit.component.less'],
 })
 export class ProductAddEditComponent implements OnInit {
   /*******************************************
-  ** Variablen                              **
-  *******************************************/
+   ** Variablen                              **
+   *******************************************/
   selectProductService = 'product';
   productForm: FormGroup;
   editIdProperty: string | null = null;
@@ -26,58 +26,62 @@ export class ProductAddEditComponent implements OnInit {
   listOfCategory = ['Test 1', 'Test 2'];
   indexCategory = 0;
   /*******************************************
-  ** Formular Builder                       **
-  *******************************************/
+   ** Formular Builder                       **
+   *******************************************/
   constructor(private fbp: FormBuilder) {}
 
   ngOnInit(): void {
     this.productForm = this.fbp.group({
-      productname: new FormControl("", [Validators.required]),
-      price: new FormControl("", [Validators.required]),
-      sku: new FormControl("", [Validators.required]),
-      category: new FormControl("", [Validators.required])
-    }); 
+      productname: new FormControl('', [Validators.required]),
+      price: new FormControl('', [Validators.required]),
+      sku: new FormControl('', [Validators.required]),
+      category: new FormControl('', [Validators.required]),
+    });
   }
 
   /*******************************************
-  ** Speichern Button                       **
-  *******************************************/
+   ** Speichern Button                       **
+   *******************************************/
   submitForm() {
+    console.log(this.listOfLocation);
   }
 
   /*******************************************
-  ** Katigorie hinzufügen                   **
-  *******************************************/
+   ** Katigorie hinzufügen                   **
+   *******************************************/
   addItem(input: HTMLInputElement): void {
     const value = input.value;
     if (this.listOfCategory.indexOf(value) === -1) {
-      this.listOfCategory = [...this.listOfCategory, input.value || `New item ${this.indexCategory++}`];
+      this.listOfCategory = [
+        ...this.listOfCategory,
+        input.value || `New item ${this.indexCategory++}`,
+      ];
     }
   }
 
   /*******************************************
-  ** Eigenschaft hinzufügen                 **
-  *******************************************/
+   ** Eigenschaft hinzufügen                 **
+   *******************************************/
   addRowProperty(): void {
     this.listOfProperty = [
       ...this.listOfProperty,
       {
         name: '',
-        value: ''
-      }
+        value: '',
+      },
     ];
   }
 
   /*******************************************
-  ** Standort hinzufügen                    **
-  *******************************************/
+   ** Standort hinzufügen                    **
+   *******************************************/
   addRowLocation(): void {
     this.listOfLocation = [
       ...this.listOfLocation,
       {
         location: '',
-        amount: 0
-      }
+        amount: 0,
+      },
     ];
   }
 }

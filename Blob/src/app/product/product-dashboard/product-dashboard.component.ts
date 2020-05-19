@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IProductItem } from '../../interfaces/IProductItem';
+import { ProductService } from '../product.service';
 
 @Component({
   selector: 'app-product-dashboard',
@@ -7,9 +8,25 @@ import { IProductItem } from '../../interfaces/IProductItem';
   styleUrls: ['./product-dashboard.component.less'],
 })
 export class ProductDashboardComponent implements OnInit {
-  constructor() {}
+  constructor(private productService: ProductService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getAllProducts();
+  }
+
+  getAllProducts() {
+    this.productService.getAllProducts().subscribe(
+      (data) => {
+        console.log(data);
+
+        this.listOfData = data;
+        this.listOfDisplayData = data;
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
 
   /********************************************
    ** Variablen                              **
@@ -20,7 +37,7 @@ export class ProductDashboardComponent implements OnInit {
   /********************************************
    ** Liste aller Produkte                   **
    *******************************************/
-  listOfData: IProductItem[] = [
+  listOfData: Array<IProductItem> = [
     {
       product: 'Product 1',
       sku: 'A123456789',
@@ -53,8 +70,8 @@ export class ProductDashboardComponent implements OnInit {
   }
 
   /********************************************
-  ** Produktsuche zurücksetzten              **
-  ********************************************/
+   ** Produktsuche zurücksetzten              **
+   ********************************************/
   reset() {
     this.searchValue = '';
     this.search();
