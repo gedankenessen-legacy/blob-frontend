@@ -13,6 +13,7 @@ export class CutomerDashboardComponent implements OnInit {
   searchValue: string = '';
   visible: boolean = false;
   isPopupVisible: boolean = false;
+  isLoading: boolean = true;
   addForm: FormGroup;
 
   constructor(private fb:FormBuilder, private titleService:TitleService, private customerService: CustomerService) {}
@@ -38,6 +39,8 @@ export class CutomerDashboardComponent implements OnInit {
 
         this.listOfData = data;
         this.listOfDisplayData = data;
+
+        this.isLoading = false;
       },
       (error) => {
         console.error(error);
@@ -45,13 +48,13 @@ export class CutomerDashboardComponent implements OnInit {
     );
   }
   
-  addNewCustomer(){
+  addNewCustomer(id:number = -1){
     var newCustomerItem: ICustomerItem = {
-      id: 4,
+      id: id,
       firstName: this.addForm.controls["firstname"].value,
       lastName: this.addForm.controls["lastname"].value,
       address: this.addForm.controls["firstname"].value+", "+this.addForm.controls["zip"].value+" "+this.addForm.controls["city"].value,
-      createdAt: "20-05-2020",
+      createdAt: null,
     }
 
     this.customerService.createCustomer(newCustomerItem).subscribe(
@@ -76,7 +79,8 @@ export class CutomerDashboardComponent implements OnInit {
   /********************************************
    ** Liste aller Kunden                   **
    *******************************************/
-  listOfData: ICustomerItem[] = [
+  listOfData: ICustomerItem[] = [];
+  /* listOfData: ICustomerItem[] = [
     {
       id: 1,
       firstName: "Test",
@@ -91,7 +95,7 @@ export class CutomerDashboardComponent implements OnInit {
       address: "Badstraße 24, 77654 Offenburg",
       createdAt: "20-05-2020",
     },
-  ];
+  ]; */
 
   /********************************************
    ** Kundensuche                            **
@@ -100,7 +104,7 @@ export class CutomerDashboardComponent implements OnInit {
   search() {
     this.visible = false;
     this.listOfDisplayData = this.listOfData.filter(
-      (item: ICustomerItem) => item.firstName.indexOf(this.searchValue) !== -1
+      (item: ICustomerItem) => (item.firstName +" "+item.lastName).indexOf(this.searchValue) !== -1
     );
   }
 
@@ -119,10 +123,6 @@ export class CutomerDashboardComponent implements OnInit {
     this.isPopupVisible = true;
   }
 
-  handlePopupOk(): void {
-    this.isPopupVisible = false;
-  }
-
   handlePopupCancel(): void {
     this.isPopupVisible = false;
   }
@@ -132,4 +132,10 @@ export class CutomerDashboardComponent implements OnInit {
     this.isPopupVisible = false;
     this.addNewCustomer();
   }
+
+  editButtonClicked(): void{
+    console.log("Edit clicked");
+    this.isPopupVisible = true;
+  }
+
 }
