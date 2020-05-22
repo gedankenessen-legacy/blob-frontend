@@ -19,7 +19,7 @@
 <!----------------------------------------->
 <!-- Benutzer Tabelle                    -->
 <!----------------------------------------->
-<nz-table #nzTable [nzData]="fetchUsers()">
+<nz-table #nzTableUser [nzData]="fetchUsers()">
   <thead>
 	<!-- TODO: nzCustomFilter (?) -->
 	<tr>
@@ -30,7 +30,7 @@
 	</tr>
   </thead>
   <tbody>
-	<tr *ngFor="let data of nzTable.data">
+	<tr *ngFor="let data of nzTableUser.data">
 	  <td>{{ data.id }}</td>
 	  <td>{{ data.firstname }}</td>
 	  <td>{{ data.lastname }}</td>
@@ -46,11 +46,11 @@
   nzWrapClassName="vertical-center-modal"
   [(nzVisible)]="isUserPopupVisible"
   nzTitle="Benutzer hinzufügen"
-  [nzContent]="modalContent"
-  [nzFooter]="modalFooter"
+  [nzContent]="modalContentUser"
+  [nzFooter]="modalFooterUser"
   (nzOnCancel)="handleUserPopupCancel()"
 >
-  <ng-template #modalContent>
+  <ng-template #modalContentUser>
     <form
       nz-form
       [formGroup]="addUserForm"
@@ -115,7 +115,7 @@
       </button> -->
     </form>
   </ng-template>
-  <ng-template #modalFooter>
+  <ng-template #modalFooterUser>
     <button nz-button nzType="primary" (click)="submitUserAddForm()" nzBlock>
       Speichern
     </button>
@@ -144,7 +144,7 @@
   <!----------------------------------------->
   <!-- Standort Tabelle                    -->
   <!----------------------------------------->
-  <nz-table #nzTable [nzData]="fetchLocations()">
+  <nz-table #nzTableLocation [nzData]="fetchLocations()">
 	<thead>
 	  <!-- nzCustomFilter -->
 	  <tr>
@@ -157,7 +157,7 @@
 	  </tr>
 	</thead>
 	<tbody>
-	  <tr *ngFor="let data of nzTable.data">
+	  <tr *ngFor="let data of nzTableLocation.data">
 		<td>{{ data.id }}</td>
 		<td>{{ data.name }}</td>
 		<td>{{ data.city }}</td>
@@ -194,11 +194,11 @@
   nzWrapClassName="vertical-center-modal"
   [(nzVisible)]="isLocationPopupVisible"
   nzTitle="Standort hinzufügen"
-  [nzContent]="modalContent"
-  [nzFooter]="modalFooter"
+  [nzContent]="modalContentLocation"
+  [nzFooter]="modalFooterLocation"
   (nzOnCancel)="handleLocationPopupCancel()"
 >
-  <ng-template #modalContent>
+  <ng-template #modalContentLocation>
     <form
       nz-form
       [formGroup]="addLocationForm"
@@ -263,7 +263,7 @@
       </button> -->
     </form>
   </ng-template>
-  <ng-template #modalFooter>
+  <ng-template #modalFooterLocation>
     <button nz-button nzType="primary" (click)="submitLocationAddForm()" nzBlock>
       Speichern
     </button>
