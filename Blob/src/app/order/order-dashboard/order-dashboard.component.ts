@@ -13,6 +13,7 @@ export class OrderDashboardComponent implements OnInit {
   searchValue: string = '';
   visible: boolean = false;
   currentState: EOrderState = EOrderState.notPaid;
+  selectedIndex: EOrderState = EOrderState.notPaid;
   tabs:ITabContent[] = [
     {
       title: "Nicht Bezahlt",
@@ -79,9 +80,28 @@ export class OrderDashboardComponent implements OnInit {
 
   tabChanged(state:EOrderState):void{
     this.currentState = state;
+    this.updateListOfDisplayData();
+  }
+
+  updateListOfDisplayData():void{
+    console.log(this.listOfData);
+    
     this.listOfDisplayData = this.listOfData.filter(
-      (item: IOrderItem) => item.state == state
+      (item: IOrderItem) => item.state == this.currentState
     );
+  }
+
+  selectChanged(newState: EOrderState, id: number): void{
+    console.log("id: "+id);
+    
+    this.listOfData.find(item => {
+      return item.id == id
+    }).state = newState;
+
+    this.selectedIndex = newState;
+    console.log(this.listOfData);
+    
+    this.updateListOfDisplayData();
   }
 
   /********************************************
@@ -91,7 +111,7 @@ export class OrderDashboardComponent implements OnInit {
   search() {
     this.visible = false;
     this.listOfDisplayData = this.listOfData.filter(
-      //TODO Suche fixen
+      //TODO Suche fixen auch reset
       (item: IOrderItem) => item.id == Number(this.searchValue) && item.state==this.currentState
     );
   }
