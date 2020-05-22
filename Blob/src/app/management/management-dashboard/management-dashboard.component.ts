@@ -102,6 +102,15 @@ export class ManagementDashboardComponent implements OnInit {
     return this.placeholderLocations;
   }
 
+  // TODO: Send actual request
+  addUser(user): void {
+    console.log(user);
+  }
+
+  addLocation(location): void {
+    console.log(location);
+  }
+
   changeLocation(): void {
     // Change submit to POST request
     // Fill popup with data
@@ -123,7 +132,15 @@ export class ManagementDashboardComponent implements OnInit {
     this.isUserPopupVisible = false;
   }
 
-  submitUserAddForm(): void {}
+  submitUserAddForm(): void {
+    // TODO: build username
+    // TODO: validate input
+    this.addUser({
+      firstname: this.addUserForm.get('firstname').value,
+      lastname: this.addUserForm.get('lastname').value,
+      password: this.addUserForm.get('password').value,
+    });
+  }
 
   showLocationPopup(): void {
     this.isLocationPopupVisible = true;
@@ -134,5 +151,13 @@ export class ManagementDashboardComponent implements OnInit {
   handleLocationPopupCancel(): void {
     this.isLocationPopupVisible = false;
   }
-  submitLocationAddForm(): void {}
+  submitLocationAddForm(): void {
+    // TODO: validate input
+    this.addLocation({
+      name: this.addLocationForm.get('name').value,
+      street: this.addLocationForm.get('street').value,
+      zip: this.addLocationForm.get('zip').value,
+      city: this.addLocationForm.get('city').value,
+    });
+  }
 }
