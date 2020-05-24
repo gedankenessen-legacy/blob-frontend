@@ -6,12 +6,13 @@
       nz-button
       nzType="primary"
       class="element-add-button"
+      [routerLink]="['/order/addedit',-1]"
     >
       <i nz-icon nzType="plus" nzTheme="outline"></i> Bestellung hinzufügen
     </button>
   </div>
   
-  <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'" [nzSelectedIndex]="selectedIndex">
+  <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'" [nzSelectedIndex]="currentState">
     <nz-tab *ngFor="let tab of tabs" [nzTitle]="tab.title" (nzClick)="tabChanged(tab.state)"> 
         <!----------------------------------------->
         <!-- Kundentabelle                      -->

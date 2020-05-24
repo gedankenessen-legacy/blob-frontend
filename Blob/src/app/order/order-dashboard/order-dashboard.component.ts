@@ -13,7 +13,6 @@ export class OrderDashboardComponent implements OnInit {
   searchValue: string = '';
   visible: boolean = false;
   currentState: EOrderState = EOrderState.notPaid;
-  selectedIndex: EOrderState = EOrderState.notPaid;
   tabs:ITabContent[] = [
     {
       title: "Nicht Bezahlt",
@@ -98,7 +97,7 @@ export class OrderDashboardComponent implements OnInit {
       return item.id == id
     }).state = newState;
 
-    this.selectedIndex = newState;
+    this.currentState = newState;
     console.log(this.listOfData);
     
     this.updateListOfDisplayData();

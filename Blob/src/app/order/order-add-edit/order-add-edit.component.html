@@ -1,0 +1,75 @@
+<form
+      nz-form
+      [formGroup]="addForm"
+      class="login-form"
+      (ngSubmit)="submitAddForm()"
+    >
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Bitte geben Sie einen Vorname ein!">
+          <nz-input-group>
+            <input
+              type="text"
+              nz-input
+              formControlName="firstname"
+              placeholder="Vorname"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Bitte geben Sie einen Nachname ein!">
+          <nz-input-group>
+            <input
+              type="text"
+              nz-input
+              formControlName="lastname"
+              placeholder="Nachname"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Bitte geben Sie eine Straße ein!">
+          <nz-input-group>
+            <input
+              type="text"
+              nz-input
+              formControlName="street"
+              placeholder="Straße"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Bitte geben Sie eine PLZ ein!">
+          <nz-input-group>
+            <input
+              type="text"
+              nz-input
+              formControlName="zip"
+              placeholder="PLZ"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Bitte geben Sie eine Stadt ein!">
+          <nz-input-group>
+            <input
+              type="text"
+              nz-input
+              formControlName="city"
+              placeholder="Stadt"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- <button
+        nz-button
+        class="addButton"
+        [nzType]="'primary'"
+        nzBlock
+      >
+        Speichern
+      </button> -->
+    </form>
