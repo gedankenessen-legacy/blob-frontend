@@ -35,7 +35,7 @@
   <tbody>
     <tr *ngFor="let data of nzTable.data">
       <td>{{ data.firstName }} {{data.lastName}}</td>
-      <td>{{ data.address }}</td>
+      <td>{{ data.address.street }}, {{ data.address.zip }} {{ data.address.city }}</td>
       <td>
         <button
           nz-button

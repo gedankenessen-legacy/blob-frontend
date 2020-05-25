@@ -15,7 +15,7 @@
   <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'" [nzSelectedIndex]="currentState">
     <nz-tab *ngFor="let tab of tabs" [nzTitle]="tab.title" (nzClick)="tabChanged(tab.state)"> 
         <!----------------------------------------->
-        <!-- Kundentabelle                      -->
+        <!-- Bestellungtabelle                   -->
         <!----------------------------------------->
         <nz-table #nzTable [nzData]="listOfDisplayData" nzTableLayout="fixed">
             <thead>

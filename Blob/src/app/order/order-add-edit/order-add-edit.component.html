@@ -4,72 +4,119 @@
       class="login-form"
       (ngSubmit)="submitAddForm()"
     >
-      <nz-form-item>
-        <nz-form-control nzErrorTip="Bitte geben Sie einen Vorname ein!">
-          <nz-input-group>
-            <input
-              type="text"
-              nz-input
-              formControlName="firstname"
-              placeholder="Vorname"
-            />
-          </nz-input-group>
+
+    <nz-form-item>
+        <nz-form-control>
+            <nz-select formControlName="customerId" nzShowSearch nzAllowClear nzPlaceHolder="Wähle einen Kunden"  [nzLoading]="isLoading" (ngModelChange)="customerChanged()">
+                <nz-option *ngFor="let customer of customers" [nzValue]="customer.id" [nzLabel]="customer.firstName"></nz-option>
+                </nz-select>
         </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-control nzErrorTip="Bitte geben Sie einen Nachname ein!">
-          <nz-input-group>
-            <input
-              type="text"
-              nz-input
-              formControlName="lastname"
-              placeholder="Nachname"
-            />
-          </nz-input-group>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control>
+            <nz-input-group>
+            <input formControlName="street" nz-input placeholder="Straße"/>
+            </nz-input-group>
         </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-control nzErrorTip="Bitte geben Sie eine Straße ein!">
-          <nz-input-group>
-            <input
-              type="text"
-              nz-input
-              formControlName="street"
-              placeholder="Straße"
-            />
-          </nz-input-group>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control>
+            <nz-input-group>
+            <input formControlName="city" nz-input placeholder="PLZ, Ort"/>
+            </nz-input-group>
         </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-control nzErrorTip="Bitte geben Sie eine PLZ ein!">
-          <nz-input-group>
-            <input
-              type="text"
-              nz-input
-              formControlName="zip"
-              placeholder="PLZ"
-            />
-          </nz-input-group>
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-control nzErrorTip="Bitte geben Sie eine Stadt ein!">
-          <nz-input-group>
-            <input
-              type="text"
-              nz-input
-              formControlName="city"
-              placeholder="Stadt"
-            />
-          </nz-input-group>
-        </nz-form-control>
-      </nz-form-item>
-      <!-- <button
+    </nz-form-item>
+    <div *ngFor="let product of products.controls; let i = index;">
+        <div>
+            <nz-form-item>
+                <nz-form-control>
+                    <nz-select [formControlName]="products.controls[i]['product']" nzShowSearch nzAllowClear nzPlaceHolder="Produkt auswählen">
+                        <nz-option *ngFor="let customer of customers" [nzValue]="customer.id" [nzLabel]="customer.firstName"></nz-option>
+                        <nz-option nzLabel="Produkt 1" nzValue="1">Produkt 1</nz-option>
+                        <nz-option nzLabel="Produkt 2" nzValue="2">Produkt 2</nz-option>
+                        <nz-option nzLabel="Produkt 3" nzValue="3">Produkt 3</nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control>
+                    <nz-input-group>
+                    <input [formControlName]="products.controls[i]['quantity']" nz-input placeholder="Menge"/>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control>
+                    <nz-input-group>
+                    <input [formControlName]="products.controls[i]['price']" nz-input placeholder="Preis"/>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+
+    </div>
+
+   <!--  <nz-table #nzTable [nzData]="products.controls" nzTableLayout="fixed">
+        <thead>
+        <tr>
+            <th>Produkt</th>
+            <th>Menge</th>
+            <th>Preis</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let product of nzTable.data; let i = index;" [formGroup]="product">
+            <td>
+                <nz-form-item>
+                    <nz-form-control>
+                        <nz-select formControlName="product" nzShowSearch nzAllowClear nzPlaceHolder="Produkt auswählen">
+                            <nz-option *ngFor="let customer of customers" [nzValue]="customer.id" [nzLabel]="customer.firstName"></nz-option>
+                            <nz-option nzLabel="Produkt 1" nzValue="1">Produkt 1</nz-option>
+                            <nz-option nzLabel="Produkt 2" nzValue="2">Produkt 2</nz-option>
+                            <nz-option nzLabel="Produkt 3" nzValue="3">Produkt 3</nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </td>
+            <td>
+                <nz-form-item>
+                    <nz-form-control>
+                        <nz-input-group>
+                        <input formControlName="quantity" nz-input placeholder="Menge"/>
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+            </td>
+            <td>
+                <nz-form-item>
+                    <nz-form-control>
+                        <nz-input-group>
+                        <input formControlName="price" nz-input placeholder="Preis"/>
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+            </td>
+        </tr>
+        </tbody>
+    </nz-table> -->
+
+    <div class="button-wrapper">
+    <button
         nz-button
-        class="addButton"
-        [nzType]="'primary'"
-        nzBlock
-      >
-        Speichern
-      </button> -->
-    </form>
+        nzType="primary"
+        class="element-add-button"
+        (click)="addProduct()"
+    >
+        <i nz-icon nzType="plus" nzTheme="outline"></i> Produkt hinzufügen
+    </button>
+    </div>
+     
+    <button
+    nz-button
+    class="addButton"
+    [nzType]="'primary'"
+    nzBlock
+    >
+    Speichern
+    </button> 
+ </form>

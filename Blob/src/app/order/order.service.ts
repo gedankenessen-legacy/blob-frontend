@@ -18,7 +18,12 @@ export class OrderService {
         id: 3,
         firstName: "Test",
         lastName: "1",
-        address: "Badstraße 24, 77654 Offenburg",
+        address: {
+          id: 1,
+          street: "Badstraße 24",
+          zip: "77654",
+          city: "Offenburg"
+        },
         createdAt: "20-05-2020",
       },
       createdAt: "21.05.2020",
@@ -32,7 +37,12 @@ export class OrderService {
         id: 2,
         firstName: "Test",
         lastName: "2",
-        address: "Badstraße 24, 77654 Offenburg",
+        address: {
+          id: 1,
+          street: "Badstraße 24",
+          zip: "77654",
+          city: "Offenburg"
+        },
         createdAt: "20-05-2020",
       },
       createdAt: "21.05.2020",

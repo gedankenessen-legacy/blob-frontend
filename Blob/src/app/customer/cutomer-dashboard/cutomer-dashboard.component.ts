@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, AfterContentInit, AfterContentChecked } from '@angular/core';
 import { ICustomerItem } from 'src/app/interfaces/customer/ICustomerItem';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { TitleService } from 'src/app/title.service';
 import { CustomerService } from '../customer.service';
+import { IAdress } from 'src/app/interfaces/iadress';
 
 @Component({
   selector: 'app-cutomer-dashboard',
@@ -15,7 +16,9 @@ export class CutomerDashboardComponent implements OnInit {
   isPopupVisible: boolean = false;
   addForm: FormGroup;
 
-  constructor(private fb:FormBuilder, private titleService:TitleService, private customerService: CustomerService) {}
+  constructor(private fb:FormBuilder, private titleService:TitleService, private customerService: CustomerService) {
+    this.titleService.Title = 'Kunden';
+  }
 
   ngOnInit(): void {
     this.addForm = this.fb.group({
@@ -25,8 +28,6 @@ export class CutomerDashboardComponent implements OnInit {
       zip: new FormControl(null, [Validators.required]),
       city: new FormControl(null, Validators.required)
     })
-
-    this.titleService.Title = 'Kunden';
 
     this.getAllCustomer();
   }
@@ -46,11 +47,17 @@ export class CutomerDashboardComponent implements OnInit {
   }
   
   addNewCustomer(){
+    var address: IAdress =  {
+      id: -1,
+      street: this.addForm.controls["street"].value,
+      zip: this.addForm.controls["zip"].value,
+      city: this.addForm.controls["city"].value
+    }
     var newCustomerItem: ICustomerItem = {
       id: 4,
       firstName: this.addForm.controls["firstname"].value,
       lastName: this.addForm.controls["lastname"].value,
-      address: this.addForm.controls["firstname"].value+", "+this.addForm.controls["zip"].value+" "+this.addForm.controls["city"].value,
+      address: address,
       createdAt: "20-05-2020",
     }
 
@@ -81,14 +88,24 @@ export class CutomerDashboardComponent implements OnInit {
       id: 1,
       firstName: "Test",
       lastName: "Test",
-      address: "Badstraße 24, 77654 Offenburg",
+      address: {
+        id: 1,
+        street: "Badstraße 24",
+        zip: "77654",
+        city: "Offenburg"
+      },
       createdAt: "20-05-2020",
     },
     {
       id: 2,
       firstName: "Test 2",
       lastName: "Test 2",
-      address: "Badstraße 24, 77654 Offenburg",
+      address: {
+        id: 1,
+        street: "Badstraße 24",
+        zip: "77654",
+        city: "Offenburg"
+      },
       createdAt: "20-05-2020",
     },
   ];
