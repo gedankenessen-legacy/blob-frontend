@@ -27,7 +27,7 @@ export class OrderAddEditComponent implements OnInit {
       customerId: new FormControl(null, Validators.required),
       street: new FormControl({value: null, disabled:true}),
       city: new FormControl({value: null, disabled:true}),
-      products: this.fb.array([this.createItem()])
+      products: this.fb.array([this.createItem()], Validators.required)
     })
     
     this.getAllCustomer();
@@ -68,8 +68,8 @@ export class OrderAddEditComponent implements OnInit {
     
   }
 
-  public removeProduct() {
-    
+  public removeProduct(index: number) {
+    this.products.removeAt(index);
   }
 
   customerChanged(): void{
