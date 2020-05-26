@@ -10,7 +10,7 @@ import { EOrderState } from '../enums/order/eorder-state.enum';
   providedIn: 'root'
 })
 export class OrderService {
-  demoCustomer: Array<IOrderItem> = [
+  demoOrder: Array<IOrderItem> = [
     {
       id: 1,
       locationId: 1,
@@ -27,7 +27,7 @@ export class OrderService {
         createdAt: "20-05-2020",
       },
       createdAt: "21.05.2020",
-      orderedProduct:null,
+      orderProducts:null,
       state: EOrderState.notPaid,
     },
     {
@@ -46,7 +46,7 @@ export class OrderService {
         createdAt: "20-05-2020",
       },
       createdAt: "21.05.2020",
-      orderedProduct:null,
+      orderProducts:null,
       state: EOrderState.paid,
     }
   ];
@@ -59,6 +59,7 @@ export class OrderService {
   };
   constructor(private http: HttpClient, private baseService: BaseService) { 
     this.getAllOrders = this.getAllOrdersDev;
+    this.getOrder = this.getOrderDev;
   }
 
   getAllOrders(): Observable<any>{
@@ -68,6 +69,19 @@ export class OrderService {
   }
 
   getAllOrdersDev(): Observable<Array<IOrderItem>>{
-    return of(this.demoCustomer).pipe(delay(2000));
+    return of(this.demoOrder).pipe(delay(2000));
+  }
+
+  getOrder(id: number): Observable<IOrderItem>{
+    return this.http
+      .get<any>(this.baseService.getBaseUrl + '/order/'+id, this.httpOptions)
+      .pipe(catchError(this.baseService.errorHandle));
+  }
+
+  getOrderDev(id: number): Observable<IOrderItem>{
+    var order: IOrderItem = this.demoOrder.filter(
+      (item: IOrderItem) => item.id == id
+    )[0];
+    return of(order).pipe(delay(2000));
   }
 }

@@ -3,6 +3,7 @@ import { TitleService } from 'src/app/title.service';
 import { IOrderItem } from 'src/app/interfaces/order/IOrderItem';
 import { EOrderState } from 'src/app/enums/order/eorder-state.enum';
 import { ITabContent } from 'src/app/interfaces/order/ITabContent';
+import { OrderService } from '../order.service';
 
 @Component({
   selector: 'app-order-dashboard',
@@ -12,6 +13,7 @@ import { ITabContent } from 'src/app/interfaces/order/ITabContent';
 export class OrderDashboardComponent implements OnInit {
   searchValue: string = '';
   visible: boolean = false;
+  isOrdersLoading = true;
   currentState: EOrderState = EOrderState.notPaid;
   tabs:ITabContent[] = [
     {
@@ -36,57 +38,32 @@ export class OrderDashboardComponent implements OnInit {
     },
   ];
 
-  constructor(private titleService:TitleService) {
+  constructor(private titleService:TitleService, private orderService: OrderService) {
     this.titleService.Title = 'Bestellungen';
   }
 
   ngOnInit(): void {
     this.tabChanged(EOrderState.notPaid);
+    this.getAllOrders();
+  }
+
+  getAllOrders() {
+    this.orderService.getAllOrders().subscribe(
+      (data) => {
+        this.listOfData = data;
+        this.updateListOfDisplayData();
+        this.isOrdersLoading = false;
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
   }
 
   /********************************************
-   ** Liste aller Kunden                   **
+   ** Liste aller Bestellungen               **
    *******************************************/
-  listOfData: IOrderItem[] = [
-    {
-      id: 1,
-      locationId: 1,
-      customer: {
-        id: 3,
-        firstName: "Test",
-        lastName: "1",
-        address: {
-          id: 1,
-          street: "Badstraße 24",
-          zip: "77654",
-          city: "Offenburg"
-        },
-        createdAt: "20-05-2020",
-      },
-      createdAt: "21.05.2020",
-      orderedProduct:null,
-      state: EOrderState.notPaid,
-    },
-    {
-      id: 2,
-      locationId: 1,
-      customer: {
-        id: 2,
-        firstName: "Test",
-        lastName: "2",
-        address: {
-          id: 1,
-          street: "Badstraße 24",
-          zip: "77654",
-          city: "Offenburg"
-        },
-        createdAt: "20-05-2020",
-      },
-      createdAt: "21.05.2020",
-      orderedProduct:null,
-      state: EOrderState.paid,
-    }
-  ];
+  listOfData: IOrderItem[] = [];
 
   tabChanged(state:EOrderState):void{
     this.currentState = state;

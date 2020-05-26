@@ -5,6 +5,9 @@ import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from '@ang
 import { OrderService } from '../order.service';
 import { ICustomerItem } from 'src/app/interfaces/customer/ICustomerItem';
 import { NzTableCellDirective } from 'ng-zorro-antd';
+import { IOrderItem } from 'src/app/interfaces/order/IOrderItem';
+import { EOrderState } from 'src/app/enums/order/eorder-state.enum';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-order-add-edit',
@@ -17,8 +20,11 @@ export class OrderAddEditComponent implements OnInit {
   customers: ICustomerItem[];
   displayProducts: [];
   isLoading: boolean = true;
+  currentInvoiceMount: number = 0;
+  orderId: number;
+  currentOrder: IOrderItem = null;
 
-  constructor(private fb:FormBuilder, private titleService:TitleService, private customerService: CustomerService, private orderService: OrderService) { 
+  constructor(private route: ActivatedRoute, private fb:FormBuilder, private titleService:TitleService, private customerService: CustomerService, private orderService: OrderService) { 
     this.titleService.Title = 'Bestellung hinzufügen';
   }
 
@@ -30,7 +36,13 @@ export class OrderAddEditComponent implements OnInit {
       products: this.fb.array([this.createItem()], Validators.required)
     })
     
+    this.route.paramMap.subscribe(params => {
+      this.orderId = Number(params.get('id'));
+    });
+    
+
     this.getAllCustomer();
+    this.calcInvoiceMount();
   }
 
   get formControls() { return this.addForm.controls; }
@@ -41,7 +53,26 @@ export class OrderAddEditComponent implements OnInit {
       (data) => {
         console.log(data);
         this.customers = data;
-        this.isLoading = false;
+
+        if(this.orderId>=0){
+          this.getOrder();
+        }else{
+          this.isLoading = false
+        }
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
+
+  getOrder() {
+    this.orderService.getOrder(this.orderId).subscribe(
+      (data) => {
+        console.log(data);
+        this.currentOrder = data;
+        this.addForm.controls["customerId"].setValue(this.currentOrder.customer.id)
+        this.isLoading = false
       },
       (error) => {
         console.error(error);
@@ -57,7 +88,7 @@ export class OrderAddEditComponent implements OnInit {
     return this.fb.group({
       product: new FormControl(null, [Validators.required]),
       quantity: new FormControl(1, [Validators.required]),
-      price: new FormControl(null, [Validators.required]), //TODO Preis validator korrgieren
+      price: new FormControl({value: 0, disabled:true}),
     });
   }
 
@@ -65,11 +96,22 @@ export class OrderAddEditComponent implements OnInit {
     var test: FormArray = this.formControls.products as FormArray;
     
     this.products.push(this.createItem());
-    
+    this.calcInvoiceMount();
   }
 
   public removeProduct(index: number) {
     this.products.removeAt(index);
+    this.calcInvoiceMount();
+  }
+
+  calcInvoiceMount(): void{
+    var mount: number = 0;
+    for (let product of this.products.controls) {
+      var currentQuantity: number = product["controls"]["quantity"].value;
+      var currentPrice: number = Number(product["controls"]["price"].value);
+      mount += currentQuantity*currentPrice;
+    }
+    this.currentInvoiceMount = mount;
   }
 
   customerChanged(): void{

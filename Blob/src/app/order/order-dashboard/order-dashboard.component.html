@@ -17,7 +17,7 @@
         <!----------------------------------------->
         <!-- Bestellungtabelle                   -->
         <!----------------------------------------->
-        <nz-table #nzTable [nzData]="listOfDisplayData" nzTableLayout="fixed">
+        <nz-table #nzTable [nzData]="listOfDisplayData" nzTableLayout="fixed" [nzLoading]="isOrdersLoading">
             <thead>
             <tr>
                 <th nzCustomFilter>
@@ -51,6 +51,7 @@
                     nzType="primary"
                     [nzSize]="4"
                     class="quickaction-button"
+                    [routerLink]="['/order/addedit',data.id]"
                 >
                     <i nz-icon nzType="edit" nzTheme="outline"></i>
                 </button>

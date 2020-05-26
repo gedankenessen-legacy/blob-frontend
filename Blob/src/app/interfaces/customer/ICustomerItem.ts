@@ -3,7 +3,7 @@ import { IAdress } from '../iadress';
 export interface ICustomerItem {
     id: number;
     firstName: string;
-    lastName
+    lastName: string;
     address: IAdress;
     createdAt: string;
 }
