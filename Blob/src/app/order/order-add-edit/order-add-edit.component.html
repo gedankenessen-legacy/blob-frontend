@@ -26,79 +26,38 @@
             </nz-input-group>
         </nz-form-control>
     </nz-form-item>
-    <div *ngFor="let product of products.controls; let i = index;">
-        <div>
-            <nz-form-item>
-                <nz-form-control>
-                    <nz-select [formControlName]="products.controls[i]['product']" nzShowSearch nzAllowClear nzPlaceHolder="Produkt auswählen">
-                        <nz-option *ngFor="let customer of customers" [nzValue]="customer.id" [nzLabel]="customer.firstName"></nz-option>
-                        <nz-option nzLabel="Produkt 1" nzValue="1">Produkt 1</nz-option>
-                        <nz-option nzLabel="Produkt 2" nzValue="2">Produkt 2</nz-option>
-                        <nz-option nzLabel="Produkt 3" nzValue="3">Produkt 3</nz-option>
-                    </nz-select>
-                </nz-form-control>
-            </nz-form-item>
-            <nz-form-item>
-                <nz-form-control>
-                    <nz-input-group>
-                    <input [formControlName]="products.controls[i]['quantity']" nz-input placeholder="Menge"/>
-                    </nz-input-group>
-                </nz-form-control>
-            </nz-form-item>
-            <nz-form-item>
-                <nz-form-control>
-                    <nz-input-group>
-                    <input [formControlName]="products.controls[i]['price']" nz-input placeholder="Preis"/>
-                    </nz-input-group>
-                </nz-form-control>
-            </nz-form-item>
-        </div>
-
-    </div>
-
-   <!--  <nz-table #nzTable [nzData]="products.controls" nzTableLayout="fixed">
-        <thead>
-        <tr>
-            <th>Produkt</th>
-            <th>Menge</th>
-            <th>Preis</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let product of nzTable.data; let i = index;" [formGroup]="product">
-            <td>
+    <h2 nz-typography>Produkte</h2>
+    <ng-container formArrayName="products">
+        <div *ngFor="let _ of products.controls; let i = index;" class="order-products-wrapper">
+            <ng-container [formGroupName]="i">
                 <nz-form-item>
-                    <nz-form-control>
+                    <nz-form-control nzErrorTip="Bitte wähle ein Produkt aus">
                         <nz-select formControlName="product" nzShowSearch nzAllowClear nzPlaceHolder="Produkt auswählen">
-                            <nz-option *ngFor="let customer of customers" [nzValue]="customer.id" [nzLabel]="customer.firstName"></nz-option>
+                            <!--nz-option *ngFor="let customer of customers" [nzValue]="customer.id" [nzLabel]="customer.firstName"></nz-option-->
                             <nz-option nzLabel="Produkt 1" nzValue="1">Produkt 1</nz-option>
                             <nz-option nzLabel="Produkt 2" nzValue="2">Produkt 2</nz-option>
                             <nz-option nzLabel="Produkt 3" nzValue="3">Produkt 3</nz-option>
                         </nz-select>
                     </nz-form-control>
                 </nz-form-item>
-            </td>
-            <td>
                 <nz-form-item>
-                    <nz-form-control>
+                    <nz-form-control nzErrorTip="Bitte wähle ein Produkt aus">
                         <nz-input-group>
-                        <input formControlName="quantity" nz-input placeholder="Menge"/>
+                        <input nz-input formControlName="quantity" type="number" placeholder="Menge"/>
                         </nz-input-group>
                     </nz-form-control>
                 </nz-form-item>
-            </td>
-            <td>
                 <nz-form-item>
-                    <nz-form-control>
+                    <nz-form-control nzErrorTip="Bitte gib einen gültigen Preis ein">
                         <nz-input-group>
-                        <input formControlName="price" nz-input placeholder="Preis"/>
+                        <input nz-input formControlName="price" placeholder="Preis"/>
                         </nz-input-group>
                     </nz-form-control>
                 </nz-form-item>
-            </td>
-        </tr>
-        </tbody>
-    </nz-table> -->
+            </ng-container>
+            <i nz-icon nzType="delete" nzTheme="outline" class="dynamic-delete-button" (click)="removeProduct()"></i>
+        </div>
+    </ng-container>
 
     <div class="button-wrapper">
     <button
@@ -116,6 +75,7 @@
     class="addButton"
     [nzType]="'primary'"
     nzBlock
+    [disabled]="!addForm.valid"
     >
     Speichern
     </button> 

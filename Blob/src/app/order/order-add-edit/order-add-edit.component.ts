@@ -56,8 +56,8 @@ export class OrderAddEditComponent implements OnInit {
   createItem(): FormGroup {
     return this.fb.group({
       product: new FormControl(null, [Validators.required]),
-      quantity: new FormControl(null, [Validators.required]),
-      price: new FormControl(null, [Validators.required]),
+      quantity: new FormControl(1, [Validators.required]),
+      price: new FormControl(null, [Validators.required]), //TODO Preis validator korrgieren
     });
   }
 
@@ -65,6 +65,10 @@ export class OrderAddEditComponent implements OnInit {
     var test: FormArray = this.formControls.products as FormArray;
     
     this.products.push(this.createItem());
+    
+  }
+
+  public removeProduct() {
     
   }
 
