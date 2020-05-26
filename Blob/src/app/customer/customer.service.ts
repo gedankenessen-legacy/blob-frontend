@@ -22,6 +22,18 @@ export class CustomerService {
       },
       createdAt: "20-05-2020",
     },
+    {
+      id: 2,
+      firstName: "Test",
+      lastName: "2",
+      address: {
+        id: 1,
+        street: "Badstraße 25",
+        zip: "77654",
+        city: "Offenburg"
+      },
+      createdAt: "20-05-2020",
+    },
   ];
 
   // Http Headers
