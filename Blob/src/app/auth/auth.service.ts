@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { BaseService } from '../base.service';
+import { error } from 'protractor';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private debuggee = false;
+  willExpiresIn: Date;
 
   /**
    * Checks if the user is Authenticated.
@@ -16,20 +19,17 @@ export class AuthService {
     return this.isTokenValid();
   }
 
-  /* public get isAuthenticated(): Observable<boolean> {
-    return of(this.isTokenValid());
-  } */
-
-  constructor(private router: Router) {}
+  constructor(private router: Router, private http: HttpClient, private baseService: BaseService) {}
 
   /**
    * This method checks if the Token is expired.
    * @returns   'true' if the token is still valid, otherwise 'false'.
    */
   private isTokenValid(): boolean {
-    // TODO: Check if the token is expired
-    return this.debuggee; //! DEBUG: only for debugging!
-
+    // Check if the token is expired
+    if (this.willExpiresIn > new Date()) {
+      return true;
+    }
     return false;
   }
 
@@ -38,12 +38,18 @@ export class AuthService {
    * @param username The username.
    * @param password The password.
    */
-  public signIn(username: string, password: string): boolean {
-    // TODO: Create a http req on the auth api.
-    // TODO: Store the token if the req was successful.
-    this.debuggee = true;
-    this.router.navigate(['/']);
-    return true; //! DEBUG: only for debugging!
+  public signIn(username: string, password: string): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/x-www-form-urlencoded',
+      }),
+    };
+
+    const body = new HttpParams().set('grant_type', 'password').set('username', username).set('password', password);
+
+    // Create a http req on the auth api.
+    // Store the token if the req was successful.
+    return this.http.post<any>(this.baseService.getBaseUrl + '/token', body.toString(), httpOptions);
   }
 
   /**
@@ -51,9 +57,11 @@ export class AuthService {
    * @returns 'true' if the signOut was successful.
    */
   public signOut(): boolean {
-    // TODO: Remove the stored token from the browser storage.
-    this.debuggee = false;
+    // Remove the stored token from the browser storage.
+    localStorage.removeItem('token');
+    this.willExpiresIn = null;
+
     this.router.navigate(['/login']);
-    return true; //! DEBUG: only for debugging!
+    return true;
   }
 }
