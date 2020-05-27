@@ -60,6 +60,7 @@ export class OrderService {
   constructor(private http: HttpClient, private baseService: BaseService) { 
     this.getAllOrders = this.getAllOrdersDev;
     this.getOrder = this.getOrderDev;
+    this.createOrder = this.createOrderDev;
   }
 
   getAllOrders(): Observable<any>{
@@ -83,5 +84,18 @@ export class OrderService {
       (item: IOrderItem) => item.id == id
     )[0];
     return of(order).pipe(delay(2000));
+  }
+
+  createOrder(newOrder:IOrderItem): Observable<IOrderItem>{
+    return this.http
+      .post<any>(this.baseService.getBaseUrl + '/order',newOrder, this.httpOptions)
+      .pipe(catchError(this.baseService.errorHandle));
+  }
+
+  createOrderDev(newOrder:IOrderItem): Observable<IOrderItem>{
+    var maxId: number = Math.max.apply(Math, this.demoOrder.map(function(o) { return o.id; }))
+    newOrder.id = maxId+1;
+    this.demoOrder = [...this.demoOrder, newOrder]
+    return of(newOrder).pipe(delay(2000));
   }
 }

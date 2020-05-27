@@ -2,6 +2,6 @@ export interface IOrderProduct {
     id: number;
     name: string;
     price: number;
-    sku: string;
+    sku?: string;
     quantity: number;
 }
