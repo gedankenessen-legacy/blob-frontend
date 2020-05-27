@@ -37,7 +37,7 @@ export class OrderAddEditComponent implements OnInit {
       customerId: new FormControl(null, Validators.required),
       street: new FormControl({value: null, disabled:true}),
       city: new FormControl({value: null, disabled:true}),
-      products: this.fb.array([this.createItem()], Validators.required)
+      products: this.fb.array([], Validators.required)
     })
     
     this.route.paramMap.subscribe(params => {
@@ -89,6 +89,13 @@ export class OrderAddEditComponent implements OnInit {
         console.log(data);
         this.currentOrder = data;
         this.addForm.controls["customerId"].setValue(this.currentOrder.customer.id)
+
+        if(data.orderProducts!=null){
+          for(let orderProduct of data.orderProducts){
+            this.orderProducts.push(this.createItem(orderProduct.id,orderProduct.quantity, orderProduct.price));
+          }
+        }
+        this.calcInvoiceMount();
         this.isLoading = false
       },
       (error) => {
@@ -127,7 +134,7 @@ export class OrderAddEditComponent implements OnInit {
     );
 
     var newOrderItem: IOrderItem = {
-      id: 4,
+      id: this.orderId,
       locationId: 1,
       customer: currentCustomer[0],
       createdAt: "27-05-2020",
@@ -135,22 +142,34 @@ export class OrderAddEditComponent implements OnInit {
       state: EOrderState.notPaid,
     }
 
-    this.orderService.createOrder(newOrderItem).subscribe(
-      (data) => {
-        console.log(data);
-        this.router.navigate(['/order']);
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
+    if(this.orderId>=0){
+      this.orderService.updateOrders([newOrderItem]).subscribe(
+        (data) => {
+          console.log(data);
+          this.router.navigate(['/order']);
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+    }else{
+      this.orderService.createOrder(newOrderItem).subscribe(
+        (data) => {
+          console.log(data);
+          this.router.navigate(['/order']);
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+    }
   }
 
-  createItem(): FormGroup {
+  createItem(product: number = null, quantity: number = 1, price: number = 0): FormGroup {
     return this.fb.group({
-      product: new FormControl(null, [Validators.required]),
-      quantity: new FormControl(1, [Validators.required]),
-      price: new FormControl({value: 0, disabled:true}),
+      product: new FormControl(product, [Validators.required]),
+      quantity: new FormControl(quantity, [Validators.required]),
+      price: new FormControl({value: price, disabled:true}),
     });
   }
 

@@ -61,6 +61,7 @@ export class OrderService {
     this.getAllOrders = this.getAllOrdersDev;
     this.getOrder = this.getOrderDev;
     this.createOrder = this.createOrderDev;
+    this.updateOrders = this.updateOrdersDev;
   }
 
   getAllOrders(): Observable<any>{
@@ -97,5 +98,21 @@ export class OrderService {
     newOrder.id = maxId+1;
     this.demoOrder = [...this.demoOrder, newOrder]
     return of(newOrder).pipe(delay(2000));
+  }
+
+  updateOrders(updatedOrders:IOrderItem[]): Observable<IOrderItem[]>{
+    return this.http
+      .put<any>(this.baseService.getBaseUrl + '/order',updatedOrders, this.httpOptions)
+      .pipe(catchError(this.baseService.errorHandle));
+  }
+
+  updateOrdersDev(updatedOrders:IOrderItem[]): Observable<IOrderItem[]>{
+    for(let order of updatedOrders){
+      var index: number = this.demoOrder.findIndex(
+        (item: IOrderItem) => item.id == order.id
+      );
+      this.demoOrder[index] = order;
+    }
+    return of(updatedOrders).pipe(delay(2000));
   }
 }
