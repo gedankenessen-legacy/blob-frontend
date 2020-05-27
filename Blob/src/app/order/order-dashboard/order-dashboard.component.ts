@@ -81,14 +81,24 @@ export class OrderDashboardComponent implements OnInit {
   selectChanged(newState: EOrderState, id: number): void{
     console.log("id: "+id);
     
-    this.listOfData.find(item => {
+    var order:IOrderItem = this.listOfData.find(item => {
       return item.id == id
-    }).state = newState;
+    });
 
-    this.currentState = newState;
-    console.log(this.listOfData);
-    
-    this.updateListOfDisplayData();
+    order.state = newState;
+    this.isOrdersLoading = true;
+    this.orderService.updateOrders([order]).subscribe(
+      (data) => {
+        console.log(data);
+        this.currentState = newState;
+        
+        this.updateListOfDisplayData();
+        this.isOrdersLoading = false;
+      },
+      (error) => {
+        console.error(error);
+      }
+    ); 
   }
 
   /********************************************
