@@ -14,7 +14,24 @@ export class CustomerService {
       id: 3,
       firstName: "Test",
       lastName: "Reload",
-      address: "Badstraße 24, 77654 Offenburg",
+      address: {
+        id: 1,
+        street: "Badstraße 24",
+        zip: "77654",
+        city: "Offenburg"
+      },
+      createdAt: "20-05-2020",
+    },
+    {
+      id: 2,
+      firstName: "Test",
+      lastName: "2",
+      address: {
+        id: 1,
+        street: "Badstraße 25",
+        zip: "77654",
+        city: "Offenburg"
+      },
       createdAt: "20-05-2020",
     },
   ];

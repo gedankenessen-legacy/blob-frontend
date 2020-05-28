@@ -1,7 +1,9 @@
+import { IAdress } from '../iadress';
+
 export interface ICustomerItem {
     id: number;
     firstName: string;
-    lastName
-    address: string;
+    lastName: string;
+    address: IAdress;
     createdAt: string;
 }
