@@ -15,7 +15,7 @@
 <!----------------------------------------->
 <!-- Kundentabelle                      -->
 <!----------------------------------------->
-<nz-table #nzTable [nzData]="listOfDisplayData" nzTableLayout="fixed">
+<nz-table #nzTable [nzData]="listOfDisplayData" nzTableLayout="fixed" [nzLoading]="isLoading">
   <thead>
     <tr>
       <th nzCustomFilter>
@@ -169,18 +169,10 @@
           </nz-input-group>
         </nz-form-control>
       </nz-form-item>
-      <!-- <button
-        nz-button
-        class="addButton"
-        [nzType]="'primary'"
-        nzBlock
-      >
-        Speichern
-      </button> -->
     </form>
   </ng-template>
   <ng-template #modalFooter>
-    <button nz-button nzType="primary" (click)="submitAddForm()" nzBlock>
+    <button nz-button nzType="primary" (click)="submitAddForm()" nzBlock [disabled]="!addForm.valid">
       Speichern
     </button>
   </ng-template>
