@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { TitleService } from 'src/app/title.service';
 import { IOrderItem } from 'src/app/interfaces/order/IOrderItem';
 import { EOrderState } from 'src/app/enums/order/eorder-state.enum';
-import { ITabContent } from 'src/app/interfaces/order/ITabContent';
 import { OrderService } from '../order.service';
 import { IOrderState } from 'src/app/interfaces/order/IOrderState';
 

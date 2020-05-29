@@ -16,8 +16,8 @@ export class OrderService {
       locationId: 1,
       customer: {
         id: 3,
-        firstName: "Test",
-        lastName: "1",
+        firstname: "Test",
+        lastname: "1",
         address: {
           id: 1,
           street: "Badstraße 24",
@@ -27,7 +27,7 @@ export class OrderService {
         createdAt: "20-05-2020",
       },
       createdAt: "21.05.2020",
-      orderProducts:null,
+      orderedProducts:null,
       state: {
         id: EOrderState.notPaid,
         value: "Nicht Bezahlt",
@@ -38,8 +38,8 @@ export class OrderService {
       locationId: 1,
       customer: {
         id: 2,
-        firstName: "Test",
-        lastName: "2",
+        firstname: "Test",
+        lastname: "2",
         address: {
           id: 1,
           street: "Badstraße 25",
@@ -49,7 +49,7 @@ export class OrderService {
         createdAt: "20-05-2020",
       },
       createdAt: "21.05.2020",
-      orderProducts:null,
+      orderedProducts:null,
       state: {
         value: "Bezahlt",
         id: EOrderState.paid,

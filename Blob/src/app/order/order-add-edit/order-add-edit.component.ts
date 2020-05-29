@@ -59,7 +59,7 @@ export class OrderAddEditComponent implements OnInit {
         console.log(data);
         this.customers = data;
 
-        if(this.orderId>=0){
+        if(this.orderId>0){
           this.getOrder();
         }else{
           this.isLoading = false
@@ -90,8 +90,8 @@ export class OrderAddEditComponent implements OnInit {
         this.currentOrder = data;
         this.addForm.controls["customerId"].setValue(this.currentOrder.customer.id)
 
-        if(data.orderProducts!=null){
-          for(let orderProduct of data.orderProducts){
+        if(data.orderedProducts!=null){
+          for(let orderProduct of data.orderedProducts){
             this.orderProducts.push(this.createItem(orderProduct.id,orderProduct.quantity, orderProduct.price));
           }
         }
@@ -110,7 +110,7 @@ export class OrderAddEditComponent implements OnInit {
     var products: IOrderProduct[] = [];
     for (let product of this.orderProducts.controls) {
       var currentQuantity: number = product["controls"]["quantity"].value;
-      var currentPrice: number = Number(product["controls"]["price"].value);
+      //var currentPrice: number = Number(product["controls"]["price"].value);
 
       var currentProduct: IProductItem[] = this.products.filter(
         (item: IProductItem) => item.id == product["controls"]["product"].value
@@ -121,31 +121,42 @@ export class OrderAddEditComponent implements OnInit {
         ...products,
         {
           id: currentProduct[0].id,
-          name: currentProduct[0].product,
-          price: currentPrice,
-          sku: currentProduct[0].sku,
+          name: null,
+          price: 0,
+          sku: null,
           quantity: currentQuantity,
         }
       ];
     }
 
-    var currentCustomer: ICustomerItem[] = this.customers.filter(
+    var currentCustomer: ICustomerItem = this.customers.filter(
       (item: ICustomerItem) => item.id == this.addForm.controls["customerId"].value
-    );
+    )[0];
 
     var newOrderItem: IOrderItem = {
       id: this.orderId,
-      locationId: 1,
-      customer: currentCustomer[0],
-      createdAt: "27-05-2020",
-      orderProducts:products,
+      locationId: 0,
+      createdAt: null,
+      customer: {
+        id: this.addForm.controls["customerId"].value,
+        firstname: null,
+        lastname: null,
+        address: {
+          id: currentCustomer.address.id,
+          street: null,
+          zip: null,
+          city: null,
+        },
+        createdAt: null,
+      },
+      orderedProducts:products,
       state: {
         id: EOrderState.notPaid,
         value: "Nicht Bezahlt",
       }
     }
 
-    if(this.orderId>=0){
+    if(this.orderId>0){
       this.orderService.updateOrders([newOrderItem]).subscribe(
         (data) => {
           console.log(data);

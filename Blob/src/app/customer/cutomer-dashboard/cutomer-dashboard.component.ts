@@ -55,8 +55,8 @@ export class CutomerDashboardComponent implements OnInit {
     }
     var newCustomerItem: ICustomerItem = {
       id: 4,
-      firstName: this.addForm.controls["firstname"].value,
-      lastName: this.addForm.controls["lastname"].value,
+      firstname: this.addForm.controls["firstname"].value,
+      lastname: this.addForm.controls["lastname"].value,
       address: address,
       createdAt: "20-05-2020",
     }
@@ -86,8 +86,8 @@ export class CutomerDashboardComponent implements OnInit {
   listOfData: ICustomerItem[] = [
     {
       id: 1,
-      firstName: "Test",
-      lastName: "Test",
+      firstname: "Test",
+      lastname: "Test",
       address: {
         id: 1,
         street: "Badstraße 24",
@@ -98,8 +98,8 @@ export class CutomerDashboardComponent implements OnInit {
     },
     {
       id: 2,
-      firstName: "Test 2",
-      lastName: "Test 2",
+      firstname: "Test 2",
+      lastname: "Test 2",
       address: {
         id: 1,
         street: "Badstraße 24",
@@ -117,7 +117,7 @@ export class CutomerDashboardComponent implements OnInit {
   search() {
     this.visible = false;
     this.listOfDisplayData = this.listOfData.filter(
-      (item: ICustomerItem) => item.firstName.indexOf(this.searchValue) !== -1
+      (item: ICustomerItem) => item.firstname.indexOf(this.searchValue) !== -1
     );
   }
 

@@ -8,6 +8,6 @@ export interface IOrderItem {
     locationId: number;
     customer: ICustomerItem;
     createdAt: string;
-    orderProducts:IOrderProduct[];
+    orderedProducts:IOrderProduct[];
     state: IOrderState;
 }

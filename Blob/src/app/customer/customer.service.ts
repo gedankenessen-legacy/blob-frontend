@@ -11,9 +11,9 @@ import { catchError, delay } from 'rxjs/operators';
 export class CustomerService {
   demoCustomer: Array<ICustomerItem> = [
     {
-      id: 3,
-      firstName: "Test",
-      lastName: "Reload",
+      id: 1,
+      firstname: "Test",
+      lastname: "Reload",
       address: {
         id: 1,
         street: "Badstraße 24",
@@ -24,8 +24,8 @@ export class CustomerService {
     },
     {
       id: 2,
-      firstName: "Test",
-      lastName: "2",
+      firstname: "Test",
+      lastname: "2",
       address: {
         id: 1,
         street: "Badstraße 25",
