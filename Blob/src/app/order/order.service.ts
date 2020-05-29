@@ -28,7 +28,10 @@ export class OrderService {
       },
       createdAt: "21.05.2020",
       orderProducts:null,
-      state: EOrderState.notPaid,
+      state: {
+        id: EOrderState.notPaid,
+        value: "Nicht Bezahlt",
+      }
     },
     {
       id: 2,
@@ -47,7 +50,10 @@ export class OrderService {
       },
       createdAt: "21.05.2020",
       orderProducts:null,
-      state: EOrderState.paid,
+      state: {
+        value: "Bezahlt",
+        id: EOrderState.paid,
+      }
     }
   ];
 
@@ -58,10 +64,10 @@ export class OrderService {
     }),
   };
   constructor(private http: HttpClient, private baseService: BaseService) { 
-    this.getAllOrders = this.getAllOrdersDev;
+    /*this.getAllOrders = this.getAllOrdersDev;
     this.getOrder = this.getOrderDev;
     this.createOrder = this.createOrderDev;
-    this.updateOrders = this.updateOrdersDev;
+    this.updateOrders = this.updateOrdersDev;*/
   }
 
   getAllOrders(): Observable<any>{

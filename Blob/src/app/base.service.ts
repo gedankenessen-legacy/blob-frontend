@@ -5,7 +5,7 @@ import { throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class BaseService {
-  private baseUrl: string = 'http://localhost:5000/api';
+  private baseUrl: string = 'https://localhost:5001/api';
 
   constructor() {}
 

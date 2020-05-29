@@ -4,6 +4,7 @@ import { IOrderItem } from 'src/app/interfaces/order/IOrderItem';
 import { EOrderState } from 'src/app/enums/order/eorder-state.enum';
 import { ITabContent } from 'src/app/interfaces/order/ITabContent';
 import { OrderService } from '../order.service';
+import { IOrderState } from 'src/app/interfaces/order/IOrderState';
 
 @Component({
   selector: 'app-order-dashboard',
@@ -15,26 +16,26 @@ export class OrderDashboardComponent implements OnInit {
   visible: boolean = false;
   isOrdersLoading = true;
   currentState: EOrderState = EOrderState.notPaid;
-  tabs:ITabContent[] = [
+  tabs:IOrderState[] = [
     {
-      title: "Nicht Bezahlt",
-      state: EOrderState.notPaid,
+      value: "Nicht Bezahlt",
+      id: EOrderState.notPaid,
     }, 
     {
-      title: "Bezahlt",
-      state: EOrderState.paid,
+      value: "Bezahlt",
+      id: EOrderState.paid,
     },
     {
-      title: "In-Bearbeitung",
-      state: EOrderState.inProcessing,
+      value: "In-Bearbeitung",
+      id: EOrderState.inProcessing,
     }, 
     {
-      title: "Versand",
-      state: EOrderState.shipping,
+      value: "Versand",
+      id: EOrderState.shipping,
     }, 
     {
-      title: "Archiviert",
-      state: EOrderState.archived,
+      value: "Archiviert",
+      id: EOrderState.archived,
     },
   ];
 
@@ -74,7 +75,7 @@ export class OrderDashboardComponent implements OnInit {
     console.log(this.listOfData);
     
     this.listOfDisplayData = this.listOfData.filter(
-      (item: IOrderItem) => item.state == this.currentState
+      (item: IOrderItem) => item.state.id == this.currentState
     );
   }
 
@@ -85,7 +86,7 @@ export class OrderDashboardComponent implements OnInit {
       return item.id == id
     });
 
-    order.state = newState;
+    order.state.id = newState;
     this.isOrdersLoading = true;
     this.orderService.updateOrders([order]).subscribe(
       (data) => {
@@ -109,7 +110,7 @@ export class OrderDashboardComponent implements OnInit {
     this.visible = false;
     this.listOfDisplayData = this.listOfData.filter(
       //TODO Suche fixen auch reset
-      (item: IOrderItem) => item.id == Number(this.searchValue) && item.state==this.currentState
+      (item: IOrderItem) => item.id == Number(this.searchValue) && item.state.id==this.currentState
     );
   }
 

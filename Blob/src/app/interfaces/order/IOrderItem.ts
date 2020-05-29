@@ -1,6 +1,7 @@
 import { ICustomerItem } from '../customer/ICustomerItem';
 import { EOrderState } from 'src/app/enums/order/eorder-state.enum';
 import { IOrderProduct } from './IOrderProduct';
+import { IOrderState } from './IOrderState';
 
 export interface IOrderItem {
     id: number;
@@ -8,5 +9,5 @@ export interface IOrderItem {
     customer: ICustomerItem;
     createdAt: string;
     orderProducts:IOrderProduct[];
-    state: EOrderState;
+    state: IOrderState;
 }

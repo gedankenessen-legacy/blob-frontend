@@ -12,8 +12,8 @@
     </button>
   </div>
   
-  <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'" [nzSelectedIndex]="currentState">
-    <nz-tab *ngFor="let tab of tabs" [nzTitle]="tab.title" (nzClick)="tabChanged(tab.state)"> 
+  <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'" [nzSelectedIndex]="currentState-1">
+    <nz-tab *ngFor="let tab of tabs" [nzTitle]="tab.value" (nzClick)="tabChanged(tab.id)"> 
         <!----------------------------------------->
         <!-- Bestellungtabelle                   -->
         <!----------------------------------------->
@@ -44,7 +44,7 @@
                 <td>{{ data.createdAt }}</td>
                 <td>
                 <nz-select [(ngModel)]="currentState" (ngModelChange)="selectChanged($event, data.id)">
-                    <nz-option *ngFor="let tab of tabs" [nzLabel]="tab.title" [nzValue]="tab.state"></nz-option>
+                    <nz-option *ngFor="let tab of tabs" [nzLabel]="tab.value" [nzValue]="tab.id"></nz-option>
                 </nz-select>
                 <button
                     nz-button

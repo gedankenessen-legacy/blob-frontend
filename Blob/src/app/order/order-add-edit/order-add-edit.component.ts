@@ -139,7 +139,10 @@ export class OrderAddEditComponent implements OnInit {
       customer: currentCustomer[0],
       createdAt: "27-05-2020",
       orderProducts:products,
-      state: EOrderState.notPaid,
+      state: {
+        id: EOrderState.notPaid,
+        value: "Nicht Bezahlt",
+      }
     }
 
     if(this.orderId>=0){
