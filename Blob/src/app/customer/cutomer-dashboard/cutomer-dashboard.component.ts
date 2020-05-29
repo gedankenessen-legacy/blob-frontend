@@ -57,15 +57,9 @@ export class CutomerDashboardComponent implements OnInit {
       city: this.addForm.controls["city"].value
     }
     var newCustomerItem: ICustomerItem = {
-<<<<<<< HEAD
       id: 4,
       firstname: this.addForm.controls["firstname"].value,
       lastname: this.addForm.controls["lastname"].value,
-=======
-      id: id,
-      firstName: this.addForm.controls["firstname"].value,
-      lastName: this.addForm.controls["lastname"].value,
->>>>>>> 8aa231464d9bb6d99bb5a6f1f448b68670f9af7e
       address: address,
       createdAt: "20-05-2020",
     }
@@ -127,7 +121,7 @@ export class CutomerDashboardComponent implements OnInit {
   search() {
     this.visible = false;
     this.listOfDisplayData = this.listOfData.filter(
-      (item: ICustomerItem) => (item.firstName +" "+item.lastName).indexOf(this.searchValue) !== -1
+      (item: ICustomerItem) => (item.firstname +" "+item.lastname).indexOf(this.searchValue) !== -1
     );
   }
 
