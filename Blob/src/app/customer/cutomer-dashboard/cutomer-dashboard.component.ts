@@ -14,6 +14,7 @@ export class CutomerDashboardComponent implements OnInit {
   searchValue: string = '';
   visible: boolean = false;
   isPopupVisible: boolean = false;
+  isLoading: boolean = true;
   addForm: FormGroup;
 
   constructor(private fb:FormBuilder, private titleService:TitleService, private customerService: CustomerService) {
@@ -39,6 +40,8 @@ export class CutomerDashboardComponent implements OnInit {
 
         this.listOfData = data;
         this.listOfDisplayData = data;
+
+        this.isLoading = false;
       },
       (error) => {
         console.error(error);
@@ -46,7 +49,7 @@ export class CutomerDashboardComponent implements OnInit {
     );
   }
   
-  addNewCustomer(){
+  addNewCustomer(id:number = -1){
     var address: IAdress =  {
       id: -1,
       street: this.addForm.controls["street"].value,
@@ -54,9 +57,15 @@ export class CutomerDashboardComponent implements OnInit {
       city: this.addForm.controls["city"].value
     }
     var newCustomerItem: ICustomerItem = {
+<<<<<<< HEAD
       id: 4,
       firstname: this.addForm.controls["firstname"].value,
       lastname: this.addForm.controls["lastname"].value,
+=======
+      id: id,
+      firstName: this.addForm.controls["firstname"].value,
+      lastName: this.addForm.controls["lastname"].value,
+>>>>>>> 8aa231464d9bb6d99bb5a6f1f448b68670f9af7e
       address: address,
       createdAt: "20-05-2020",
     }
@@ -83,7 +92,8 @@ export class CutomerDashboardComponent implements OnInit {
   /********************************************
    ** Liste aller Kunden                   **
    *******************************************/
-  listOfData: ICustomerItem[] = [
+  listOfData: ICustomerItem[] = [];
+  /* listOfData: ICustomerItem[] = [
     {
       id: 1,
       firstname: "Test",
@@ -108,7 +118,7 @@ export class CutomerDashboardComponent implements OnInit {
       },
       createdAt: "20-05-2020",
     },
-  ];
+  ]; */
 
   /********************************************
    ** Kundensuche                            **
@@ -117,7 +127,7 @@ export class CutomerDashboardComponent implements OnInit {
   search() {
     this.visible = false;
     this.listOfDisplayData = this.listOfData.filter(
-      (item: ICustomerItem) => item.firstname.indexOf(this.searchValue) !== -1
+      (item: ICustomerItem) => (item.firstName +" "+item.lastName).indexOf(this.searchValue) !== -1
     );
   }
 
@@ -136,10 +146,6 @@ export class CutomerDashboardComponent implements OnInit {
     this.isPopupVisible = true;
   }
 
-  handlePopupOk(): void {
-    this.isPopupVisible = false;
-  }
-
   handlePopupCancel(): void {
     this.isPopupVisible = false;
   }
@@ -149,4 +155,10 @@ export class CutomerDashboardComponent implements OnInit {
     this.isPopupVisible = false;
     this.addNewCustomer();
   }
+
+  editButtonClicked(): void{
+    console.log("Edit clicked");
+    this.isPopupVisible = true;
+  }
+
 }
