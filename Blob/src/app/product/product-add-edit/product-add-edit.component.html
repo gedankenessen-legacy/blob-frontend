@@ -1,149 +1,163 @@
 <!-- Wie füge ich die formControlName="" bei dropdown hinzu
 Spalte weg bekommen
 Rest Request -->
-
-<form nz-form [formGroup]="productForm" class="product-addedit-form" (ngSubmit)="submitForm()">
+<div id="product_form">
+<form nz-form [formGroup]="productForm" class="product-addedit-form">
   <!----------------------------------------->
   <!-- Produkt oder Service Auswahl        -->
   <!----------------------------------------->
-  <h3>Produkt/Service</h3>
-  <nz-form-item>
-    <nz-radio-group>
-      <!-- [(ngModel)]="selectProductService" -->
-      <label nz-radio nzValue="product">Produkt</label>
-      <label nz-radio nzValue="service">Service</label>
-    </nz-radio-group>
-  </nz-form-item>
+  <div id="product_productservice">
+    <h3>Produkt/Service</h3>
+    <nz-form-item>
+      <nz-radio-group>
+        <!-- [(ngModel)]="selectProductService" -->
+        <label nz-radio nzValue="product">Produkt</label>
+        <label nz-radio nzValue="service">Service</label>
+      </nz-radio-group>
+    </nz-form-item>
+  </div>
 
   <!----------------------------------------->
   <!-- Produktname                         -->
   <!----------------------------------------->
-  <h3>Produktname</h3>
-  <nz-form-item>
-    <nz-form-control nzErrorTip="Bitte geben Sie den Produktnamen an!">
-      <nz-input-group nzPrefixIcon="code-sandbox">
-        <input type="text" nz-input formControlName="productname" placeholder="Produktname" />
-      </nz-input-group>
-    </nz-form-control>
-  </nz-form-item>
-
+  <div id="product_name">
+    <h3>Produktname</h3>
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Bitte geben Sie den Produktnamen an!">
+        <nz-input-group nzPrefixIcon="code-sandbox">
+          <input type="text" nz-input formControlName="productname" placeholder="Produktname" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
   <!----------------------------------------->
   <!-- Preis                               -->
   <!----------------------------------------->
-  <h3>Preis</h3>
-  <nz-form-item>
-    <nz-form-control nzErrorTip="Bitte geben Sie den Preis an!">
-      <nz-input-group nzPrefixIcon="euro">
-        <input type="number" nz-input formControlName="price" placeholder="Preis" />
-      </nz-input-group>
-    </nz-form-control>
-  </nz-form-item>
+  <div id="product_price">
+    <h3>Preis</h3>
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Bitte geben Sie den Preis an!">
+        <nz-input-group nzPrefixIcon="euro">
+          <input type="number" nz-input formControlName="price" placeholder="Preis" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
 
   <!----------------------------------------->
   <!-- SKU                                 -->
   <!----------------------------------------->
-  <h3>SKU</h3>
-  <nz-form-item>
-    <nz-form-control nzErrorTip="Bitte geben Sie die SKU an!">
-      <nz-input-group nzPrefixIcon="barcode">
-        <input type="text" nz-input formControlName="sku" placeholder="SKU" />
-      </nz-input-group>
-    </nz-form-control>
-  </nz-form-item>
-
+  <div id="product_sku">
+    <h3>SKU</h3>
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Bitte geben Sie die SKU an!">
+        <nz-input-group nzPrefixIcon="barcode">
+          <input type="text" nz-input formControlName="sku" placeholder="SKU" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
 
   <!----------------------------------------->
-  <!-- Speichern Button                    -->
+  <!-- Kategorien Auswahl                  -->
   <!----------------------------------------->
-  <nz-form-item>
-    <nz-form-control>
-      <button nz-button nzType="primary">Speichern</button>
-    </nz-form-control>
-  </nz-form-item>
+  <div id="product_category">
+    <h3>Kategorie</h3>
+    <nz-select nzShowSearch [nzDropdownRender]="renderTemplate" nzPlaceHolder="Kategorie" class="category">
+      <!-- TODO: Need "name" from object -->
+      <nz-option *ngFor="let item of listOfCategory" [nzLabel]="item" [nzValue]="item"></nz-option>
+    </nz-select>
+    <ng-template #renderTemplate>
+      <nz-divider></nz-divider>
+      <div class="container">
+        <input type="text" nz-input #inputElement formControlName="category" />
+        <a class="add-item" (click)="addItem(inputElement)"><i nz-icon nzType="plus"></i> Neue Kategorie</a>
+      </div>
+    </ng-template>
+    <br /><br />
+  </div>
 </form>
+
 
 <!----------------------------------------->
 <!-- Eigenschaften                       -->
 <!----------------------------------------->
-<h3>Eigenschaften</h3>
-<!-- TODO: Workaround 'NoResult' need to be fixed -->
-<nz-table #propertyTable nzBordered [nzData]="listOfProperty" [nzNoResult]="null">
-  <thead>
-    <tr>
-      <th nzSpan="12">Eigenschaft</th>
-      <th nzSpan="12">Wert</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let data of propertyTable.data" class="editable-row">
-      <td>
-        <div class="editable-cell" [hidden]="editIdProperty === data.id">
-          {{ data.name }}
-        </div>
-        <input type="text" nz-input [(ngModel)]="data.name" />
-      </td>
+<div id="product_property">
+  <h3>Eigenschaften</h3>
+  <nz-table #propertyTable nzBordered [nzData]="listOfProperty" [nzNoResult]="null">
+    <thead>
+      <tr>
+        <th nzSpan="12">Eigenschaft</th>
+        <th nzSpan="12">Wert</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of propertyTable.data" class="editable-row">
+        <td>
+          <div class="editable-cell" [hidden]="editIdProperty === data.id">
+          </div>
+          <input type="text" nz-input [(ngModel)]="data.name" />
+        </td>
 
-      <td>
-        <div class="editable-cell" [hidden]="editIdProperty === data.id">
-          {{ data.value }}
-        </div>
-        <input type="text" nz-input [(ngModel)]="data.value" />
-      </td>
-    </tr>
-  </tbody>
-</nz-table>
-<button nz-button (click)="addRowProperty()" nzType="primary">
-  Hinzufügen
-</button>
-<br /><br />
-
-<!----------------------------------------->
-<!-- Kategorien Auswahl                  -->
-<!----------------------------------------->
-<h3>Kategorie</h3>
-<nz-select nzShowSearch nzAllowClear [nzDropdownRender]="renderTemplate" nzPlaceHolder="Kategorie" class="category">
-  <nz-option *ngFor="let item of listOfCategory" [nzLabel]="item" [nzValue]="item"></nz-option>
-</nz-select>
-<ng-template #renderTemplate>
-  <nz-divider></nz-divider>
-  <div class="container">
-    <input type="text" nz-input #inputElement formControlName="category" />
-    <a class="add-item" (click)="addItem(inputElement)"><i nz-icon nzType="plus"></i> Neue Kategorie</a>
+        <td>
+          <div class="editable-cell" [hidden]="editIdProperty === data.id">
+          </div>
+          <input type="text" nz-input [(ngModel)]="data.value" />
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <button nz-button (click)="addRowProperty()" nzType="primary">
+    Hinzufügen
+  </button>
+  <br /><br />
   </div>
-</ng-template>
-<br /><br />
 
 <!----------------------------------------->
 <!-- Standort                            -->
 <!----------------------------------------->
-<h3>Standorte</h3>
-<!-- TODO: Workaround 'NoResult' need to be fixed -->
-<nz-table #locationTable nzBordered [nzData]="listOfLocation" [nzNoResult]="null">
-  <thead>
-    <tr>
-      <th nzSpan="12">Standort</th>
-      <th nzSpan="12">Bestand</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let data of locationTable.data" class="editable-row">
-      <td>
-        <div class="editable-cell" [hidden]="editIdLocation === data.id">
-          {{ data.name }}
-        </div>
-        <input type="text" nz-input [(ngModel)]="data.name" />
-      </td>
+<div id="product_location">
+  <h3>Standorte</h3>
+  <nz-table #locationTable nzBordered [nzData]="listOfLocation" [nzNoResult]="null">
+    <thead>
+      <tr>
+        <th nzSpan="12">Standort</th>
+        <th nzSpan="12">Bestand</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of locationTable.data" class="editable-row">
+        <td>
+          <div class="editable-cell" [hidden]="editIdLocation === data.id">
+          </div>
+          <!-- <input type="text" nz-input [(ngModel)]="data.location" -->
 
-      <td>
-        <div class="editable-cell" [hidden]="editIdLocation === data.id">
-          {{ data.value }}
-        </div>
-        <input type="text" nz-input [(ngModel)]="data.value" />
-      </td>
-    </tr>
-  </tbody>
-</nz-table>
-<button nz-button (click)="addRowLocation()" nzType="primary">
-  Hinzufügen
-</button>
-<br /><br />
+          <nz-select class="location" ngModel="{{data.location}}">
+            <nz-option nzSpan="12" nzValue="{{data.location}}" nzLabel="{{data.location}}"></nz-option>
+          </nz-select>
+        </td>
+
+        <td>
+          <div class="editable-cell" [hidden]="editIdLocation === data.id">
+          </div>
+          <input type="text" nz-input [(ngModel)]="data.amount" />
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <button nz-button (click)="addRowLocation()" nzType="primary">
+    Hinzufügen
+  </button>
+  <br /><br />
+  </div>
+
+  <!----------------------------------------->
+  <!-- Speichern Button                    -->
+  <!----------------------------------------->
+  <div id="product_save">
+    <nz-form-item>
+      <nz-form-control>
+        <button nz-button nzType="primary" (click)="submitForm()">Speichern</button>
+      </nz-form-control>
+    </nz-form-item>
+  </div>

@@ -38,24 +38,7 @@ export class ProductDashboardComponent implements OnInit {
    ** Liste aller Produkte                   **
    *******************************************/
   listOfData: Array<IProductItem> = [
-    {
-      product: 'Product 1',
-      sku: 'A123456789',
-      stock: 'Freiburg 10, München 5',
-      price: 19.99,
-    },
-    {
-      product: 'Product 2',
-      sku: 'A123456789',
-      stock: 'Freiburg 10, München 5',
-      price: 19.99,
-    },
-    {
-      product: 'Product 3',
-      sku: 'A123456789',
-      stock: 'Freiburg 10, München 5',
-      price: 19.99,
-    },
+    
   ];
 
   /********************************************
