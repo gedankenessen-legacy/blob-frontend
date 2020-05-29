@@ -51,6 +51,6 @@ export class ProductService {
   }
 
   getAllProductsDev(): Observable<Array<IProductItem>> {
-    return of(this.demoProducts).pipe(delay(5000));
+    return of(this.demoProducts).pipe(delay(1000));
   }
 }
