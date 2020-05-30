@@ -4,7 +4,7 @@ import { TitleService } from 'src/app/title.service';
 import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { OrderService } from '../order.service';
 import { ICustomerItem } from 'src/app/interfaces/customer/ICustomerItem';
-import { NzTableCellDirective } from 'ng-zorro-antd';
+import { NzTableCellDirective, NzModalService } from 'ng-zorro-antd';
 import { IOrderItem } from 'src/app/interfaces/order/IOrderItem';
 import { EOrderState } from 'src/app/enums/order/eorder-state.enum';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -28,7 +28,7 @@ export class OrderAddEditComponent implements OnInit {
   orderId: number;
   currentOrder: IOrderItem = null;
 
-  constructor(public router: Router,private route: ActivatedRoute, private fb:FormBuilder, private titleService:TitleService, private customerService: CustomerService, private orderService: OrderService, private productService: ProductService) { 
+  constructor(private modal:NzModalService,private router: Router,private route: ActivatedRoute, private fb:FormBuilder, private titleService:TitleService, private customerService: CustomerService, private orderService: OrderService, private productService: ProductService) { 
     this.titleService.Title = 'Bestellung hinzufügen';
   }
 
@@ -163,7 +163,12 @@ export class OrderAddEditComponent implements OnInit {
           this.router.navigate(['/order']);
         },
         (error) => {
-          console.error(error);
+          this.isLoading = false;
+
+          this.modal.error({
+            nzTitle: 'Fehler beim Bearbeiten',
+            nzContent: 'Beim Bearbeiten der Bestellung ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
+          });
         }
       );
     }else{
@@ -173,7 +178,12 @@ export class OrderAddEditComponent implements OnInit {
           this.router.navigate(['/order']);
         },
         (error) => {
-          console.error(error);
+          this.isLoading = false;
+
+          this.modal.error({
+            nzTitle: 'Fehler beim Anlegen',
+            nzContent: 'Beim Anlegen der Bestellung ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
+          });
         }
       );
     }

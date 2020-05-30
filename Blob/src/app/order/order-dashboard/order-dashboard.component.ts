@@ -4,6 +4,7 @@ import { IOrderItem } from 'src/app/interfaces/order/IOrderItem';
 import { EOrderState } from 'src/app/enums/order/eorder-state.enum';
 import { OrderService } from '../order.service';
 import { IOrderState } from 'src/app/interfaces/order/IOrderState';
+import { NzModalService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-order-dashboard',
@@ -38,7 +39,7 @@ export class OrderDashboardComponent implements OnInit {
     },
   ];
 
-  constructor(private titleService:TitleService, private orderService: OrderService) {
+  constructor(private modal:NzModalService,private titleService:TitleService, private orderService: OrderService) {
     this.titleService.Title = 'Bestellungen';
   }
 
@@ -56,6 +57,12 @@ export class OrderDashboardComponent implements OnInit {
       },
       (error) => {
         console.error(error);
+
+        this.isOrdersLoading = false;
+        this.modal.error({
+          nzTitle: 'Fehler',
+          nzContent: 'Beim laden der Bestellungen ist es zu einem Fehler gekommen, bitte benachrichtigen Sie den Administrator.'
+        });
       }
     );
   }
@@ -79,15 +86,15 @@ export class OrderDashboardComponent implements OnInit {
   }
 
   selectChanged(newState: EOrderState, id: number): void{
-    console.log("id: "+id);
     
-    var order:IOrderItem = this.listOfData.find(item => {
-      return item.id == id
-    });
+    var index: number = this.listOfData.findIndex(
+      (item: IOrderItem) => item.id == id
+    );
 
-    order.state.id = newState;
+    this.listOfData[index].state.id = newState;
+
     this.isOrdersLoading = true;
-    this.orderService.updateOrders([order]).subscribe(
+    this.orderService.updateOrders([this.listOfData[index]]).subscribe(
       (data) => {
         console.log(data);
         this.currentState = newState;
@@ -97,6 +104,15 @@ export class OrderDashboardComponent implements OnInit {
       },
       (error) => {
         console.error(error);
+
+        this.listOfData[index].state.id = this.currentState;
+
+        this.isOrdersLoading = false;
+
+          this.modal.error({
+            nzTitle: 'Fehler',
+            nzContent: 'Beim ändern des Statuses ist es zu einem Fehler gekommen, bitte benachrichtigen Sie den Administrator.'
+          });
       }
     ); 
   }

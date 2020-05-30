@@ -8,7 +8,7 @@
             >
 
             <nz-form-item>
-                <nz-form-control>
+                <nz-form-control nzErrorTip="Bitte wählen Sie einen Kunden aus um die Bestellung zu speichern.">
                     <nz-select formControlName="customerId" nzShowSearch nzAllowClear nzPlaceHolder="Wähle einen Kunden" (ngModelChange)="customerChanged()">
                         <nz-option *ngFor="let customer of customers" [nzValue]="customer.id" [nzLabel]="customer.firstname+' '+customer.lastname"></nz-option>
                         </nz-select>
@@ -37,7 +37,7 @@
                     <h4 nz-typography></h4>
                 </div>
                 <div *ngFor="let _ of orderProducts.controls; let i = index;" class="order-products-wrapper">
-                    <ng-container [formGroupName]="i">
+                    <ng-container [formGroupName]="i" nzErrorTip="Bitte wählen Sie mindestens ein Produkt aus um die Bestellung zu speichern.">
                         <nz-form-item>
                             <nz-form-control nzErrorTip="Bitte wähle ein Produkt aus">
                                 <nz-select formControlName="product" nzShowSearch nzAllowClear nzPlaceHolder="Produkt auswählen" (ngModelChange)="productChanged(i)">
@@ -46,7 +46,7 @@
                             </nz-form-control>
                         </nz-form-item>
                         <nz-form-item>
-                            <nz-form-control nzErrorTip="Bitte wähle ein Produkt aus">
+                            <nz-form-control nzErrorTip="Bitte wähle eine Menge aus">
                                 <nz-input-group>
                                 <!--input nz-input formControlName="quantity" type="number" placeholder="Menge"/-->
                                 <nz-input-number formControlName="quantity" [nzMin]="1" [nzStep]="1" (ngModelChange)="calcInvoiceMount()"></nz-input-number>
@@ -54,7 +54,7 @@
                             </nz-form-control>
                         </nz-form-item>
                         <nz-form-item>
-                            <nz-form-control nzErrorTip="Bitte gib einen gültigen Preis ein">
+                            <nz-form-control>
                                 <nz-input-group>
                                 <input nz-input formControlName="price" placeholder="Preis"/>
                                 </nz-input-group>
