@@ -12,7 +12,21 @@ export class ProductService {
   demoProducts: Array<IProductItem> = [
     {
       id: 1,
-      product: 'a',
+      product: 'Produkt 1',
+      sku: 'asdfasfg',
+      stock: '10',
+      price: 50,
+    },
+    {
+      id: 2,
+      product: 'Produkt 2',
+      sku: 'asdfasfg',
+      stock: '10',
+      price: 50,
+    },
+    {
+      id: 3,
+      product: 'Produkt 3',
       sku: 'asdfasfg',
       stock: '10',
       price: 50,
@@ -37,6 +51,6 @@ export class ProductService {
   }
 
   getAllProductsDev(): Observable<Array<IProductItem>> {
-    return of(this.demoProducts).pipe(delay(5000));
+    return of(this.demoProducts).pipe(delay(1000));
   }
 }

@@ -16,8 +16,8 @@ export class OrderService {
       locationId: 1,
       customer: {
         id: 3,
-        firstName: "Test",
-        lastName: "1",
+        firstname: "Test",
+        lastname: "1",
         address: {
           id: 1,
           street: "Badstraße 24",
@@ -27,16 +27,19 @@ export class OrderService {
         createdAt: "20-05-2020",
       },
       createdAt: "21.05.2020",
-      orderProducts:null,
-      state: EOrderState.notPaid,
+      orderedProducts:null,
+      state: {
+        id: EOrderState.notPaid,
+        value: "Nicht Bezahlt",
+      }
     },
     {
       id: 2,
       locationId: 1,
       customer: {
         id: 2,
-        firstName: "Test",
-        lastName: "2",
+        firstname: "Test",
+        lastname: "2",
         address: {
           id: 1,
           street: "Badstraße 25",
@@ -46,8 +49,11 @@ export class OrderService {
         createdAt: "20-05-2020",
       },
       createdAt: "21.05.2020",
-      orderProducts:null,
-      state: EOrderState.paid,
+      orderedProducts:null,
+      state: {
+        value: "Bezahlt",
+        id: EOrderState.paid,
+      }
     }
   ];
 
@@ -58,10 +64,10 @@ export class OrderService {
     }),
   };
   constructor(private http: HttpClient, private baseService: BaseService) { 
-    this.getAllOrders = this.getAllOrdersDev;
+    /*this.getAllOrders = this.getAllOrdersDev;
     this.getOrder = this.getOrderDev;
     this.createOrder = this.createOrderDev;
-    this.updateOrders = this.updateOrdersDev;
+    this.updateOrders = this.updateOrdersDev;*/
   }
 
   getAllOrders(): Observable<any>{

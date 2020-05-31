@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { TitleService } from 'src/app/title.service';
 import { IOrderItem } from 'src/app/interfaces/order/IOrderItem';
 import { EOrderState } from 'src/app/enums/order/eorder-state.enum';
-import { ITabContent } from 'src/app/interfaces/order/ITabContent';
 import { OrderService } from '../order.service';
+import { IOrderState } from 'src/app/interfaces/order/IOrderState';
+import { NzModalService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-order-dashboard',
@@ -15,30 +16,30 @@ export class OrderDashboardComponent implements OnInit {
   visible: boolean = false;
   isOrdersLoading = true;
   currentState: EOrderState = EOrderState.notPaid;
-  tabs:ITabContent[] = [
+  tabs:IOrderState[] = [
     {
-      title: "Nicht Bezahlt",
-      state: EOrderState.notPaid,
+      value: "Nicht Bezahlt",
+      id: EOrderState.notPaid,
     }, 
     {
-      title: "Bezahlt",
-      state: EOrderState.paid,
+      value: "Bezahlt",
+      id: EOrderState.paid,
     },
     {
-      title: "In-Bearbeitung",
-      state: EOrderState.inProcessing,
+      value: "In-Bearbeitung",
+      id: EOrderState.inProcessing,
     }, 
     {
-      title: "Versand",
-      state: EOrderState.shipping,
+      value: "Versand",
+      id: EOrderState.shipping,
     }, 
     {
-      title: "Archiviert",
-      state: EOrderState.archived,
+      value: "Archiviert",
+      id: EOrderState.archived,
     },
   ];
 
-  constructor(private titleService:TitleService, private orderService: OrderService) {
+  constructor(private modal:NzModalService,private titleService:TitleService, private orderService: OrderService) {
     this.titleService.Title = 'Bestellungen';
   }
 
@@ -56,6 +57,12 @@ export class OrderDashboardComponent implements OnInit {
       },
       (error) => {
         console.error(error);
+
+        this.isOrdersLoading = false;
+        this.modal.error({
+          nzTitle: 'Fehler',
+          nzContent: 'Beim laden der Bestellungen ist es zu einem Fehler gekommen, bitte benachrichtigen Sie den Administrator.'
+        });
       }
     );
   }
@@ -74,20 +81,20 @@ export class OrderDashboardComponent implements OnInit {
     console.log(this.listOfData);
     
     this.listOfDisplayData = this.listOfData.filter(
-      (item: IOrderItem) => item.state == this.currentState
+      (item: IOrderItem) => item.state.id == this.currentState
     );
   }
 
   selectChanged(newState: EOrderState, id: number): void{
-    console.log("id: "+id);
     
-    var order:IOrderItem = this.listOfData.find(item => {
-      return item.id == id
-    });
+    var index: number = this.listOfData.findIndex(
+      (item: IOrderItem) => item.id == id
+    );
 
-    order.state = newState;
+    this.listOfData[index].state.id = newState;
+
     this.isOrdersLoading = true;
-    this.orderService.updateOrders([order]).subscribe(
+    this.orderService.updateOrders([this.listOfData[index]]).subscribe(
       (data) => {
         console.log(data);
         this.currentState = newState;
@@ -97,6 +104,15 @@ export class OrderDashboardComponent implements OnInit {
       },
       (error) => {
         console.error(error);
+
+        this.listOfData[index].state.id = this.currentState;
+
+        this.isOrdersLoading = false;
+
+          this.modal.error({
+            nzTitle: 'Fehler',
+            nzContent: 'Beim ändern des Statuses ist es zu einem Fehler gekommen, bitte benachrichtigen Sie den Administrator.'
+          });
       }
     ); 
   }
@@ -109,7 +125,7 @@ export class OrderDashboardComponent implements OnInit {
     this.visible = false;
     this.listOfDisplayData = this.listOfData.filter(
       //TODO Suche fixen auch reset
-      (item: IOrderItem) => item.id == Number(this.searchValue) && item.state==this.currentState
+      (item: IOrderItem) => item.id == Number(this.searchValue) && item.state.id==this.currentState
     );
   }
 

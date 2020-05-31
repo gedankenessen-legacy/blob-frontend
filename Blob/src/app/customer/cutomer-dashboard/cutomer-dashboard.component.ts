@@ -65,9 +65,9 @@ export class CutomerDashboardComponent implements OnInit {
       city: this.addForm.controls['city'].value,
     };
     var newCustomerItem: ICustomerItem = {
-      id: -1,
-      firstName: this.addForm.controls['firstname'].value,
-      lastName: this.addForm.controls['lastname'].value,
+      id: 4,
+      firstname: this.addForm.controls["firstname"].value,
+      lastname: this.addForm.controls["lastname"].value,
       address: address,
       createdAt: '20-05-2020',
     };
@@ -119,6 +119,32 @@ export class CutomerDashboardComponent implements OnInit {
    ** Liste aller Kunden                   **
    *******************************************/
   listOfData: ICustomerItem[] = [];
+  /* listOfData: ICustomerItem[] = [
+    {
+      id: 1,
+      firstname: "Test",
+      lastname: "Test",
+      address: {
+        id: 1,
+        street: "Badstraße 24",
+        zip: "77654",
+        city: "Offenburg"
+      },
+      createdAt: "20-05-2020",
+    },
+    {
+      id: 2,
+      firstname: "Test 2",
+      lastname: "Test 2",
+      address: {
+        id: 1,
+        street: "Badstraße 24",
+        zip: "77654",
+        city: "Offenburg"
+      },
+      createdAt: "20-05-2020",
+    },
+  ]; */
 
   /********************************************
    ** Kundensuche                            **
@@ -126,7 +152,9 @@ export class CutomerDashboardComponent implements OnInit {
   listOfDisplayData = [...this.listOfData];
   search() {
     this.visible = false;
-    this.listOfDisplayData = this.listOfData.filter((item: ICustomerItem) => (item.firstName + ' ' + item.lastName).indexOf(this.searchValue) !== -1);
+    this.listOfDisplayData = this.listOfData.filter(
+      (item: ICustomerItem) => (item.firstname +" "+item.lastname).indexOf(this.searchValue) !== -1
+    );
   }
 
   /********************************************
