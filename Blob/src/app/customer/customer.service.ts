@@ -43,8 +43,8 @@ export class CustomerService {
     }),
   };
   constructor(private http: HttpClient, private baseService: BaseService) { 
-    this.getAllCustomer = this.getAllCustomerDev;
-    this.createCustomer = this.createCustomerDev;
+    //this.getAllCustomer = this.getAllCustomerDev;
+    //this.createCustomer = this.createCustomerDev;
   }
 
   getAllCustomer(): Observable<any>{
