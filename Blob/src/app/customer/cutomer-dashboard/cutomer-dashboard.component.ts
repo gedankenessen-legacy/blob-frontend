@@ -96,8 +96,8 @@ export class CutomerDashboardComponent implements OnInit {
     };
     var newCustomerItem: ICustomerItem = {
       id: id,
-      firstName: this.addForm.controls['firstname'].value,
-      lastName: this.addForm.controls['lastname'].value,
+      firstname: this.addForm.controls['firstname'].value,
+      lastname: this.addForm.controls['lastname'].value,
       address: address,
       createdAt: '20-05-2020',
     };
@@ -196,8 +196,8 @@ export class CutomerDashboardComponent implements OnInit {
 
         var customer: ICustomerItem = data;
 
-        this.addForm.controls['firstname'].setValue(customer.firstName);
-        this.addForm.controls['lastname'].setValue(customer.lastName);
+        this.addForm.controls['firstname'].setValue(customer.firstname);
+        this.addForm.controls['lastname'].setValue(customer.lastname);
         this.addForm.controls['street'].setValue(customer.address.street);
         this.addForm.controls['zip'].setValue(customer.address.zip);
         this.addForm.controls['city'].setValue(customer.address.city);
@@ -223,8 +223,8 @@ export class CutomerDashboardComponent implements OnInit {
 
         var customer: ICustomerItem = data;
 
-        this.addForm.controls['firstname'].setValue(customer.firstName);
-        this.addForm.controls['lastname'].setValue(customer.lastName);
+        this.addForm.controls['firstname'].setValue(customer.firstname);
+        this.addForm.controls['lastname'].setValue(customer.lastname);
         this.addForm.controls['street'].setValue(customer.address.street);
         this.addForm.controls['zip'].setValue(customer.address.zip);
         this.addForm.controls['city'].setValue(customer.address.city);
