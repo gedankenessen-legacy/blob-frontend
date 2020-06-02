@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { TitleService } from 'src/app/title.service';
 import { CustomerService } from '../customer.service';
 import { IAdress } from 'src/app/interfaces/iadress';
+import { NzModalService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-cutomer-dashboard',
@@ -18,7 +19,7 @@ export class CutomerDashboardComponent implements OnInit {
   isSaving: boolean = false;
   addForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private titleService: TitleService, private customerService: CustomerService) {
+  constructor(private modal:NzModalService, private fb: FormBuilder, private titleService: TitleService, private customerService: CustomerService) {
     this.titleService.Title = 'Kunden';
   }
 
@@ -29,29 +30,28 @@ export class CutomerDashboardComponent implements OnInit {
       street: new FormControl(null, Validators.required),
       zip: new FormControl(null, [Validators.required]),
       city: new FormControl(null, Validators.required),
-      id: new FormControl(-1, Validators.required),
+      id: new FormControl(0, Validators.required),
     });
 
     this.getAllCustomer();
   }
 
   getAllCustomer() {
-    console.log('get all customer');
-
+    this.isLoading = true;
     this.customerService.getAllCustomer().subscribe(
       (data) => {
-        console.log(data);
-
-        this.listOfData = [];
-        this.listOfDisplayData = [];
         this.listOfData = data;
         this.listOfDisplayData = data;
-        console.log(this.listOfDisplayData);
 
         this.isLoading = false;
       },
       (error) => {
-        console.error(error);
+        this.isLoading = false;
+
+        this.modal.error({
+          nzTitle: 'Fehler',
+          nzContent: 'Beim Laden der Kunden ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
+        });
       }
     );
   }
@@ -59,17 +59,17 @@ export class CutomerDashboardComponent implements OnInit {
   addNewCustomer() {
     this.isSaving = true;
     var address: IAdress = {
-      id: -1,
+      id: 0,
       street: this.addForm.controls['street'].value,
       zip: this.addForm.controls['zip'].value,
       city: this.addForm.controls['city'].value,
     };
     var newCustomerItem: ICustomerItem = {
-      id: 4,
+      id: 0,
       firstname: this.addForm.controls["firstname"].value,
       lastname: this.addForm.controls["lastname"].value,
       address: address,
-      createdAt: '20-05-2020',
+      createdAt: null,
     };
 
     this.customerService.createCustomer(newCustomerItem).subscribe(
@@ -81,37 +81,56 @@ export class CutomerDashboardComponent implements OnInit {
         this.getAllCustomer();
       },
       (error) => {
-        console.error(error);
+        this.isSaving = false;
+
+        this.modal.error({
+          nzTitle: 'Fehler',
+          nzContent: 'Beim Anlegen des Kunden ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
+        });
       }
     );
   }
 
   updateCustomer(id: number) {
     this.isSaving = true;
+
+    var customers: ICustomerItem[] = this.listOfData.filter(
+      (item: ICustomerItem) => item.id == id
+    );
+
+    var customer:ICustomerItem = customers[0];
+
     var address: IAdress = {
-      id: -1,
+      id: customer.address.id,
       street: this.addForm.controls['street'].value,
       zip: this.addForm.controls['zip'].value,
       city: this.addForm.controls['city'].value,
     };
+
     var newCustomerItem: ICustomerItem = {
       id: id,
       firstname: this.addForm.controls['firstname'].value,
       lastname: this.addForm.controls['lastname'].value,
       address: address,
-      createdAt: '20-05-2020',
+      createdAt: customer.createdAt,
     };
-
+    
     this.customerService.updateCustomers([newCustomerItem]).subscribe(
       (data) => {
         console.log(data);
+        
         this.isLoading = true;
         this.isPopupVisible = false;
         this.isSaving = false;
         this.getAllCustomer();
       },
       (error) => {
-        console.error(error);
+        this.isSaving = false;
+
+        this.modal.error({
+          nzTitle: 'Fehler',
+          nzContent: 'Beim Bearbeiten des Kunden ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
+        });
       }
     );
   }
@@ -119,32 +138,6 @@ export class CutomerDashboardComponent implements OnInit {
    ** Liste aller Kunden                   **
    *******************************************/
   listOfData: ICustomerItem[] = [];
-  /* listOfData: ICustomerItem[] = [
-    {
-      id: 1,
-      firstname: "Test",
-      lastname: "Test",
-      address: {
-        id: 1,
-        street: "Badstraße 24",
-        zip: "77654",
-        city: "Offenburg"
-      },
-      createdAt: "20-05-2020",
-    },
-    {
-      id: 2,
-      firstname: "Test 2",
-      lastname: "Test 2",
-      address: {
-        id: 1,
-        street: "Badstraße 24",
-        zip: "77654",
-        city: "Offenburg"
-      },
-      createdAt: "20-05-2020",
-    },
-  ]; */
 
   /********************************************
    ** Kundensuche                            **
@@ -178,7 +171,7 @@ export class CutomerDashboardComponent implements OnInit {
 
   submitAddForm(): void {
     console.log('Add clicked');
-    if (this.addForm.controls['id'].value == -1) {
+    if (this.addForm.controls['id'].value == 0) {
       this.addNewCustomer();
     } else {
       this.updateCustomer(this.addForm.controls['id'].value);
@@ -188,28 +181,20 @@ export class CutomerDashboardComponent implements OnInit {
   editButtonClicked(id: number): void {
     console.log('Edit clicked');
 
-    this.isLoading = true;
-
-    this.customerService.getCustomer(id).subscribe(
-      (data) => {
-        console.log(data);
-
-        var customer: ICustomerItem = data;
-
-        this.addForm.controls['firstname'].setValue(customer.firstname);
-        this.addForm.controls['lastname'].setValue(customer.lastname);
-        this.addForm.controls['street'].setValue(customer.address.street);
-        this.addForm.controls['zip'].setValue(customer.address.zip);
-        this.addForm.controls['city'].setValue(customer.address.city);
-        this.addForm.controls['id'].setValue(customer.id);
-
-        this.isPopupVisible = true;
-        this.isLoading = false;
-      },
-      (error) => {
-        console.error(error);
-      }
+    var customers: ICustomerItem[] = this.listOfData.filter(
+      (item: ICustomerItem) => item.id == id
     );
+
+    var customer:ICustomerItem = customers[0];
+    
+    this.addForm.controls['firstname'].setValue(customer.firstname);
+    this.addForm.controls['lastname'].setValue(customer.lastname);
+    this.addForm.controls['street'].setValue(customer.address.street);
+    this.addForm.controls['zip'].setValue(customer.address.zip);
+    this.addForm.controls['city'].setValue(customer.address.city);
+    this.addForm.controls['id'].setValue(customer.id);
+
+    this.isPopupVisible = true;
   }
 
   copyButtonClicked(id: number): void {
@@ -217,25 +202,19 @@ export class CutomerDashboardComponent implements OnInit {
 
     this.isLoading = true;
 
-    this.customerService.getCustomer(id).subscribe(
-      (data) => {
-        console.log(data);
-
-        var customer: ICustomerItem = data;
-
-        this.addForm.controls['firstname'].setValue(customer.firstname);
-        this.addForm.controls['lastname'].setValue(customer.lastname);
-        this.addForm.controls['street'].setValue(customer.address.street);
-        this.addForm.controls['zip'].setValue(customer.address.zip);
-        this.addForm.controls['city'].setValue(customer.address.city);
-
-        this.isPopupVisible = true;
-        this.isLoading = false;
-      },
-      (error) => {
-        console.error(error);
-      }
+    var customers: ICustomerItem[] = this.listOfData.filter(
+      (item: ICustomerItem) => item.id == id
     );
+
+    var customer:ICustomerItem = customers[0];
+
+    this.addForm.controls['firstname'].setValue(customer.firstname);
+    this.addForm.controls['lastname'].setValue(customer.lastname);
+    this.addForm.controls['street'].setValue(customer.address.street);
+    this.addForm.controls['zip'].setValue(customer.address.zip);
+    this.addForm.controls['city'].setValue(customer.address.city);
+
+    this.isPopupVisible = true;
   }
 
   deleteButtonClicked(id: number): void {
