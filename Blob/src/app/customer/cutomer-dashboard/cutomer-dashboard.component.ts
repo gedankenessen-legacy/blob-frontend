@@ -37,7 +37,7 @@ export class CutomerDashboardComponent implements OnInit {
   }
 
   getAllCustomer() {
-
+    this.isLoading = true;
     this.customerService.getAllCustomer().subscribe(
       (data) => {
         this.listOfData = data;
