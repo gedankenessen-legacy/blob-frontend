@@ -157,6 +157,8 @@ export class OrderAddEditComponent implements OnInit {
     }
 
     if(this.orderId>0){
+      console.log(newOrderItem);
+
       this.orderService.updateOrders([newOrderItem]).subscribe(
         (data) => {
           console.log(data);
@@ -197,7 +199,7 @@ export class OrderAddEditComponent implements OnInit {
     });
   }
 
-  public addProduct(e: MouseEvent) {
+  addProduct(e: MouseEvent) {
     e.preventDefault();
     var test: FormArray = this.formControls.products as FormArray;
     
@@ -205,7 +207,7 @@ export class OrderAddEditComponent implements OnInit {
     this.calcInvoiceMount();
   }
 
-  public removeProduct(index: number) {
+  removeProduct(index: number) {
     this.orderProducts.removeAt(index);
     this.calcInvoiceMount();
   }
