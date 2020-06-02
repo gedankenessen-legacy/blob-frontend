@@ -49,6 +49,7 @@ export class OrderDashboardComponent implements OnInit {
   }
 
   getAllOrders() {
+    this.isOrdersLoading = true;
     this.orderService.getAllOrders().subscribe(
       (data) => {
         this.listOfData = data;
