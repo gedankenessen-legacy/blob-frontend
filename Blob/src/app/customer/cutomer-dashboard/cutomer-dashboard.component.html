@@ -42,6 +42,7 @@
           nzType="primary"
           [nzSize]="4"
           class="quickaction-button"
+          (click)="editButtonClicked(data.id)"
         >
           <i nz-icon nzType="edit" nzTheme="outline"></i>
         </button>
@@ -50,6 +51,7 @@
           nzType="primary"
           [nzSize]="4"
           class="quickaction-button"
+          (click)="deleteButtonClicked(data.id)"
         >
           <i nz-icon nzType="delete" nzTheme="outline"></i>
         </button>
@@ -58,6 +60,7 @@
           nzType="primary"
           [nzSize]="4"
           class="quickaction-button"
+          (click)="copyButtonClicked(data.id)"
         >
           <i nz-icon nzType="copy" nzTheme="outline"></i>
         </button>
@@ -134,13 +137,13 @@
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-control nzErrorTip="Bitte geben Sie eine Straße ein!">
+        <nz-form-control nzErrorTip="Bitte geben Sie eine Straße und Hasunummer ein!">
           <nz-input-group>
             <input
               type="text"
               nz-input
               formControlName="street"
-              placeholder="Straße"
+              placeholder="Straße + Hausnummer"
             />
           </nz-input-group>
         </nz-form-control>
@@ -169,10 +172,15 @@
           </nz-input-group>
         </nz-form-control>
       </nz-form-item>
+      <input
+              type="hidden"
+              nz-input
+              formControlName="id"
+            />
     </form>
   </ng-template>
   <ng-template #modalFooter>
-    <button nz-button nzType="primary" (click)="submitAddForm()" nzBlock [disabled]="!addForm.valid">
+    <button nz-button nzType="primary" (click)="submitAddForm()" nzBlock [disabled]="!addForm.valid" [nzLoading]="isSaving">
       Speichern
     </button>
   </ng-template>

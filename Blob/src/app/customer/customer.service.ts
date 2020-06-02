@@ -43,8 +43,11 @@ export class CustomerService {
     }),
   };
   constructor(private http: HttpClient, private baseService: BaseService) { 
-    //this.getAllCustomer = this.getAllCustomerDev;
-    //this.createCustomer = this.createCustomerDev;
+    this.getAllCustomer = this.getAllCustomerDev;
+    this.getCustomer = this.getCustomerDev;
+    this.createCustomer = this.createCustomerDev;
+    this.deleteCustomer = this.deleteCustomerDev;
+    this.updateCustomers = this.updateCustomersDev;
   }
 
   getAllCustomer(): Observable<any>{
@@ -57,6 +60,19 @@ export class CustomerService {
     return of(this.demoCustomer).pipe(delay(2000));
   }
 
+  getCustomer(id: number): Observable<ICustomerItem>{
+    return this.http
+      .get<any>(this.baseService.getBaseUrl + '/customer/'+id, this.httpOptions)
+      .pipe(catchError(this.baseService.errorHandle));
+  }
+
+  getCustomerDev(id: number): Observable<ICustomerItem>{
+    var order: ICustomerItem = this.demoCustomer.filter(
+      (item: ICustomerItem) => item.id == id
+    )[0];
+    return of(order).pipe(delay(2000));
+  }
+
   createCustomer(newCustomer:ICustomerItem): Observable<any>{
     return this.http
       .post<any>(this.baseService.getBaseUrl + '/customer',newCustomer, this.httpOptions)
@@ -64,6 +80,36 @@ export class CustomerService {
   }
 
   createCustomerDev(newCustomer:ICustomerItem): Observable<ICustomerItem>{
+    var maxId: number = Math.max.apply(Math, this.demoCustomer.map(function(o) { return o.id; }))
+    newCustomer.id = maxId+1;
+    this.demoCustomer = [...this.demoCustomer, newCustomer]
     return of(newCustomer).pipe(delay(2000));
+  }
+
+  deleteCustomer(id: number):Observable<any>{
+    return this.http
+      .delete(this.baseService.getBaseUrl + '/customer/'+id, this.httpOptions)
+      .pipe(catchError(this.baseService.errorHandle));
+  }
+
+  deleteCustomerDev(id: number): Observable<any>{
+    this.demoCustomer = this.demoCustomer.filter(d => d.id !== id);
+
+    return of(null).pipe(delay(2000));
+  }
+
+  updateCustomers(updatedOrders:ICustomerItem[]): Observable<ICustomerItem[]>{
+    return this.http
+      .put<any>(this.baseService.getBaseUrl + '/customer',updatedOrders, this.httpOptions)
+      .pipe(catchError(this.baseService.errorHandle));
+  }
+
+  updateCustomersDev(updatedOrders:ICustomerItem[]): Observable<ICustomerItem[]>{
+
+    for(let order of updatedOrders){
+      const index = this.demoCustomer.findIndex(item => item.id === order.id);
+      Object.assign(this.demoCustomer[index], order);
+    }
+    return of(updatedOrders).pipe(delay(2000));
   }
 }
