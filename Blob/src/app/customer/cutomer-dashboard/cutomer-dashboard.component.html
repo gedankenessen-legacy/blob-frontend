@@ -34,7 +34,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let data of nzTable.data">
-      <td>{{ data.firstName }} {{data.lastName}}</td>
+      <td>{{ data.firstname }} {{data.lastname}}</td>
       <td>{{ data.address.street }}, {{ data.address.zip }} {{ data.address.city }}</td>
       <td>
         <button
@@ -113,7 +113,7 @@
       (ngSubmit)="submitAddForm()"
     >
       <nz-form-item>
-        <nz-form-control nzErrorTip="Bitte geben Sie einen Vorname ein!">
+        <nz-form-control nzErrorTip="Bitte geben Sie einen Vornamen ein.">
           <nz-input-group>
             <input
               type="text"
@@ -125,7 +125,7 @@
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-control nzErrorTip="Bitte geben Sie einen Nachname ein!">
+        <nz-form-control nzErrorTip="Bitte geben Sie einen Nachnamen ein.">
           <nz-input-group>
             <input
               type="text"
@@ -137,7 +137,7 @@
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-control nzErrorTip="Bitte geben Sie eine Straße und Hasunummer ein!">
+        <nz-form-control nzErrorTip="Bitte geben Sie einen Straße ein.">
           <nz-input-group>
             <input
               type="text"
@@ -149,7 +149,7 @@
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-control nzErrorTip="Bitte geben Sie eine PLZ ein!">
+        <nz-form-control nzErrorTip="Bitte geben Sie einen Postleitzahl ein.">
           <nz-input-group>
             <input
               type="text"
@@ -161,7 +161,7 @@
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-control nzErrorTip="Bitte geben Sie eine Stadt ein!">
+        <nz-form-control nzErrorTip="Bitte geben Sie einen Stadt ein.">
           <nz-input-group>
             <input
               type="text"
