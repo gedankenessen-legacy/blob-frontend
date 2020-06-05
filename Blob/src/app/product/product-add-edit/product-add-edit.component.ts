@@ -10,6 +10,7 @@ import { IProductLocationItem } from 'src/app/interfaces/IProductLocationItem';
 import { ProductService } from '../product.service';
 import { IProductItem } from 'src/app/interfaces/IProductItem';
 import { ILocationItem } from 'src/app/interfaces/ILocationItem';
+import { ICategoryItem } from 'src/app/interfaces/ICategoryItem';
 
 @Component({
   selector: 'app-product-add-edit',
@@ -71,10 +72,17 @@ export class ProductAddEditComponent implements OnInit {
   getAllCategorys() {
     this.productService.getAllProducts().subscribe(
       (data) => {
-        console.log(data);
-
-        this.listOfCategory = data.map(category => category.category.name);
-        
+        let categorys: ICategoryItem[] = []
+        for(var dcy = 0; dcy < data.length; dcy++) {
+          for(var cy = 0; cy < data[dcy].category.length; cy++) {
+            let categoryData = {
+              id: data[dcy].category[cy].id,
+              name: data[dcy].category[cy].name,
+            }; 
+            categorys.push(categoryData);
+          }
+        }
+        this.listOfCategory = data.category;
       },
       (error) => {
         console.error(error);

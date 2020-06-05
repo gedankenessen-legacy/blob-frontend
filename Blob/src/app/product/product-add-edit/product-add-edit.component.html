@@ -64,7 +64,6 @@ Rest Request -->
         <div id="product_category">
             <h3>Kategorie</h3>
             <nz-select nzShowSearch [nzDropdownRender]="renderTemplate" nzPlaceHolder="Kategorie" class="category">
-                <!-- TODO: Need "name" from object -->
                 <nz-option *ngFor="let item of listOfCategory" [nzLabel]="item" [nzValue]="item"></nz-option>
             </nz-select>
             <ng-template #renderTemplate>
@@ -140,7 +139,7 @@ Rest Request -->
                     <td>
                         <div class="editable-cell" [hidden]="editIdLocation === data.id">
                         </div>
-                        <input type="text" nz-input [(ngModel)]="data.amount" />
+                        <input type="number" nz-input [(ngModel)]="data.amount" />
                     </td>
                 </tr>
             </tbody>

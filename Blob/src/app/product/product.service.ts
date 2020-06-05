@@ -38,7 +38,15 @@ export class ProductService {
   demoCategory: Array<ICategoryItem> = [
     {
       id: 1,
-      name: 'Reifen'
+      name: 'Winter Reifen'
+    },
+    {
+      id: 2,
+      name: 'Sommer Reifen'
+    },
+    {
+      id: 3,
+      name: 'Ganzjahres Reifen'
     },
   ];
 
