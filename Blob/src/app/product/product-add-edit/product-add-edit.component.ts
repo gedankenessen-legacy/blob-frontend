@@ -6,9 +6,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { IPropertyItem } from 'src/app/interfaces/IPropertyItem';
-import { ILocationItem } from 'src/app/interfaces/ILocationItem';
+import { IProductLocationItem } from 'src/app/interfaces/IProductLocationItem';
 import { ProductService } from '../product.service';
 import { IProductItem } from 'src/app/interfaces/IProductItem';
+import { ILocationItem } from 'src/app/interfaces/ILocationItem';
 
 @Component({
   selector: 'app-product-add-edit',
@@ -52,17 +53,6 @@ export class ProductAddEditComponent implements OnInit {
       (data) => {
         console.log(data);
 
-        /* let locations: ILocationItem[] = [];
-        for(var loc = 0; loc < data.length; loc++) {
-
-          let locationData = {
-            location: data[loc].location,
-            amount: data[loc].amount
-          }; 
-
-          locations.push(locationData);
-        } */
-
         this.listOfLocation = data;
       },
       (error) => {
@@ -79,7 +69,7 @@ export class ProductAddEditComponent implements OnInit {
       (data) => {
         console.log(data);
 
-        this.listOfCategory = data.map(category => category.name);
+        this.listOfCategory = data.map(category => category.category.name);
         
       },
       (error) => {
@@ -111,6 +101,7 @@ export class ProductAddEditComponent implements OnInit {
     //Brauche das angeforderte JSON vom Backend
 
     //this.createProduct(product , this.listOfLocation, this.listOfProperty)
+    console.log(this.productForm);
   }
 
   /*******************************************
@@ -146,8 +137,8 @@ export class ProductAddEditComponent implements OnInit {
     this.listOfLocation = [
       ...this.listOfLocation,
       {
-        productId: this.id,
-        quantity: 0,
+        id: this.id,
+        name: "",
       },
     ];
   }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IProductItem } from '../../interfaces/IProductItem';
 import { ProductService } from '../product.service';
 import { NzModalService } from 'ng-zorro-antd';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-product-dashboard',
@@ -32,6 +33,26 @@ export class ProductDashboardComponent implements OnInit {
         this.listOfDisplayData = data;
 
         this.isLoading = false;
+      },
+      (error) => {
+        this.isLoading = false;
+
+        /* TODO: Nach Import läd Seite nicht mehr */ 
+        /* this.modal.error({
+          nzTitle: 'Fehler',
+          nzContent: 'Beim Laden der Produkte ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
+        }); */
+      }
+    );
+  }
+
+
+  getLocation(id: number) {
+    this.isLoading = true;
+    this.productService.getLocations(id).subscribe(
+      (data) => {
+        this.isLoading = false;
+        return of(data.name);
       },
       (error) => {
         this.isLoading = false;

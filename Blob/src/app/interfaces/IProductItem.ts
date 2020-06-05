@@ -1,4 +1,4 @@
-import { ILocationItem } from './ILocationItem';
+import { IProductLocationItem } from './IProductLocationItem';
 import { ICategoryItem } from './ICategoryItem';
 import { IPropertyItem } from './IPropertyItem';
 
@@ -8,7 +8,7 @@ export interface IProductItem {
     name: string;
     sku?: string;
     category: ICategoryItem;
-    location: ILocationItem;
+    location: IProductLocationItem;
     property: IPropertyItem;
     price: number;
 }

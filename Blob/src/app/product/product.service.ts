@@ -4,8 +4,9 @@ import { BaseService } from '../base.service';
 import { Observable, of } from 'rxjs';
 import { catchError, delay } from 'rxjs/operators';
 import { IProductItem } from '../interfaces/IProductItem';
-import { ILocationItem } from '../interfaces/ILocationItem';
+import { IProductLocationItem } from '../interfaces/IProductLocationItem';
 import { ICategoryItem } from '../interfaces/ICategoryItem';
+import { ILocationItem } from '../interfaces/ILocationItem';
 
 let isDebug: boolean = true;
 
@@ -16,9 +17,8 @@ export class ProductService {
 
   demoLocations: Array<ILocationItem> = [
     {
-      locationId: 1,
-      productId: 1,
-      quantity: 10,
+      id: 1,
+      name: "Test Filiale 1",
     }    
   ];
 
@@ -92,7 +92,7 @@ export class ProductService {
   /* Demo Location mit ID */ 
   getLocationsDev(id: number): Observable<ILocationItem> {
     var location: ILocationItem = this.demoLocations.filter(
-      (item: ILocationItem) => item.locationId == id
+      (item: ILocationItem) => item.id == id
     )[0];
 
     return of(location).pipe(delay(1000));
