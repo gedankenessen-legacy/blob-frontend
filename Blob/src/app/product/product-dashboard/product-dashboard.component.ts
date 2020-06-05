@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { IProductItem } from '../../interfaces/IProductItem';
 import { ProductService } from '../product.service';
 import { NzModalService } from 'ng-zorro-antd';
-import { IPropertyItem } from 'src/app/interfaces/IPropertyItem';
 
 @Component({
   selector: 'app-product-dashboard',
@@ -19,7 +18,7 @@ export class ProductDashboardComponent implements OnInit {
   isLoading: boolean = true;
   listOfData: Array<IProductItem> = [ ];
 
-  constructor(private modal:NzModalService, private productService: ProductService) {}
+  constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
     this.getAllProducts();
@@ -37,10 +36,11 @@ export class ProductDashboardComponent implements OnInit {
       (error) => {
         this.isLoading = false;
 
-        this.modal.error({
+        /* TODO: Nach Import läd Seite nicht mehr */ 
+        /* this.modal.error({
           nzTitle: 'Fehler',
           nzContent: 'Beim Laden der Produkte ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
-        });
+        }); */
       }
     );
   }

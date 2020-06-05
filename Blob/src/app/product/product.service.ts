@@ -5,7 +5,6 @@ import { Observable, of } from 'rxjs';
 import { catchError, delay } from 'rxjs/operators';
 import { IProductItem } from '../interfaces/IProductItem';
 import { ILocationItem } from '../interfaces/ILocationItem';
-import { IPropertyItem } from '../interfaces/IPropertyItem';
 import { ICategoryItem } from '../interfaces/ICategoryItem';
 
 let isDebug: boolean = true;
@@ -35,9 +34,8 @@ export class ProductService {
     {
       id: 1,
       productservice: 'product',
-      product: 'Dunlop Sport Classic 195/65 R18 91V',
+      name: 'Dunlop Sport Classic 195/65 R18 91V',
       sku: '5452000811332',
-      stock: 'Freiburg: 50, Berlin: 10',
       location: {
         locationId: 1,
         productId: 1,
@@ -68,6 +66,7 @@ export class ProductService {
       this.getAllLocations = this.getAllLocationsDev;
       this.getAllProducts = this.getAllProductsDev;
       this.createProduct = this.createProductDev;
+      this.deleteProduct = this.deleteProductDev;
     }
   }
 

@@ -27,6 +27,7 @@ export class ProductAddEditComponent implements OnInit {
   listOfLocation: ILocationItem[] = [];
   listOfCategory: string[] = [];
   indexCategory = 0;
+  id: number;
   /*******************************************
    ** Formular Builder                       **
    *******************************************/
@@ -74,7 +75,7 @@ export class ProductAddEditComponent implements OnInit {
    ** Lade alle Kategorien von Datenbank    **
    *******************************************/
   getAllCategorys() {
-    this.productService.getAllCategorys().subscribe(
+    this.productService.getAllProducts().subscribe(
       (data) => {
         console.log(data);
 
@@ -145,8 +146,8 @@ export class ProductAddEditComponent implements OnInit {
     this.listOfLocation = [
       ...this.listOfLocation,
       {
-        location: '',
-        amount: 0,
+        productId: this.id,
+        quantity: 0,
       },
     ];
   }
