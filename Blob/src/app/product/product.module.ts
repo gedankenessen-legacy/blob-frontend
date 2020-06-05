@@ -23,7 +23,7 @@ import { ProductAddEditComponent } from './product-add-edit/product-add-edit.com
     ReactiveFormsModule,
     NzSelectModule,
     NzDividerModule,
-    NzRadioModule
+    NzRadioModule,
   ]
 })
 export class ProductModule { }

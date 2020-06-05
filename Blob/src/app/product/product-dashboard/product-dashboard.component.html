@@ -30,11 +30,11 @@
             <td>ID:{{ data.location.locationId }}-{{ data.location.quantity }}</td>
             <td>{{ data.price }}€</td>
             <td>
-                <button nz-button nzType="primary" [nzSize]="4" class="product-quickaction-button" (click)="editButtinClicked(data.id)"><i nz-icon nzType="edit"
+                <button nz-button nzType="primary" [nzSize]="4" class="product-quickaction-button" (click)="editButtonClicked(data.id)"><i nz-icon nzType="edit"
             nzTheme="outline"></i></button>
-                <button nz-button nzType="primary" [nzSize]="4" class="product-quickaction-button" (click)="deleteButtinClicked(data.id)"><i nz-icon nzType="delete"
+                <button nz-button nzType="primary" [nzSize]="4" class="product-quickaction-button" (click)="deleteButtonClicked(data.id)"><i nz-icon nzType="delete"
             nzTheme="outline"></i></button>
-                <button nz-button nzType="primary" [nzSize]="4" class="product-quickaction-button" (click)="copyButtinClicked(data.id)"><i nz-icon nzType="copy"
+                <button nz-button nzType="primary" [nzSize]="4" class="product-quickaction-button" (click)="copyButtonClicked(data.id)"><i nz-icon nzType="copy"
             nzTheme="outline"></i></button>
             </td>
         </tr>

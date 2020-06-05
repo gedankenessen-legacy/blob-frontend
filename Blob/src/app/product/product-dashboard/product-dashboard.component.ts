@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { IProductItem } from '../../interfaces/IProductItem';
 import { ProductService } from '../product.service';
+import { NzModalService } from 'ng-zorro-antd';
+import { IPropertyItem } from 'src/app/interfaces/IPropertyItem';
 
 @Component({
   selector: 'app-product-dashboard',
@@ -8,38 +10,40 @@ import { ProductService } from '../product.service';
   styleUrls: ['./product-dashboard.component.less'],
 })
 export class ProductDashboardComponent implements OnInit {
-  constructor(private productService: ProductService) {}
+  
+  /********************************************
+   ** Variablen                              **
+   *******************************************/
+  searchValue = '';
+  visible = false;
+  isLoading: boolean = true;
+  listOfData: Array<IProductItem> = [ ];
+
+  constructor(private modal:NzModalService, private productService: ProductService) {}
 
   ngOnInit(): void {
     this.getAllProducts();
   }
 
   getAllProducts() {
+    this.isLoading = true;
     this.productService.getAllProducts().subscribe(
       (data) => {
-        console.log(data);
-
         this.listOfData = data;
         this.listOfDisplayData = data;
+
+        this.isLoading = false;
       },
       (error) => {
-        console.error(error);
+        this.isLoading = false;
+
+        this.modal.error({
+          nzTitle: 'Fehler',
+          nzContent: 'Beim Laden der Produkte ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
+        });
       }
     );
   }
-
-  /********************************************
-   ** Variablen                              **
-   *******************************************/
-  searchValue = '';
-  visible = false;
-
-  /********************************************
-   ** Liste aller Produkte                   **
-   *******************************************/
-  listOfData: Array<IProductItem> = [
-    
-  ];
 
   /********************************************
    ** Produktsuche                           **
@@ -63,15 +67,44 @@ export class ProductDashboardComponent implements OnInit {
   /********************************************
    ** Quickaction Buttons                    **
    ********************************************/
-  editButtinClicked(id: number) {
+  editButtonClicked(id: number) {
+    console.log('copy clicked');
+
+    this.isLoading = true;
+
+    var products: IProductItem[] = this.listOfData.filter((item: IProductItem) => item.id == id);
+
+    var product:IProductItem = products[0];
     
+    /* TODO: Wohin kommen die Daten? Seitenwechsel */
+    /* Senden an product/addedit/id */
   }
 
-  deleteButtinClicked(id: number) {
-    
+  deleteButtonClicked(id: number) {
+    console.log('delete clicked');
+
+    this.isLoading = true;
+
+    this.productService.deleteProduct(id).subscribe(
+      (data) => {
+        this.getAllProducts();
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
   }
 
-  copyButtinClicked(id: number) {
-    
+  copyButtonClicked(id: number) {
+    console.log('copy clicked');
+
+    this.isLoading = true;
+
+    var products: IProductItem[] = this.listOfData.filter((item: IProductItem) => item.id == id);
+
+    var product:IProductItem = products[0];
+
+    /* TODO: Wohin kommen die Daten? Seitenwechsel */
+    /* Senden an product/addedit/-1 */
   }
 }
