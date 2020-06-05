@@ -49,6 +49,7 @@ export class ProductAddEditComponent implements OnInit {
     
     this.getAllLocations();
     this.getAllCategorys();
+    this.getAllPropertys();
   }
 
   /*******************************************
@@ -73,6 +74,7 @@ export class ProductAddEditComponent implements OnInit {
   getAllCategorys() {
     this.productService.getAllProducts().subscribe(
       (data) => {
+        console.log(data);
         let serverCategorys: ICategoryItem[] = [];
         let categorys: string[] = [];
         for(var dcy = 0; dcy < data.length; dcy++) {
@@ -95,21 +97,46 @@ export class ProductAddEditComponent implements OnInit {
   }
 
   /*******************************************
+   ** Lade alle Eigenschaten von Datenbank  **
+   *******************************************/
+  getAllPropertys() {
+    this.productService.getAllProducts().subscribe(
+      (data) => {
+        let propertys: IPropertyItem[] = [];
+        for(var dcy = 0; dcy < data.length; dcy++) {
+          for(var cy = 0; cy < data[dcy].property.length; cy++) {
+            let propertyData = {
+              id: data[dcy].property[cy].id,
+              name: data[dcy].property[cy].name,
+              value: data[dcy].property[cy].value,
+            }; 
+            propertys.push(propertyData);
+          }
+        }
+        console.log(propertys);
+        this.listOfProperty = propertys;
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
+
+  /*******************************************
    ** Erstelle Produkt                      **
    *******************************************/
   createNewProdukt() 
   {
-
-    /* var newProduct: IProductItem = {
+     var newProduct: IProductItem = {
       id: 0,
       productservice: "string",
       name: this.productForm.controls['productname'].value,
       sku: this.productForm.controls['sku'].value,
-      category: this.listOfCategory,
+      category: this.listOfServerCategory,
       location: this.listOfProductLocation,
       property: this.listOfProperty,
       price: this.productForm.controls['price'].value,
-    } */
+    } 
   }
 
 
