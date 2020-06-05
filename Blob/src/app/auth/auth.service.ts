@@ -6,7 +6,7 @@ import { Observable, of } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  private debuggee = false;
+  private debuggee = true;
 
   /**
    * Checks if the user is Authenticated.
