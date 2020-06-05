@@ -26,23 +26,27 @@ export class ProductAddEditComponent implements OnInit {
   editIdLocation: string | null = null;
   listOfProperty: IPropertyItem[] = [];
   listOfLocation: ILocationItem[] = [];
+  listOfProductLocation: IProductLocationItem[] = [];
   listOfCategory: string[] = [];
   indexCategory = 0;
   id: number;
+
   /*******************************************
    ** Formular Builder                       **
    *******************************************/
   constructor(private fbp: FormBuilder, private productService: ProductService) {}
 
   ngOnInit(): void {
-    this.getAllLocations();
-    this.getAllCategorys();
     this.productForm = this.fbp.group({
       productname: new FormControl('', [Validators.required]),
       price: new FormControl('', [Validators.required]),
       sku: new FormControl('', [Validators.required]),
       category: new FormControl('', [Validators.required]),
     });
+
+    
+    this.getAllLocations();
+    this.getAllCategorys();
   }
 
   /*******************************************
@@ -81,27 +85,28 @@ export class ProductAddEditComponent implements OnInit {
   /*******************************************
    ** Erstelle Produkt                      **
    *******************************************/
-  createProduct(newProduct:IProductItem, newLocation:Array<ILocationItem>, newProperty:Array<IPropertyItem>) {
-    //Brauche das angeforderte JSON vom Backend
+  createNewProdukt() 
+  {
 
-    /* this.createProduct(newProduct, newLocation, newProperty).subscribe(
-      (data) => {
-
-      },
-      (error) => {
-        console.error(error);
-      }
-    ) */
+    /* var newProduct: IProductItem = {
+      id: 0,
+      productservice: "string",
+      name: this.productForm.controls['productname'].value,
+      sku: this.productForm.controls['sku'].value,
+      category: this.listOfCategory,
+      location: this.listOfProductLocation,
+      property: this.listOfProperty,
+      price: this.productForm.controls['price'].value,
+    } */
   }
+
 
   /*******************************************
    ** Speichern Button                       **
    *******************************************/
   submitForm() {
-    //Brauche das angeforderte JSON vom Backend
+    this.createNewProdukt();
 
-    //this.createProduct(product , this.listOfLocation, this.listOfProperty)
-    console.log(this.productForm);
   }
 
   /*******************************************

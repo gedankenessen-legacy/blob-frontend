@@ -7,6 +7,7 @@ import { IProductItem } from '../interfaces/IProductItem';
 import { IProductLocationItem } from '../interfaces/IProductLocationItem';
 import { ICategoryItem } from '../interfaces/ICategoryItem';
 import { ILocationItem } from '../interfaces/ILocationItem';
+import { IPropertyItem } from '../interfaces/IPropertyItem';
 
 let isDebug: boolean = true;
 
@@ -19,13 +20,33 @@ export class ProductService {
     {
       id: 1,
       name: "Test Filiale 1",
+    },
+    {
+      id: 2,
+      name: "Test Filiale 2",
     }    
   ];
+
+  demoProductLocation: Array<IProductLocationItem> = [
+    {
+      locationId: 1,
+      productId: 1,
+      quantity: 10,
+    }
+  ]
 
   demoCategory: Array<ICategoryItem> = [
     {
       id: 1,
       name: 'Reifen'
+    },
+  ];
+
+  demoProperty: Array<IPropertyItem> = [
+    {
+      id: 1,
+      name: "Größe",
+      value: "235 70 R18",
     },
   ];
 
@@ -36,20 +57,9 @@ export class ProductService {
       productservice: 'product',
       name: 'Dunlop Sport Classic 195/65 R18 91V',
       sku: '5452000811332',
-      location: {
-        locationId: 1,
-        productId: 1,
-        quantity: 1,
-      },
-      category: {
-        id: 1,
-        name: "Reifen",
-      },
-      property: {
-        id: 1,
-        name: "Größe",
-        value: "235 70 R18",
-      },
+      location: this.demoProductLocation,
+      category: this.demoCategory,
+      property: this.demoProperty,
       price: 145.13,
     }
   ];

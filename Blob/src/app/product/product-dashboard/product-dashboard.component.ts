@@ -19,7 +19,7 @@ export class ProductDashboardComponent implements OnInit {
   isLoading: boolean = true;
   listOfData: Array<IProductItem> = [ ];
 
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService, private modal:NzModalService) {}
 
   ngOnInit(): void {
     this.getAllProducts();
@@ -37,11 +37,10 @@ export class ProductDashboardComponent implements OnInit {
       (error) => {
         this.isLoading = false;
 
-        /* TODO: Nach Import läd Seite nicht mehr */ 
-        /* this.modal.error({
+        this.modal.error({
           nzTitle: 'Fehler',
           nzContent: 'Beim Laden der Produkte ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
-        }); */
+        });
       }
     );
   }
@@ -57,11 +56,10 @@ export class ProductDashboardComponent implements OnInit {
       (error) => {
         this.isLoading = false;
 
-        /* TODO: Nach Import läd Seite nicht mehr */ 
-        /* this.modal.error({
+        this.modal.error({
           nzTitle: 'Fehler',
           nzContent: 'Beim Laden der Produkte ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
-        }); */
+        });
       }
     );
   }
