@@ -1,4 +1,5 @@
 export interface ILocationItem {
-    location: string;
-    amount: number;
+    locationId: number;
+    productId: number;
+    quantity: number;
 }
