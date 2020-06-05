@@ -29,6 +29,7 @@ export class ProductAddEditComponent implements OnInit {
   listOfLocation: ILocationItem[] = [];
   listOfProductLocation: IProductLocationItem[] = [];
   listOfCategory: string[] = [];
+  listOfServerCategory: ICategoryItem[] = [];
   indexCategory = 0;
   id: number;
 
@@ -72,17 +73,20 @@ export class ProductAddEditComponent implements OnInit {
   getAllCategorys() {
     this.productService.getAllProducts().subscribe(
       (data) => {
-        let categorys: ICategoryItem[] = []
+        let serverCategorys: ICategoryItem[] = [];
+        let categorys: string[] = [];
         for(var dcy = 0; dcy < data.length; dcy++) {
           for(var cy = 0; cy < data[dcy].category.length; cy++) {
-            let categoryData = {
+            let categoryServerData = {
               id: data[dcy].category[cy].id,
               name: data[dcy].category[cy].name,
             }; 
-            categorys.push(categoryData);
+            serverCategorys.push(categoryServerData);
+            categorys.push(data[dcy].category[cy].name);
           }
         }
-        this.listOfCategory = data.category;
+        this.listOfCategory = categorys;
+        this.listOfServerCategory = serverCategorys;
       },
       (error) => {
         console.error(error);
