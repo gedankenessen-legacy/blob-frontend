@@ -132,7 +132,7 @@ Rest Request -->
                         <!-- <input type="text" nz-input [(ngModel)]="data.location" -->
 
                         <nz-select class="location">
-                            <nz-option nzSpan="12" nzValue="{{data.name}}" nzLabel="{{data.name}}"></nz-option>
+                            <nz-option *ngFor="let item of listOfLocation" [nzLabel]="item.name" [nzValue]="item.name"></nz-option>
                         </nz-select>
                     </td>
 
