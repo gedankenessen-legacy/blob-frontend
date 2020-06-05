@@ -13,7 +13,6 @@ export class OrderService {
   demoOrder: Array<IOrderItem> = [
     {
       id: 1,
-      locationId: 1,
       customer: {
         id: 3,
         firstname: "Test",
@@ -35,7 +34,6 @@ export class OrderService {
     },
     {
       id: 2,
-      locationId: 1,
       customer: {
         id: 2,
         firstname: "Test",

@@ -1,5 +1,5 @@
 .nzLayout {
-  height: 100%;
+  min-height: 100%;
 }
 
 .logo {
@@ -21,13 +21,26 @@
   font-size: 1.5rem;
 }
 
+nz-header{
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
 .sider-menu {
   height: 100%;
   border-right: 0;
 }
 
 .inner-layout {
+  margin-left: 200px;
   padding: 0 24px 24px;
+}
+
+nz-sider{
+  position: fixed;
+  left: 0;
+  height: 100%;
 }
 
 nz-content {

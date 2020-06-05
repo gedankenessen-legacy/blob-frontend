@@ -135,7 +135,6 @@ export class OrderAddEditComponent implements OnInit {
 
     var newOrderItem: IOrderItem = {
       id: this.orderId,
-      locationId: 0,
       createdAt: null,
       customer: {
         id: this.addForm.controls["customerId"].value,

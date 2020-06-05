@@ -48,8 +48,8 @@
             <tbody>
             <tr *ngFor="let data of nzTable.data">
                 <td>{{ data.id }}</td>
-                <td>{{ data.customer.id }}</td>
-                <td>{{ data.locationId }}</td>
+                <td>{{ data.customer.firstname }} {{ data.customer.lastname }}</td>
+                <td>{{ data.customer.address.street }}, {{ data.customer.address.zip }} {{ data.customer.address.city }}</td>
                 <td>{{ data.createdAt }}</td>
                 <td>
                 <nz-select [(ngModel)]="currentState" (ngModelChange)="selectChanged($event, data.id)">

@@ -5,7 +5,6 @@ import { IOrderState } from './IOrderState';
 
 export interface IOrderItem {
     id: number;
-    locationId: number;
     customer: ICustomerItem;
     createdAt: string;
     orderedProducts:IOrderProduct[];
