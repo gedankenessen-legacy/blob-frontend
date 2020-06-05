@@ -5,9 +5,8 @@ import { IPropertyItem } from './IPropertyItem';
 export interface IProductItem {
     id: number;
     productservice: string;
-    product: string;
+    name: string;
     sku?: string;
-    stock: string;
     category: ICategoryItem;
     location: ILocationItem;
     property: IPropertyItem;

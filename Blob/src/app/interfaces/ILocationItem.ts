@@ -1,5 +1,5 @@
 export interface ILocationItem {
-    locationId: number;
+    locationId?: number;
     productId: number;
     quantity: number;
 }

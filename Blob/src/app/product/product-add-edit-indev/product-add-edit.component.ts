@@ -23,6 +23,7 @@ export class ProductAddEditComponent implements OnInit {
   /*******************************************
    ** Dummmy                                **
    *******************************************/
+  id: number;
   productservice: string;
   product: string;
   sku?: string;
@@ -86,8 +87,9 @@ export class ProductAddEditComponent implements OnInit {
     this.listOfLocation = [
       ...this.listOfLocation,
       {
-        location: '',
-        amount: 0,
+        locationId: 0,
+        productId: this.id,
+        quantity: 0,
       },
     ];
     console.log("Standorte: ");

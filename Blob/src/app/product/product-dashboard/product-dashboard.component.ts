@@ -48,7 +48,7 @@ export class ProductDashboardComponent implements OnInit {
   search() {
     this.visible = false;
     this.listOfDisplayData = this.listOfData.filter(
-      (item: IProductItem) => item.product.indexOf(this.searchValue) !== -1
+      (item: IProductItem) => item.name.indexOf(this.searchValue) !== -1
     );
   }
 
@@ -58,5 +58,20 @@ export class ProductDashboardComponent implements OnInit {
   reset() {
     this.searchValue = '';
     this.search();
+  }
+
+  /********************************************
+   ** Quickaction Buttons                    **
+   ********************************************/
+  editButtinClicked(id: number) {
+    
+  }
+
+  deleteButtinClicked(id: number) {
+    
+  }
+
+  copyButtinClicked(id: number) {
+    
   }
 }

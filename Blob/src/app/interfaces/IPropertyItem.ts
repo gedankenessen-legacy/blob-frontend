@@ -1,5 +1,5 @@
 export interface IPropertyItem {
-    id: number;
+    id?: number;
     name: string;
     value: string;
 }
