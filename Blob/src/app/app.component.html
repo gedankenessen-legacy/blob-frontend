@@ -1,4 +1,4 @@
-<nz-layout class="nzLayout">
+<nz-layout *ngIf="HideUiShell" class="nzLayout">
   <nz-header>
     <div class="logo">BLOB</div>
     <h1 class="header-title-name">{{ Title }}</h1>
@@ -6,8 +6,8 @@
       <li nz-menu-item [routerLink]="['/manage']">
         <i nz-icon nzType="setting" nzTheme="outline"></i>Verwaltung
       </li>
-      <li nz-menu-item>
-        <i nz-icon nzType="export" nzTheme="outline"></i>Logout
+      <li nz-menu-item (click)="signOut()" >
+        <i nz-icon nzType="logout" nzTheme="outline"></i>Logout
       </li>
     </ul>
   </nz-header>
@@ -53,4 +53,4 @@
   </nz-layout>
 </nz-layout>
 
-<!--  <app-login> </app-login> -->
+<router-outlet *ngIf="!HideUiShell"></router-outlet>
