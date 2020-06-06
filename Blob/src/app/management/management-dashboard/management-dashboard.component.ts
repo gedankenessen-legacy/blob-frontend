@@ -70,23 +70,32 @@ export class ManagementDashboardComponent implements OnInit {
     {
       id: 1,
       name: 'Hauptquartier',
-      street: 'Landauerstraße 20',
-      zip: '77151',
-      city: 'Berlin',
+      address: {
+        id: 2,
+        street: 'Landauerstraße 20',
+        zip: '77151',
+        city: 'Berlin',
+      },
     },
     {
       id: 2,
       name: 'Zweites Lager',
-      street: 'Hauptstraße 71a',
-      zip: '34125',
-      city: 'München',
+      address: {
+        id: 3,
+        street: 'Hauptstraße 71a',
+        zip: '34125',
+        city: 'München',
+      }
     },
     {
       id: 3,
       name: 'Auslandserweiterung',
-      street: 'Bastil 5',
-      zip: '75000',
-      city: 'Paris',
+      address: {
+        id: 4,
+        street: 'Bastil 5',
+        zip: '75000',
+        city: 'Paris',
+      }
     },
   ];
 
