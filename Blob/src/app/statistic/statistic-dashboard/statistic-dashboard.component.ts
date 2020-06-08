@@ -17,7 +17,7 @@ export class StatisticDashboardComponent implements OnInit {
   view: any[] = [700, 300];
 
   // options
-  legend: boolean = true;
+  legend: boolean = false;
   showLabels: boolean = true;
   animations: boolean = true;
   xAxis: boolean = true;
@@ -66,10 +66,12 @@ export class StatisticDashboardComponent implements OnInit {
     console.log(listOfOrdersThisWeek);
 
     // init profits
-    this.weeklyProfits = [{ name: 'Wochenumsatz', series: [] }];
+    this.weeklyProfits = [{ name: 'Umsatz', series: [] }];
     // foreach order add to weeklyProfits
     listOfOrdersThisWeek.forEach((order) => {
-      let weekday = new Date(Date.parse(order.createdAt)).toLocaleString('de-DE', { weekday: 'long' });
+      let weekday =
+        new Date(Date.parse(order.createdAt)).toLocaleString('de-DE', { weekday: 'long' }) +
+        ` (${new Date(Date.parse(order.createdAt)).toLocaleDateString('de-DE')})`;
       let profit = order.orderedProducts.reduce((sum, order) => (sum += order.price * order.quantity), 0);
 
       console.log(this.weeklyProfits[0].series.filter((series) => series.name == weekday));
