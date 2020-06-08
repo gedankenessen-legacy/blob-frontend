@@ -1,7 +1,7 @@
 export interface IOrderProduct {
-    id: number;
-    name: string;
-    price: number;
-    sku?: string;
-    quantity: number;
+  id: number;
+  name: string;
+  price: number;
+  sku?: string;
+  quantity: number;
 }
