@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -42,7 +42,10 @@ registerLocaleData(de);
     NzInputModule,
     NzGridModule,
   ],
-  providers: [{ provide: NZ_I18N, useValue: de_DE }],
+  providers: [
+    { provide: NZ_I18N, useValue: de_DE },
+    { provide: LOCALE_ID, useValue: 'de-DE' },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

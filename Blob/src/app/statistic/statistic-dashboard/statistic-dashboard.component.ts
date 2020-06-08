@@ -24,7 +24,7 @@ export class StatisticDashboardComponent implements OnInit {
   private loadAllOrdersFromBackend(): void {
     this.statisticService.getAllOrders().subscribe(
       (data) => {
-        console.log(data);
+        //console.log(data);
         this.orders = data;
       },
       (error) => {
