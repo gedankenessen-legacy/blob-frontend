@@ -20,15 +20,12 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzGridModule } from 'ng-zorro-antd/grid';
+import { StatisticDashboardComponent } from './statistic/statistic-dashboard/statistic-dashboard.component';
 
 registerLocaleData(de);
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    NotFoundComponent
-  ],
+  declarations: [AppComponent, LoginComponent, NotFoundComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -43,9 +40,9 @@ registerLocaleData(de);
     NzIconModule,
     NzFormModule,
     NzInputModule,
-    NzGridModule
+    NzGridModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: de_DE }],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
