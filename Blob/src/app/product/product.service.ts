@@ -9,7 +9,7 @@ import { ICategoryItem } from '../interfaces/ICategoryItem';
 import { ILocationItem } from '../interfaces/ILocationItem';
 import { IPropertyItem } from '../interfaces/IPropertyItem';
 
-let isDebug: boolean = true;
+let isDebug: boolean = false;
 
 @Injectable({
   providedIn: 'root',

@@ -78,13 +78,13 @@ export class ProductAddEditComponent implements OnInit {
         let serverCategorys: ICategoryItem[] = [];
         let categorys: string[] = [];
         for(var dcy = 0; dcy < data.length; dcy++) {
-          for(var cy = 0; cy < data[dcy].category.length; cy++) {
+          for(var cy = 0; cy < data[dcy].categories.length; cy++) {
             let categoryServerData = {
-              id: data[dcy].category[cy].id,
-              name: data[dcy].category[cy].name,
+              id: data[dcy].categories[cy].id,
+              name: data[dcy].categories[cy].name,
             }; 
             serverCategorys.push(categoryServerData);
-            categorys.push(data[dcy].category[cy].name);
+            categorys.push(data[dcy].categories[cy].name);
           }
         }
         this.listOfCategory = categorys;
@@ -104,11 +104,11 @@ export class ProductAddEditComponent implements OnInit {
       (data) => {
         let propertys: IPropertyItem[] = [];
         for(var dcy = 0; dcy < data.length; dcy++) {
-          for(var cy = 0; cy < data[dcy].property.length; cy++) {
+          for(var cy = 0; cy < data[dcy].properties.length; cy++) {
             let propertyData = {
-              id: data[dcy].property[cy].id,
-              name: data[dcy].property[cy].name,
-              value: data[dcy].property[cy].value,
+              id: data[dcy].properties[cy].id,
+              name: data[dcy].properties[cy].name,
+              value: data[dcy].properties[cy].value,
             }; 
             propertys.push(propertyData);
           }
