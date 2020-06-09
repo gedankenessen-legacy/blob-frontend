@@ -11,6 +11,7 @@ import { ProductService } from '../product.service';
 import { IProductItem } from 'src/app/interfaces/IProductItem';
 import { ILocationItem } from 'src/app/interfaces/ILocationItem';
 import { ICategoryItem } from 'src/app/interfaces/ICategoryItem';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-add-edit',
@@ -30,14 +31,19 @@ export class ProductAddEditComponent implements OnInit {
   listOfProductLocation: IProductLocationItem[] = [];
   listOfCategory: ICategoryItem[] = [];
   indexCategory = 0;
-  id: number;
+  id: string;
 
   /*******************************************
    ** Formular Builder                       **
    *******************************************/
-  constructor(private fbp: FormBuilder, private productService: ProductService) {}
+  constructor(
+    private fbp: FormBuilder,
+    private productService: ProductService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
+    this.getIDFromProduct();
     this.productForm = this.fbp.group({
       productname: new FormControl('', [Validators.required]),
       price: new FormControl('', [Validators.required]),
@@ -45,10 +51,18 @@ export class ProductAddEditComponent implements OnInit {
       category: new FormControl('', [Validators.required]),
     });
 
-    
     this.getAllLocations();
     this.getAllCategorys();
-    this.getAllPropertys();
+    this.getPropertysFromProduct();
+  }
+
+  /*******************************************
+   ** ID von Produkt                         **
+   *******************************************/
+  getIDFromProduct() {
+    var str = this.router.url; 
+    var splitted = str.split("/"); 
+    this.id = splitted[3];
   }
 
   /*******************************************
@@ -86,17 +100,17 @@ export class ProductAddEditComponent implements OnInit {
   /*******************************************
    ** Lade alle Eigenschaten von Datenbank  **
    *******************************************/
-  getAllPropertys() {
+  getPropertysFromProduct() {
     this.productService.getAllProducts().subscribe(
       (data) => {
         let propertys: IPropertyItem[] = [];
-        for(var dcy = 0; dcy < data.length; dcy++) {
-          for(var cy = 0; cy < data[dcy].properties.length; cy++) {
+        for (var dcy = 0; dcy < data.length; dcy++) {
+          for (var cy = 0; cy < data[dcy].properties.length; cy++) {
             let propertyData = {
               id: data[dcy].properties[cy].id,
               name: data[dcy].properties[cy].name,
               value: data[dcy].properties[cy].value,
-            }; 
+            };
             propertys.push(propertyData);
           }
         }
@@ -112,27 +126,24 @@ export class ProductAddEditComponent implements OnInit {
   /*******************************************
    ** Erstelle Produkt                      **
    *******************************************/
-  createNewProdukt() 
-  {
-     var newProduct: IProductItem = {
+  createNewProdukt() {
+    var newProduct: IProductItem = {
       id: 0,
-      productservice: "string",
+      productservice: 'string',
       name: this.productForm.controls['productname'].value,
       sku: this.productForm.controls['sku'].value,
       category: this.listOfCategory,
       location: this.listOfProductLocation,
       property: this.listOfProperty,
       price: this.productForm.controls['price'].value,
-    } 
+    };
   }
-
 
   /*******************************************
    ** Speichern Button                       **
    *******************************************/
   submitForm() {
     this.createNewProdukt();
-
   }
 
   /*******************************************
@@ -141,8 +152,8 @@ export class ProductAddEditComponent implements OnInit {
   addItem(input: HTMLInputElement): void {
     const value = input.value;
     let isInList = 0;
-    for(let i = 0; i < this.listOfCategory.length; i++) {
-      if(this.listOfCategory[i].name == value) {
+    for (let i = 0; i < this.listOfCategory.length; i++) {
+      if (this.listOfCategory[i].name == value) {
         isInList = 1;
       }
     }
@@ -150,8 +161,8 @@ export class ProductAddEditComponent implements OnInit {
       this.listOfCategory = [
         ...this.listOfCategory,
         {
-          name: input.value || `New item ${this.indexCategory++}`
-        }
+          name: input.value || `New item ${this.indexCategory++}`,
+        },
       ];
     }
   }
@@ -160,6 +171,16 @@ export class ProductAddEditComponent implements OnInit {
    ** Eigenschaft hinzufügen                 **
    *******************************************/
   addRowProperty(): void {
+    let haveEmptyField = 0;
+    for (let i = 0; i < this.listOfProperty.length; i++) {
+      if (
+        this.listOfProperty[i].name == '' ||
+        this.listOfProperty[i].value == ''
+      ) {
+        haveEmptyField = 1;
+      }
+    }
+    if (haveEmptyField == 0) {
       this.listOfProperty = [
         ...this.listOfProperty,
         {
@@ -167,6 +188,7 @@ export class ProductAddEditComponent implements OnInit {
           value: '',
         },
       ];
+    }
   }
 
   /*******************************************
@@ -176,8 +198,8 @@ export class ProductAddEditComponent implements OnInit {
     this.listOfLocation = [
       ...this.listOfLocation,
       {
-        id: this.id,
-        name: "",
+        id: 0,
+        name: '',
       },
     ];
   }
