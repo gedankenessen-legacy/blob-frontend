@@ -12,23 +12,33 @@ export class ManagementService {
   demoLocations: Array<ILocationItem> = [
     {
       id: 1,
-      name: "Location 1",
+      name: 'Hauptquartier',
       address: {
-        id: 1,
-        street: "Badstraße 24",
-        zip: "77654",
-        city: "Offenburg"
+        id: 2,
+        street: 'Landauerstraße 20',
+        zip: '77151',
+        city: 'Berlin',
       },
     },
     {
       id: 2,
-      name: "Location 2",
+      name: 'Zweites Lager',
       address: {
-        id: 1,
-        street: "Badstraße 24",
-        zip: "77654",
-        city: "Offenburg"
-      },
+        id: 3,
+        street: 'Hauptstraße 71a',
+        zip: '34125',
+        city: 'München',
+      }
+    },
+    {
+      id: 3,
+      name: 'Auslandserweiterung',
+      address: {
+        id: 4,
+        street: 'Bastil 5',
+        zip: '75000',
+        city: 'Paris',
+      }
     },
   ];
 
@@ -39,20 +49,16 @@ export class ManagementService {
     }),
   };
   constructor(private http: HttpClient, private baseService: BaseService) { 
-    /* this.getAllCustomer = this.getAllCustomerDev;
-    this.getCustomer = this.getCustomerDev;
-    this.createCustomer = this.createCustomerDev;
-    this.deleteCustomer = this.deleteCustomerDev;
-    this.updateCustomers = this.updateCustomersDev; */
+    //this.getAllLocations = this.getAllLocationsDev;
   }
 
-  getAllCustomer(): Observable<any>{
+  getAllLocations(): Observable<any>{
     return this.http
       .get<any>(this.baseService.getBaseUrl + '/location', this.httpOptions)
       .pipe(catchError(this.baseService.errorHandle));
   }
 
-  getAllCustomerDev(): Observable<Array<ILocationItem>>{
+  getAllLocationsDev(): Observable<Array<ILocationItem>>{
     return of(this.demoLocations).pipe(delay(2000));
   }
 

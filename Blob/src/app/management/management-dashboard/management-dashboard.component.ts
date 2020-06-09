@@ -11,6 +11,8 @@ import { IUserItem } from 'src/app/interfaces/manage/IUserItem';
 
 import { TitleService } from 'src/app/title.service';
 import { TagPlaceholder } from '@angular/compiler/src/i18n/i18n_ast';
+import { ManagementService } from '../management.service';
+import { NzModalService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-management-dashboard',
@@ -20,10 +22,12 @@ import { TagPlaceholder } from '@angular/compiler/src/i18n/i18n_ast';
 export class ManagementDashboardComponent implements OnInit {
   isLocationPopupVisible: boolean = false;
   isUserPopupVisible: boolean = false;
+  isLocationLoading: boolean = false;
+  isUserLoading: boolean = false;
   addLocationForm: FormGroup;
   addUserForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private titleService: TitleService) {
+  constructor(private modal:NzModalService, private fb: FormBuilder, private titleService: TitleService, private managemantService: ManagementService) {
     this.titleService.Title = 'Verwaltung';
   }
 
@@ -43,9 +47,31 @@ export class ManagementDashboardComponent implements OnInit {
       zip: new FormControl(null, Validators.required),
       city: new FormControl(null, Validators.required),
     });
+
+    this.getAllLocations();
   }
 
-  placeholderUsers: IUserItem[] = [
+  getAllLocations() {
+    this.isLocationLoading = true;
+    this.managemantService.getAllLocations().subscribe(
+      (data) => {
+        this.listOfLocations = data;
+        this.listOfDisplayLocations = data;
+
+        this.isLocationLoading = false;
+      },
+      (error) => {
+        this.isLocationLoading = false;
+
+        this.modal.error({
+          nzTitle: 'Fehler',
+          nzContent: 'Beim Laden der Standorte ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
+        });
+      }
+    );
+  }
+
+  listOfUsers: IUserItem[] = [
     {
       id: 1,
       firstname: 'Matze',
@@ -66,50 +92,12 @@ export class ManagementDashboardComponent implements OnInit {
     },
   ];
 
-  placeholderLocations: ILocationItem[] = [
-    {
-      id: 1,
-      name: 'Hauptquartier',
-      address: {
-        id: 2,
-        street: 'Landauerstraße 20',
-        zip: '77151',
-        city: 'Berlin',
-      },
-    },
-    {
-      id: 2,
-      name: 'Zweites Lager',
-      address: {
-        id: 3,
-        street: 'Hauptstraße 71a',
-        zip: '34125',
-        city: 'München',
-      }
-    },
-    {
-      id: 3,
-      name: 'Auslandserweiterung',
-      address: {
-        id: 4,
-        street: 'Bastil 5',
-        zip: '75000',
-        city: 'Paris',
-      }
-    },
-  ];
+  listOfLocations: ILocationItem[] = [];
+  listOfDisplayLocations: ILocationItem[] = [];
 
   /********************************************
    ** Daten behandeln                        **
    ********************************************/
-
-  fetchUsers(): IUserItem[] {
-    return this.placeholderUsers;
-  }
-
-  fetchLocations(): ILocationItem[] {
-    return this.placeholderLocations;
-  }
 
   // TODO: Send actual request
   addUser(user): void {
