@@ -16,18 +16,21 @@ export class ManagementService {
       firstName: 'Matze',
       lastName: 'Müller',
       userName: 'mmüller3',
+      password:null,
     },
     {
       id: 2,
       firstName: 'Beate',
       lastName: 'Fuchs',
       userName: 'bfuchs1',
+      password:null,
     },
     {
       id: 3,
       firstName: 'Igor',
       lastName: 'Vostok',
       userName: 'ivostok1',
+      password:null,
     },
   ];
   demoLocations: Array<ILocationItem> = [

@@ -82,26 +82,42 @@
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-control nzErrorTip="Bitte geben Sie ein Password ein!">
+        <nz-form-control [nzErrorTip]="pwError">
           <nz-input-group>
             <input
               type="text"
               nz-input
               formControlName="password"
-              placeholder="Passoword"
+              placeholder="Passwort"
             />
+            <ng-template #pwError let-control>
+              <ng-container *ngIf="control.hasError('required')">
+                Bitte gib ein Passwort
+              </ng-container>
+              <ng-container *ngIf="control.hasError('pattern')">
+                Das Passwort muss mindestens 1 Großbuchstaben, einen Kleinbuchstaben sowie ein Sonderzeichen und eine Zahl enthalten
+              </ng-container>
+            </ng-template>
           </nz-input-group>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-control nzErrorTip="Bitte bestätigen Sie ihr Password!">
+        <nz-form-control [nzErrorTip]="pwConfirmError">
           <nz-input-group>
             <input
               type="text"
               nz-input
-              formControlName="password"
-              placeholder="Password bestätigen"
+              formControlName="passwordConfirm"
+              placeholder="Passwort bestätigen"
             />
+            <ng-template #pwConfirmError let-control>
+              <ng-container *ngIf="control.hasError('required')">
+                Bitte bestätige dein Passwort
+              </ng-container>
+              <ng-container *ngIf="control.hasError('mustMatch')">
+                Die Passwörter stimmen nicht überein
+              </ng-container>
+            </ng-template>
           </nz-input-group>
         </nz-form-control>
       </nz-form-item>
@@ -116,7 +132,7 @@
     </form>
   </ng-template>
   <ng-template #modalFooterUser>
-    <button nz-button nzType="primary" (click)="submitUserAddForm()" nzBlock>
+    <button nz-button nzType="primary" (click)="submitUserAddForm()" [disabled]="!addUserForm.valid" [nzLoading]="isSavingUser" nzBlock>
       Speichern
     </button>
   </ng-template>

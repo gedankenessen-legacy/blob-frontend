@@ -14,6 +14,7 @@ import { TagPlaceholder } from '@angular/compiler/src/i18n/i18n_ast';
 import { ManagementService } from '../management.service';
 import { NzModalService } from 'ng-zorro-antd';
 import { IAdress } from 'src/app/interfaces/iadress';
+import { MustMatch } from '../passwordValidation';
 
 @Component({
   selector: 'app-management-dashboard',
@@ -39,9 +40,13 @@ export class ManagementDashboardComponent implements OnInit {
     this.addUserForm = this.fb.group({
       firstname: new FormControl(null, Validators.required),
       lastname: new FormControl(null, Validators.required),
-      password: new FormControl(null, Validators.required),
-      passwordConfirm: new FormControl(null, Validators.required),
-    });
+      password: new FormControl('', Validators.compose([Validators.required, Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[1-9])(?=.*[#$^+=!*()@%&]).{1,30}$')])),
+      passwordConfirm: new FormControl('', [Validators.required]),
+    },
+    {
+      validator: MustMatch('password', 'passwordConfirm')
+    }
+    );
 
     // Add location
     this.addLocationForm = this.fb.group({
@@ -54,6 +59,16 @@ export class ManagementDashboardComponent implements OnInit {
 
     this.getAllLocations();
     this.getAllUsers();
+  }
+
+  get userFormControls(){
+    return this.addUserForm.controls
+  }
+
+  passwordTyping(){
+    console.log("Hier");
+    
+   //this.addUserForm.updateValueAndValidity();
   }
 
   getAllLocations() {
@@ -153,13 +168,7 @@ export class ManagementDashboardComponent implements OnInit {
   }
 
   submitUserAddForm(): void {
-    // TODO: build username
-    // TODO: validate input
-/*     this.addUser({
-      firstname: this.addUserForm.get('firstname').value,
-      lastname: this.addUserForm.get('lastname').value,
-      password: this.addUserForm.get('password').value,
-    }); */
+    this.addNewUser()
   }
 
   showLocationPopup(): void {
@@ -208,6 +217,36 @@ export class ManagementDashboardComponent implements OnInit {
         this.modal.error({
           nzTitle: 'Fehler',
           nzContent: 'Beim Anlegen des Standortes ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
+        });
+      }
+    );
+  }
+
+  addNewUser() {
+    this.isSavingUser = true;
+    var newUserItem: IUserItem = {
+      id: 0,
+      firstName: this.addUserForm.controls['firstname'].value,
+      lastName: this.addUserForm.controls['lastname'].value,
+      userName: null,
+      password: this.addUserForm.controls['password'].value,
+    };
+    delete newUserItem.id;
+
+    this.managemantService.createUser(newUserItem).subscribe(
+      (data) => {
+        console.log(data);
+        this.isUserPopupVisible = false;
+        this.isSavingUser = false;
+        this.isUserLoading = true;
+        this.getAllUsers();
+      },
+      (error) => {
+        this.isSavingUser = false;
+
+        this.modal.error({
+          nzTitle: 'Fehler',
+          nzContent: 'Beim Anlegen des Benutzers ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
         });
       }
     );
