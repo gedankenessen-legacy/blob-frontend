@@ -70,8 +70,13 @@ export class ManagementService {
     }),
   };
   constructor(private http: HttpClient, private baseService: BaseService) { 
-    //this.getAllLocations = this.getAllLocationsDev;
-    //this.getAllUsers = this.getAllUsersDev;
+    /* this.getAllLocations = this.getAllLocationsDev;
+    this.getAllUsers = this.getAllUsersDev;
+    this.getLocation = this.getLocationDev;
+    this.createLocation = this.createLocationDev;
+    this.createUser = this.createUserDev;
+    this.deleteLocation = this.deleteLocationDev;
+    this.updateLocations = this.updateLocationsDev; */
   }
 
   getAllLocations(): Observable<any>{
@@ -94,56 +99,69 @@ export class ManagementService {
     return of(this.demoUsers).pipe(delay(2000));
   }
 
-  /*getCustomer(id: number): Observable<ICustomerItem>{
+  getLocation(id: number): Observable<ILocationItem>{
     return this.http
-      .get<any>(this.baseService.getBaseUrl + '/customer/'+id, this.httpOptions)
+      .get<any>(this.baseService.getBaseUrl + '/location/'+id, this.httpOptions)
       .pipe(catchError(this.baseService.errorHandle));
   }
 
-  getCustomerDev(id: number): Observable<ICustomerItem>{
-    var order: ICustomerItem = this.demoCustomer.filter(
-      (item: ICustomerItem) => item.id == id
+  getLocationDev(id: number): Observable<ILocationItem>{
+    var order: ILocationItem = this.demoLocations.filter(
+      (item: ILocationItem) => item.id == id
     )[0];
     return of(order).pipe(delay(2000));
   }
 
-  createCustomer(newCustomer:ICustomerItem): Observable<any>{
+  createLocation(newLocation:ILocationItem): Observable<any>{
     return this.http
-      .post<any>(this.baseService.getBaseUrl + '/customer',newCustomer, this.httpOptions)
+      .post<any>(this.baseService.getBaseUrl + '/location',newLocation, this.httpOptions)
       .pipe(catchError(this.baseService.errorHandle));
   }
 
-  createCustomerDev(newCustomer:ICustomerItem): Observable<ICustomerItem>{
-    var maxId: number = Math.max.apply(Math, this.demoCustomer.map(function(o) { return o.id; }))
-    newCustomer.id = maxId+1;
-    this.demoCustomer = [...this.demoCustomer, newCustomer]
-    return of(newCustomer).pipe(delay(2000));
+  createLocationDev(newLocation:ILocationItem): Observable<ILocationItem>{
+    var maxId: number = Math.max.apply(Math, this.demoLocations.map(function(o) { return o.id; }))
+    newLocation.id = maxId+1;
+    this.demoLocations = [...this.demoLocations, newLocation]
+    return of(newLocation).pipe(delay(2000));
   }
 
-  deleteCustomer(id: number):Observable<any>{
+  createUser(newUser:IUserItem): Observable<any>{
     return this.http
-      .delete(this.baseService.getBaseUrl + '/customer/'+id, this.httpOptions)
+      .post<any>(this.baseService.getBaseUrl + '/user',newUser, this.httpOptions)
       .pipe(catchError(this.baseService.errorHandle));
   }
 
-  deleteCustomerDev(id: number): Observable<any>{
-    this.demoCustomer = this.demoCustomer.filter(d => d.id !== id);
+  createUserDev(newUser:IUserItem): Observable<IUserItem>{
+    var maxId: number = Math.max.apply(Math, this.demoUsers.map(function(o) { return o.id; }))
+    newUser.id = maxId+1;
+    this.demoUsers = [...this.demoUsers, newUser]
+    return of(newUser).pipe(delay(2000));
+  }
+
+  deleteLocation(id: number):Observable<any>{
+    return this.http
+      .delete(this.baseService.getBaseUrl + '/location/'+id, this.httpOptions)
+      .pipe(catchError(this.baseService.errorHandle));
+  }
+
+  deleteLocationDev(id: number): Observable<any>{
+    this.demoLocations = this.demoLocations.filter(d => d.id !== id);
 
     return of(null).pipe(delay(2000));
   }
 
-  updateCustomers(updatedCustomers:ICustomerItem[]): Observable<ICustomerItem[]>{
+  updateLocations(updatedLocations:ILocationItem[]): Observable<ILocationItem[]>{
     return this.http
-      .put<any>(this.baseService.getBaseUrl + '/customer',updatedCustomers, this.httpOptions)
+      .put<any>(this.baseService.getBaseUrl + '/location',updatedLocations, this.httpOptions)
       .pipe(catchError(this.baseService.errorHandle));
   }
 
-  updateCustomersDev(updatedCustomers:ICustomerItem[]): Observable<ICustomerItem[]>{
+  updateLocationsDev(updatedLocations:ILocationItem[]): Observable<ILocationItem[]>{
 
-    for(let order of updatedCustomers){
-      const index = this.demoCustomer.findIndex(item => item.id === order.id);
-      Object.assign(this.demoCustomer[index], order);
+    for(let order of updatedLocations){
+      const index = this.demoLocations.findIndex(item => item.id === order.id);
+      Object.assign(this.demoLocations[index], order);
     }
-    return of(updatedCustomers).pipe(delay(2000));
-  }*/
+    return of(updatedLocations).pipe(delay(2000));
+  }
 }
