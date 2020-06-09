@@ -52,6 +52,8 @@ export class OrderDashboardComponent implements OnInit {
     this.isOrdersLoading = true;
     this.orderService.getAllOrders().subscribe(
       (data) => {
+        console.log(data);
+        
         this.listOfData = data;
         this.updateListOfDisplayData();
         this.isOrdersLoading = false;

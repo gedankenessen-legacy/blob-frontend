@@ -88,11 +88,13 @@ export class OrderAddEditComponent implements OnInit {
       (data) => {
         console.log(data);
         this.currentOrder = data;
-        this.addForm.controls["customerId"].setValue(this.currentOrder.customer.id)
+        if(this.currentOrder.customer){
+          this.addForm.controls["customerId"].setValue(this.currentOrder.customer.id)
+        }
 
         if(data.orderedProducts!=null){
           for(let orderProduct of data.orderedProducts){
-            this.orderProducts.push(this.createItem(orderProduct.id,orderProduct.quantity, orderProduct.price));
+            this.orderProducts.push(this.createItem(orderProduct.id,orderProduct.quantity, orderProduct.price, true));
           }
         }
         this.calcInvoiceMount();
@@ -190,11 +192,12 @@ export class OrderAddEditComponent implements OnInit {
     }
   }
 
-  createItem(product: number = null, quantity: number = 1, price: number = 0): FormGroup {
+  createItem(product: number = null, quantity: number = 1, price: number = 0, wasInOrder: boolean = false): FormGroup {
     return this.fb.group({
       product: new FormControl(product, [Validators.required]),
       quantity: new FormControl(quantity, [Validators.required]),
       price: new FormControl({value: price, disabled:true}),
+      wasInOrder: new FormControl(wasInOrder)
     });
   }
 
