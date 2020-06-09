@@ -28,8 +28,7 @@ export class ProductAddEditComponent implements OnInit {
   listOfProperty: IPropertyItem[] = [];
   listOfLocation: ILocationItem[] = [];
   listOfProductLocation: IProductLocationItem[] = [];
-  listOfCategory: string[] = [];
-  listOfServerCategory: ICategoryItem[] = [];
+  listOfCategory: ICategoryItem[] = [];
   indexCategory = 0;
   id: number;
 
@@ -72,23 +71,11 @@ export class ProductAddEditComponent implements OnInit {
    ** Lade alle Kategorien von Datenbank    **
    *******************************************/
   getAllCategorys() {
-    this.productService.getAllProducts().subscribe(
+    this.productService.getAllCategorys().subscribe(
       (data) => {
         console.log(data);
-        let serverCategorys: ICategoryItem[] = [];
-        let categorys: string[] = [];
-        for(var dcy = 0; dcy < data.length; dcy++) {
-          for(var cy = 0; cy < data[dcy].categories.length; cy++) {
-            let categoryServerData = {
-              id: data[dcy].categories[cy].id,
-              name: data[dcy].categories[cy].name,
-            }; 
-            serverCategorys.push(categoryServerData);
-            categorys.push(data[dcy].categories[cy].name);
-          }
-        }
-        this.listOfCategory = categorys;
-        this.listOfServerCategory = serverCategorys;
+
+        this.listOfCategory = data;
       },
       (error) => {
         console.error(error);
@@ -132,7 +119,7 @@ export class ProductAddEditComponent implements OnInit {
       productservice: "string",
       name: this.productForm.controls['productname'].value,
       sku: this.productForm.controls['sku'].value,
-      category: this.listOfServerCategory,
+      category: this.listOfCategory,
       location: this.listOfProductLocation,
       property: this.listOfProperty,
       price: this.productForm.controls['price'].value,
@@ -153,10 +140,18 @@ export class ProductAddEditComponent implements OnInit {
    *******************************************/
   addItem(input: HTMLInputElement): void {
     const value = input.value;
-    if (this.listOfCategory.indexOf(value) === -1) {
+    let isInList = 0;
+    for(let i = 0; i < this.listOfCategory.length; i++) {
+      if(this.listOfCategory[i].name == value) {
+        isInList = 1;
+      }
+    }
+    if (isInList == 0) {
       this.listOfCategory = [
         ...this.listOfCategory,
-        input.value || `New item ${this.indexCategory++}`,
+        {
+          name: input.value || `New item ${this.indexCategory++}`
+        }
       ];
     }
   }

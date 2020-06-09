@@ -146,7 +146,7 @@ export class ProductService {
   /* Lösche Produkt mit ID */
   deleteProduct(id: number):Observable<any>{
     return this.http
-      .delete(this.baseService.getBaseUrl + '/product/'+id, this.httpOptions)
+      .delete(this.baseService.getBaseUrl + '/product'+id, this.httpOptions)
       .pipe(catchError(this.baseService.errorHandle));
   }
 
@@ -157,10 +157,16 @@ export class ProductService {
     return of(null).pipe(delay(2000));
   }
 
+  getAllCategorys(): Observable<any> {
+    return this.http
+      .get<any>(this.baseService.getBaseUrl + '/product/categories', this.httpOptions)
+      .pipe(catchError(this.baseService.errorHandle));
+  }
+
   /* TODO: Wie erstellt man eine Kategorie? */
   createCategory(category: string): Observable<any> {
     return this.http
-      .post<any>(this.baseService.getBaseUrl + "/product/addedit/", this.httpOptions)
+      .post<any>(this.baseService.getBaseUrl + "/product", this.httpOptions)
       .pipe(catchError(this.baseService.errorHandle));
   }
 

@@ -64,7 +64,7 @@ Rest Request -->
         <div id="product_category">
             <h3>Kategorie</h3>
             <nz-select nzShowSearch [nzDropdownRender]="renderTemplate" nzPlaceHolder="Kategorie" class="category">
-                <nz-option *ngFor="let item of listOfCategory" [nzLabel]="item" [nzValue]="item"></nz-option>
+                <nz-option *ngFor="let item of listOfCategory" [nzLabel]="item.name" [nzValue]="item.name"></nz-option>
             </nz-select>
             <ng-template #renderTemplate>
                 <nz-divider></nz-divider>
