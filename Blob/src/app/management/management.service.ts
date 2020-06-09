@@ -4,11 +4,32 @@ import { BaseService } from '../base.service';
 import { Observable, of } from 'rxjs';
 import { catchError, delay } from 'rxjs/operators';
 import { ILocationItem } from '../interfaces/manage/ILocationItem';
+import { IUserItem } from '../interfaces/manage/IUserItem';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ManagementService {
+  demoUsers: Array<IUserItem> = [
+    {
+      id: 1,
+      firstName: 'Matze',
+      lastName: 'Müller',
+      userName: 'mmüller3',
+    },
+    {
+      id: 2,
+      firstName: 'Beate',
+      lastName: 'Fuchs',
+      userName: 'bfuchs1',
+    },
+    {
+      id: 3,
+      firstName: 'Igor',
+      lastName: 'Vostok',
+      userName: 'ivostok1',
+    },
+  ];
   demoLocations: Array<ILocationItem> = [
     {
       id: 1,
@@ -50,6 +71,7 @@ export class ManagementService {
   };
   constructor(private http: HttpClient, private baseService: BaseService) { 
     //this.getAllLocations = this.getAllLocationsDev;
+    //this.getAllUsers = this.getAllUsersDev;
   }
 
   getAllLocations(): Observable<any>{
@@ -60,6 +82,16 @@ export class ManagementService {
 
   getAllLocationsDev(): Observable<Array<ILocationItem>>{
     return of(this.demoLocations).pipe(delay(2000));
+  }
+
+  getAllUsers(): Observable<any>{
+    return this.http
+      .get<any>(this.baseService.getBaseUrl + '/user', this.httpOptions)
+      .pipe(catchError(this.baseService.errorHandle));
+  }
+
+  getAllUsersDev(): Observable<Array<IUserItem>>{
+    return of(this.demoUsers).pipe(delay(2000));
   }
 
   /*getCustomer(id: number): Observable<ICustomerItem>{

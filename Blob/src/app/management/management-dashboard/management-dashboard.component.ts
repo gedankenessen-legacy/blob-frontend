@@ -49,6 +49,7 @@ export class ManagementDashboardComponent implements OnInit {
     });
 
     this.getAllLocations();
+    this.getAllUsers();
   }
 
   getAllLocations() {
@@ -71,26 +72,28 @@ export class ManagementDashboardComponent implements OnInit {
     );
   }
 
-  listOfUsers: IUserItem[] = [
-    {
-      id: 1,
-      firstname: 'Matze',
-      lastname: 'Müller',
-      username: 'mmüller3',
-    },
-    {
-      id: 2,
-      firstname: 'Beate',
-      lastname: 'Fuchs',
-      username: 'bfuchs1',
-    },
-    {
-      id: 3,
-      firstname: 'Igor',
-      lastname: 'Vostok',
-      username: 'ivostok1',
-    },
-  ];
+  getAllUsers() {
+    this.isUserLoading = true;
+    this.managemantService.getAllUsers().subscribe(
+      (data) => {
+        this.listOfUsers = data;
+        this.listOfDisplayUsers = data;
+
+        this.isUserLoading = false;
+      },
+      (error) => {
+        this.isUserLoading = false;
+
+        this.modal.error({
+          nzTitle: 'Fehler',
+          nzContent: 'Beim Laden der Benutzer ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
+        });
+      }
+    );
+  }
+
+  listOfUsers: IUserItem[] = [];
+  listOfDisplayUsers: IUserItem[] = [];
 
   listOfLocations: ILocationItem[] = [];
   listOfDisplayLocations: ILocationItem[] = [];
