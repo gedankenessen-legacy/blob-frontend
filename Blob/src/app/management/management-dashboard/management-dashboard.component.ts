@@ -13,6 +13,7 @@ import { TitleService } from 'src/app/title.service';
 import { TagPlaceholder } from '@angular/compiler/src/i18n/i18n_ast';
 import { ManagementService } from '../management.service';
 import { NzModalService } from 'ng-zorro-antd';
+import { IAdress } from 'src/app/interfaces/iadress';
 
 @Component({
   selector: 'app-management-dashboard',
@@ -24,6 +25,8 @@ export class ManagementDashboardComponent implements OnInit {
   isUserPopupVisible: boolean = false;
   isLocationLoading: boolean = false;
   isUserLoading: boolean = false;
+  isSavingLocation: boolean = false;
+  isSavingUser: boolean = false;
   addLocationForm: FormGroup;
   addUserForm: FormGroup;
 
@@ -46,6 +49,7 @@ export class ManagementDashboardComponent implements OnInit {
       street: new FormControl(null, Validators.required),
       zip: new FormControl(null, Validators.required),
       city: new FormControl(null, Validators.required),
+      id: new FormControl(0, Validators.required),
     });
 
     this.getAllLocations();
@@ -102,21 +106,37 @@ export class ManagementDashboardComponent implements OnInit {
    ** Daten behandeln                        **
    ********************************************/
 
-  // TODO: Send actual request
-  addUser(user): void {
-    console.log(user);
+  changeLocation(id: number): void {
+    var locations: ILocationItem[] = this.listOfLocations.filter(
+      (item: ILocationItem) => item.id == id
+    );
+
+    var location:ILocationItem = locations[0];
+    
+    this.addLocationForm.controls['name'].setValue(location.name);
+    this.addLocationForm.controls['street'].setValue(location.address.street);
+    this.addLocationForm.controls['zip'].setValue(location.address.zip);
+    this.addLocationForm.controls['city'].setValue(location.address.city);
+    this.addLocationForm.controls['id'].setValue(location.id);
+
+    this.isLocationPopupVisible = true;
   }
 
-  addLocation(location): void {
-    console.log(location);
-  }
+  deleteLocation(id: number): void {
+    this.isLocationLoading = true;
 
-  changeLocation(): void {
-    // Change submit to POST request
-    // Fill popup with data
-    // Make location popup visible
+    this.managemantService.deleteLocation(id).subscribe(
+      (data) => {
+        this.getAllLocations();
+      },
+      (error) => {
+        this.modal.error({
+          nzTitle: 'Fehler',
+          nzContent: 'Beim Löschen des Standortes ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
+        });
+      }
+    );
   }
-  deleteLocation(): void {}
 
   /********************************************
    ** Popup aktionen                          **
@@ -135,14 +155,15 @@ export class ManagementDashboardComponent implements OnInit {
   submitUserAddForm(): void {
     // TODO: build username
     // TODO: validate input
-    this.addUser({
+/*     this.addUser({
       firstname: this.addUserForm.get('firstname').value,
       lastname: this.addUserForm.get('lastname').value,
       password: this.addUserForm.get('password').value,
-    });
+    }); */
   }
 
   showLocationPopup(): void {
+    this.addLocationForm.controls['id'].setValue(0);
     this.isLocationPopupVisible = true;
   }
   handleLocationPopupOk(): void {
@@ -152,12 +173,85 @@ export class ManagementDashboardComponent implements OnInit {
     this.isLocationPopupVisible = false;
   }
   submitLocationAddForm(): void {
-    // TODO: validate input
-    this.addLocation({
-      name: this.addLocationForm.get('name').value,
-      street: this.addLocationForm.get('street').value,
-      zip: this.addLocationForm.get('zip').value,
-      city: this.addLocationForm.get('city').value,
-    });
+    if (this.addLocationForm.controls['id'].value == 0) {
+      this.addNewLocation();
+    } else {
+      this.updateLocation(this.addLocationForm.controls['id'].value);
+    }
+  }
+
+  addNewLocation() {
+    this.isSavingLocation = true;
+    var address: IAdress = {
+      id: 0,
+      street: this.addLocationForm.controls['street'].value,
+      zip: this.addLocationForm.controls['zip'].value,
+      city: this.addLocationForm.controls['city'].value,
+    };
+    var newLocationItem: ILocationItem = {
+      id: 0,
+      name: this.addLocationForm.controls["name"].value,
+      address: address,
+    };
+
+    this.managemantService.createLocation(newLocationItem).subscribe(
+      (data) => {
+        console.log(data);
+        this.isLocationPopupVisible = false;
+        this.isSavingLocation = false;
+        this.isLocationLoading = true;
+        this.getAllLocations();
+      },
+      (error) => {
+        this.isSavingLocation = false;
+
+        this.modal.error({
+          nzTitle: 'Fehler',
+          nzContent: 'Beim Anlegen des Standortes ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
+        });
+      }
+    );
+  }
+
+  updateLocation(id: number) {
+    this.isSavingLocation = true;
+
+    var locations: ILocationItem[] = this.listOfLocations.filter(
+      (item: ILocationItem) => item.id == id
+    );
+
+    var location:ILocationItem = locations[0];
+
+    var address: IAdress = {
+      id: location.address.id,
+      street: this.addLocationForm.controls['street'].value,
+      zip: this.addLocationForm.controls['zip'].value,
+      city: this.addLocationForm.controls['city'].value,
+    };
+
+    var newLocationItem: ILocationItem = {
+      id: id,
+      name: this.addLocationForm.controls['name'].value,
+      address: address,
+    };
+    
+    this.managemantService.updateLocations([newLocationItem]).subscribe(
+      (data) => {
+        console.log(data);
+        
+        this.isLocationLoading = true;
+        this.isLocationPopupVisible = false;
+        this.isSavingLocation = false;
+        this.getAllLocations();
+      },
+      (error) => {
+        this.isSavingLocation = false;
+
+        this.modal.error({
+          nzTitle: 'Fehler',
+          nzContent: 'Beim Bearbeiten des Standortes ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
+        });
+      }
+    );
   }
 }

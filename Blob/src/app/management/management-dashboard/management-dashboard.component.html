@@ -169,7 +169,7 @@
           nzType="primary"
           [nzSize]="4"
           class="quickaction-button"
-		  (click)="changeLocation()"
+		  (click)="changeLocation(data.id)"
         >
           <i nz-icon nzType="edit" nzTheme="outline"></i>
         </button>
@@ -178,7 +178,7 @@
           nzType="primary"
           [nzSize]="4"
           class="quickaction-button"
-		  (click)="deleteLocation()"
+		  (click)="deleteLocation(data.id)"
         >
           <i nz-icon nzType="delete" nzTheme="outline"></i>
         </button>
@@ -264,7 +264,7 @@
     </form>
   </ng-template>
   <ng-template #modalFooterLocation>
-    <button nz-button nzType="primary" (click)="submitLocationAddForm()" nzBlock>
+    <button nz-button nzType="primary" (click)="submitLocationAddForm()" [disabled]="!addLocationForm.valid" [nzLoading]="isSavingLocation" nzBlock>
       Speichern
     </button>
   </ng-template>
