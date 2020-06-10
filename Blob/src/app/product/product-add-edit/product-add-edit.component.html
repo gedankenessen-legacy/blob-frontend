@@ -10,9 +10,8 @@ Rest Request -->
             <h3>Produkt/Service</h3>
             <nz-form-item>
                 <nz-radio-group>
-                    <!-- [(ngModel)]="selectProductService" -->
-                    <label nz-radio nzValue="product">Produkt</label>
-                    <label nz-radio nzValue="service">Service</label>
+                    <label nz-radio nzValue=0 formControlName="selectProductService">Produkt</label>
+                    <label nz-radio nzValue=1 formControlName="selectProductService">Service</label>
                 </nz-radio-group>
             </nz-form-item>
         </div>

@@ -128,6 +128,14 @@ export class ProductService {
     return of(this.demoProducts).pipe(delay(1000));
   }
 
+  /* Produkte mit ID*/ 
+  getProduct(id: number): Observable<any> {
+    return this.http
+      .get(this.baseService.getBaseUrl + '/product/'+id, this.httpOptions)
+      .pipe(catchError(this.baseService.errorHandle));
+  }
+
+
   /*  Erstelle neues Produkt */
   createProduct(newProduct:IProductItem): Observable<any> {
     return this.http

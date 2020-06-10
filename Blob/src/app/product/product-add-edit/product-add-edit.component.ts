@@ -22,7 +22,7 @@ export class ProductAddEditComponent implements OnInit {
   /*******************************************
    ** Variablen                              **
    *******************************************/
-  selectProductService = 'product';
+  selectProductService: string;
   productForm: FormGroup;
   editIdProperty: string | null = null;
   editIdLocation: string | null = null;
@@ -31,7 +31,7 @@ export class ProductAddEditComponent implements OnInit {
   listOfProductLocation: IProductLocationItem[] = [];
   listOfCategory: ICategoryItem[] = [];
   indexCategory = 0;
-  id: string;
+  id: number;
 
   /*******************************************
    ** Formular Builder                       **
@@ -44,16 +44,18 @@ export class ProductAddEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.getIDFromProduct();
+    this.getAllCategorys();
+    this.getProductData();
     this.productForm = this.fbp.group({
+      selectProductService: new FormControl(0, [Validators.required]),
       productname: new FormControl('', [Validators.required]),
       price: new FormControl('', [Validators.required]),
       sku: new FormControl('', [Validators.required]),
       category: new FormControl('', [Validators.required]),
     });
 
-    this.getAllLocations();
-    this.getAllCategorys();
-    this.getPropertysFromProduct();
+    //this.getAllLocations();
+    //this.getPropertysFromProduct();
   }
 
   /*******************************************
@@ -62,8 +64,37 @@ export class ProductAddEditComponent implements OnInit {
   getIDFromProduct() {
     var str = this.router.url; 
     var splitted = str.split("/"); 
-    this.id = splitted[3];
+    this.id = Number(splitted[3]);
   }
+
+  /*******************************************
+   ** Lade Produktdaten                     **
+   *******************************************/
+  getProductData() {
+    if(this.id != -1) {
+      this.productService.getProduct(this.id).subscribe(
+        (data) => {
+          console.log(data);
+          if(data.sku != null) {
+            //this.productForm.controls['selectProductService'].setValue('product');
+          } else {
+            //this.productForm.controls['selectProductService'].setValue('service');
+          }
+          this.productForm.controls['productname'].setValue(data.name);
+          this.productForm.controls['price'].setValue(data.price);
+          this.productForm.controls['sku'].setValue(data.sku);
+          
+          
+
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+    }
+  }
+
+
 
   /*******************************************
    ** Lade alle Locations von Datenbank     **
