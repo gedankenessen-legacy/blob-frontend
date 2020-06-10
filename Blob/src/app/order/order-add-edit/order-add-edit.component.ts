@@ -37,13 +37,12 @@ export class OrderAddEditComponent implements OnInit {
       customerId: new FormControl(null, Validators.required),
       street: new FormControl({value: null, disabled:true}),
       city: new FormControl({value: null, disabled:true}),
-      products: this.fb.array([], Validators.required)
+      products: this.fb.array([], Validators.required),
     })
-    
+  
     this.route.paramMap.subscribe(params => {
       this.orderId = Number(params.get('id'));
     });
-    
 
     this.getAllCustomer();
     this.getAllProducts();
@@ -56,7 +55,6 @@ export class OrderAddEditComponent implements OnInit {
   getAllCustomer() {
     this.customerService.getAllCustomer().subscribe(
       (data) => {
-        console.log(data);
         this.customers = data;
 
         if(this.orderId>0){
@@ -74,7 +72,6 @@ export class OrderAddEditComponent implements OnInit {
   getAllProducts() {
     this.productService.getAllProducts().subscribe(
       (data) => {
-        console.log(data);
         this.products = data;
       },
       (error) => {
@@ -86,17 +83,23 @@ export class OrderAddEditComponent implements OnInit {
   getOrder() {
     this.orderService.getOrder(this.orderId).subscribe(
       (data) => {
+
+        console.log("GetOrder");
         console.log(data);
+        
+        
+
         this.currentOrder = data;
         if(this.currentOrder.customer){
           this.addForm.controls["customerId"].setValue(this.currentOrder.customer.id)
         }
 
-        if(data.orderedProducts!=null){
+        if(data.orderedProducts != null){
           for(let orderProduct of data.orderedProducts){
-            this.orderProducts.push(this.createItem(orderProduct.id,orderProduct.quantity, orderProduct.price, true));
+            this.orderProducts.push(this.createItem(orderProduct.id,orderProduct.quantity, orderProduct.price,true));
           }
         }
+        
         this.calcInvoiceMount();
         this.isLoading = false
       },
@@ -157,8 +160,9 @@ export class OrderAddEditComponent implements OnInit {
       }
     }
 
+    /* alert(JSON.stringify(newOrderItem)); */
+
     if(this.orderId>0){
-      console.log(newOrderItem);
 
       this.orderService.updateOrders([newOrderItem]).subscribe(
         (data) => {
@@ -194,10 +198,9 @@ export class OrderAddEditComponent implements OnInit {
 
   createItem(product: number = null, quantity: number = 1, price: number = 0, wasInOrder: boolean = false): FormGroup {
     return this.fb.group({
-      product: new FormControl(product, [Validators.required]),
+      product: new FormControl({value: product, disabled:wasInOrder}, [Validators.required]),
       quantity: new FormControl(quantity, [Validators.required]),
-      price: new FormControl({value: price, disabled:true}),
-      wasInOrder: new FormControl(wasInOrder)
+      price: new FormControl({value: price, disabled:true})
     });
   }
 
@@ -229,7 +232,13 @@ export class OrderAddEditComponent implements OnInit {
       (item: ICustomerItem) => item.id == this.addForm.controls["customerId"].value
     );
 
-    //TODO Wenn kein Kunde gefunden wird
+    if(customer.length<= 0){
+      this.modal.error({
+        nzTitle: 'Fehler',
+        nzContent: 'Der zur Bestellung gespeicherte Kunde existiert nicht mehr.'
+      });
+      return;
+    }
     this.addForm.controls["street"].setValue(customer[0].address.street);
     this.addForm.controls["city"].setValue(customer[0].address.zip+", "+customer[0].address.city);
   }
@@ -240,7 +249,14 @@ export class OrderAddEditComponent implements OnInit {
       (item: IProductItem) => item.id == this.orderProducts.controls[index]["controls"]["product"].value
     );
 
-    //TODO Wenn kein Kunde gefunden wird
+    if(product.length<= 0){
+      this.modal.error({
+        nzTitle: 'Fehler',
+        nzContent: 'Es ist zu einem internen Fehler gekommen. Bitte wenden Sie sich an den Administrator.'
+      });
+      return;
+    }
+
     this.orderProducts.controls[index]["controls"]["price"].setValue(product[0].price);
     this.calcInvoiceMount();
   }

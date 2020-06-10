@@ -25,7 +25,7 @@ export class ProductService {
       price: 50,
     },
     {
-      id: 3,
+      id: 16,
       product: 'Produkt 3',
       sku: 'asdfasfg',
       stock: '10',

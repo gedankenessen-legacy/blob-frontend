@@ -52,7 +52,10 @@ export class OrderDashboardComponent implements OnInit {
     this.isOrdersLoading = true;
     this.orderService.getAllOrders().subscribe(
       (data) => {
+        /* console.log("GetAllOrders");
+        
         console.log(data);
+         */
         
         this.listOfData = data;
         this.updateListOfDisplayData();
@@ -81,7 +84,6 @@ export class OrderDashboardComponent implements OnInit {
   }
 
   updateListOfDisplayData():void{
-    console.log(this.listOfData);
     
     this.listOfDisplayData = this.listOfData.filter(
       (item: IOrderItem) => item.state.id == this.currentState
@@ -99,7 +101,6 @@ export class OrderDashboardComponent implements OnInit {
     this.isOrdersLoading = true;
     this.orderService.updateOrders([this.listOfData[index]]).subscribe(
       (data) => {
-        console.log(data);
         this.currentState = newState;
         
         this.updateListOfDisplayData();

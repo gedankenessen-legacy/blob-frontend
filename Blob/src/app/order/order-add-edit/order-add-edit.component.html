@@ -36,6 +36,9 @@
                     <h4 nz-typography>Preis</h4>
                     <h4 nz-typography></h4>
                 </div>
+                <!----------------------------------------------- 
+                -- Neue Produkte                               --
+                <------------------------------------------------>
                 <div *ngFor="let _ of orderProducts.controls; let i = index;" class="order-products-wrapper">
                     <ng-container [formGroupName]="i" nzErrorTip="Bitte wählen Sie mindestens ein Produkt aus um die Bestellung zu speichern.">
                         <nz-form-item>
@@ -48,7 +51,6 @@
                         <nz-form-item>
                             <nz-form-control nzErrorTip="Bitte wähle eine Menge aus">
                                 <nz-input-group>
-                                <!--input nz-input formControlName="quantity" type="number" placeholder="Menge"/-->
                                 <nz-input-number formControlName="quantity" [nzMin]="1" [nzStep]="1" (ngModelChange)="calcInvoiceMount()"></nz-input-number>
                                 </nz-input-group>
                             </nz-form-control>
