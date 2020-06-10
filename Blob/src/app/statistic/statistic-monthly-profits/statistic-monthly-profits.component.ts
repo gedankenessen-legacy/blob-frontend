@@ -48,6 +48,16 @@ export class StatisticMonthlyProfitsComponent implements OnInit {
 
     // init profits
     this.weeklyProfits = [{ name: 'Umsatz', series: [] }];
+
+    let daysThisMonth = this.daysInMonth(new Date().getMonth(), new Date().getFullYear());
+    for (let index = 0; index < daysThisMonth; index++) {
+      let date = new Date(new Date().getFullYear(), new Date().getMonth(), index + 1);
+      this.weeklyProfits[0].series.push({
+        name: date.getDate(),
+        value: 0,
+      });
+    }
+
     // foreach order add to weeklyProfits
     listOfOrdersThisWeek.forEach((order) => {
       let weekday = new Date(Date.parse(order.createdAt)).getDate(); //+ ` (${new Date(Date.parse(order.createdAt)).toLocaleDateString('de-DE')})`;
@@ -69,6 +79,10 @@ export class StatisticMonthlyProfitsComponent implements OnInit {
         });
       }
     });
-    console.log(this.weeklyProfits[0].series);
+    //console.log(this.weeklyProfits[0].series);
+  }
+
+  daysInMonth(month, year) {
+    return new Date(year, month + 1, 0).getDate();
   }
 }

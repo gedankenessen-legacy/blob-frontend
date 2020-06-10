@@ -1,4 +1,4 @@
-<nz-table #topProductsMonth [nzData]="topProducts">
+<nz-table #topProductsWeek [nzData]="topProducts">
     <thead>
         <tr>
             <th>Produkt</th>
@@ -7,7 +7,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let data of topProductsMonth.data">
+        <tr *ngFor="let data of topProductsWeek.data">
             <td>{{ data.product }}</td>
             <td>{{ data.count }}</td>
             <td>{{ data.profit | currency:"EUR"}}</td>

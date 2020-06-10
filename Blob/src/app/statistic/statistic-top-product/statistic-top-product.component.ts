@@ -26,7 +26,7 @@ export class StatisticTopProductComponent implements OnInit {
 
     let listOfOrdersThisWeek = listOfOrders.filter((order) => new Date(Date.parse(order.createdAt)) > dateLastWeek);
 
-    console.log(listOfOrdersThisWeek);
+    //console.log(listOfOrdersThisWeek);
 
     this.topProducts = [];
 
