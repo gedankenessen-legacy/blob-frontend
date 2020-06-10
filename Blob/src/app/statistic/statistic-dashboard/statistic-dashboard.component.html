@@ -1,16 +1,16 @@
 <div nz-row [nzGutter]="[128, 128]">
-    <div nz-col nzSpan="12">
+    <div nz-col nzLg="24" nzXl="12" nzSpan="12">
         <div nz-row>
-            <h2>Wochenumsatz</h2>
+            <h2 class="">Wochenumsatz</h2>
         </div>
         <div nz-row>
-            <app-statistic-weekly-profits [orders]="orders">
+            <app-statistic-weekly-profits [orders]="orders" class="fullWidth">
             </app-statistic-weekly-profits>
         </div>
     </div>
-    <div nz-col nzSpan="12">
+    <div nz-col nzLg="24" nzXl="12" nzSpan="12">
         <div nz-row>
-            <h2>Monatsumsatz</h2>
+            <h2 class="">Monatsumsatz</h2>
         </div>
         <div nz-row>
             <app-statistic-monthly-profits [orders]="orders" class="fullWidth"></app-statistic-monthly-profits>
@@ -18,17 +18,17 @@
     </div>
 </div>
 <div nz-row [nzGutter]="[128, 128]">
-    <div nz-col nzSpan="12">
+    <div nz-col nzLg="24" nzXl="12" nzSpan="12">
         <div nz-row>
-            <h2>Top-Seller Woche</h2>
+            <h2 class="header">Top-Seller Woche</h2>
         </div>
         <div nz-row>
             <app-statistic-top-product [orders]="orders" class="fullWidth"></app-statistic-top-product>
         </div>
     </div>
-    <div nz-col nzSpan="12">
+    <div nz-col nzLg="24" nzXl="12" nzSpan="12">
         <div nz-row>
-            <h2>Top-Seller Monat</h2>
+            <h2 class="header">Top-Seller Monat</h2>
         </div>
         <div nz-row>
             <app-statistic-top-product-month [orders]="orders" class="fullWidth"></app-statistic-top-product-month>
