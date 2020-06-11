@@ -45,7 +45,6 @@ export class ProductAddEditComponent implements OnInit {
   ngOnInit(): void {
     this.getIDFromProduct();
     this.getAllCategorys();
-    this.getProductData();
     this.productForm = this.fbp.group({
       selectProductService: new FormControl(0, [Validators.required]),
       productname: new FormControl('', [Validators.required]),
@@ -54,6 +53,7 @@ export class ProductAddEditComponent implements OnInit {
       category: new FormControl('', [Validators.required]),
     });
 
+    console.log("ID:" + this.id);
     //this.getAllLocations();
     //this.getPropertysFromProduct();
   }
@@ -64,14 +64,22 @@ export class ProductAddEditComponent implements OnInit {
   getIDFromProduct() {
     var str = this.router.url; 
     var splitted = str.split("/"); 
-    this.id = Number(splitted[3]);
+    if(splitted[4] != "copy") {
+      this.id = Number(splitted[3]);
+      if(this.id != -1) {
+        this.getProductData();
+      }
+    } else {
+      this.id = Number(splitted[3]);
+      this.getProductData();
+      this.id = -1;
+    }
   }
 
   /*******************************************
    ** Lade Produktdaten                     **
    *******************************************/
   getProductData() {
-    if(this.id != -1) {
       this.productService.getProduct(this.id).subscribe(
         (data) => {
           if(data.sku != null) {
@@ -87,15 +95,11 @@ export class ProductAddEditComponent implements OnInit {
           
           this.listOfProperty = data.properties;
           this.listOfProductLocation = data.productsAtLocations;
-
-          
-
         },
         (error) => {
           console.error(error);
         }
       );
-    }
   }
 
 

@@ -103,15 +103,6 @@ export class ProductDashboardComponent implements OnInit {
   }
 
   copyButtonClicked(id: number) {
-    console.log('copy clicked');
-
-    this.isLoading = true;
-
-    var products: IProductItem[] = this.listOfData.filter((item: IProductItem) => item.id == id);
-
-    var product:IProductItem = products[0];
-
-    /* TODO: Wohin kommen die Daten? Seitenwechsel */
-    /* Senden an product/addedit/-1 */
+    this.router.navigateByUrl("/product/addedit/"+id+"/copy");
   }
 }
