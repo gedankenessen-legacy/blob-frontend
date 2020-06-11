@@ -3,6 +3,7 @@ import { IProductItem } from '../../interfaces/IProductItem';
 import { ProductService } from '../product.service';
 import { NzModalService } from 'ng-zorro-antd';
 import { of } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-dashboard',
@@ -19,7 +20,7 @@ export class ProductDashboardComponent implements OnInit {
   isLoading: boolean = true;
   listOfData: Array<IProductItem> = [ ];
 
-  constructor(private productService: ProductService, private modal:NzModalService) {}
+  constructor(private productService: ProductService, private modal:NzModalService, private router: Router) {}
 
   ngOnInit(): void {
     this.getAllProducts();
@@ -87,23 +88,10 @@ export class ProductDashboardComponent implements OnInit {
    ** Quickaction Buttons                    **
    ********************************************/
   editButtonClicked(id: number) {
-    console.log('copy clicked');
-
-    this.isLoading = true;
-
-    var products: IProductItem[] = this.listOfData.filter((item: IProductItem) => item.id == id);
-
-    var product:IProductItem = products[0];
-    
-    /* TODO: Wohin kommen die Daten? Seitenwechsel */
-    /* Senden an product/addedit/id */
+    this.router.navigateByUrl("/product/addedit/"+id);
   }
 
   deleteButtonClicked(id: number) {
-    console.log('delete clicked');
-
-    this.isLoading = true;
-
     this.productService.deleteProduct(id).subscribe(
       (data) => {
         this.getAllProducts();

@@ -12,6 +12,10 @@ const routes: Routes = [
   {
     path: "addedit/:id",
     component: ProductAddEditComponent
+  },
+  {
+    path: "addedit/:id/copy",
+    component: ProductAddEditComponent
   }
 ];
 
