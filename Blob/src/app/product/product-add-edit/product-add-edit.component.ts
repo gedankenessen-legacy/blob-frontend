@@ -46,8 +46,9 @@ export class ProductAddEditComponent implements OnInit {
   ngOnInit(): void {
     this.getIDFromProduct();
     this.getAllCategorys();
+    this.getAllLocations();
     this.productForm = this.fbp.group({
-      selectProductService: new FormControl(0, [Validators.required]),
+      selectProductService: new FormControl('', [Validators.required]),
       productname: new FormControl('', [Validators.required]),
       price: new FormControl('', [Validators.required]),
       sku: new FormControl('', [Validators.required]),
@@ -55,8 +56,6 @@ export class ProductAddEditComponent implements OnInit {
     });
 
     console.log("ID:" + this.id);
-    //this.getAllLocations();
-    //this.getPropertysFromProduct();
   }
 
   /*******************************************
@@ -81,39 +80,22 @@ export class ProductAddEditComponent implements OnInit {
    ** Lade Produktdaten                     **
    *******************************************/
   getProductData() {
-      this.productService.getProduct(this.id).subscribe(
-        (data) => {
-          if(data.sku != null) {
-            this.selectProductService = "Product";
-          } else {
-            this.selectProductService = "Service";
-          }
-          this.productForm.controls['productname'].setValue(data.name);
-          this.productForm.controls['price'].setValue(data.price);
-          this.productForm.controls['sku'].setValue(data.sku);
-          
-          this.productForm.controls['category'].setValue(data.categories[0].name);
-          
-          this.listOfProperty = data.properties;
-          this.listOfProductLocation = data.productsAtLocations;
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
-  }
-
-
-
-  /*******************************************
-   ** Lade alle Locations von Datenbank     **
-   *******************************************/
-  getAllLocations() {
-    this.productService.getAllLocations().subscribe(
+    this.productService.getProduct(this.id).subscribe(
       (data) => {
-        console.log(data);
-
-        this.listOfLocation = data;
+        if(data.sku != null) {
+          this.selectProductService = "Product";
+        } else {
+          this.selectProductService = "Service";
+        }
+        this.productForm.controls['productname'].setValue(data.name);
+        this.productForm.controls['price'].setValue(data.price);
+        this.productForm.controls['sku'].setValue(data.sku);
+        
+        this.productForm.controls['category'].setValue(data.categories[0].name);
+        
+        this.listOfProperty = data.properties;
+        this.listOfProductLocation = data.productsAtLocations;
+        console.log(data.productsAtLocations);
       },
       (error) => {
         console.error(error);
@@ -127,8 +109,6 @@ export class ProductAddEditComponent implements OnInit {
   getAllCategorys() {
     this.productService.getAllCategorys().subscribe(
       (data) => {
-        console.log(data);
-
         this.listOfCategory = data;
       },
       (error) => {
@@ -136,58 +116,10 @@ export class ProductAddEditComponent implements OnInit {
       }
     );
   }
+  
 
   /*******************************************
-   ** Lade alle Eigenschaten von Datenbank  **
-   *******************************************/
-  getPropertysFromProduct() {
-    this.productService.getAllProducts().subscribe(
-      (data) => {
-        let propertys: IPropertyItem[] = [];
-        for (var dcy = 0; dcy < data.length; dcy++) {
-          for (var cy = 0; cy < data[dcy].properties.length; cy++) {
-            let propertyData = {
-              id: data[dcy].properties[cy].id,
-              name: data[dcy].properties[cy].name,
-              value: data[dcy].properties[cy].value,
-            };
-            propertys.push(propertyData);
-          }
-        }
-        console.log(propertys);
-        this.listOfProperty = propertys;
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
-  }
-
-  /*******************************************
-   ** Erstelle Produkt                      **
-   *******************************************/
-  createNewProdukt() {
-    var newProduct: IProductItem = {
-      id: 0,
-      productservice: 'string',
-      name: this.productForm.controls['productname'].value,
-      sku: this.productForm.controls['sku'].value,
-      category: this.listOfCategory,
-      location: this.listOfProductLocation,
-      property: this.listOfProperty,
-      price: this.productForm.controls['price'].value,
-    };
-  }
-
-  /*******************************************
-   ** Speichern Button                       **
-   *******************************************/
-  submitForm() {
-    this.createNewProdukt();
-  }
-
-  /*******************************************
-   ** Katigorie hinzufügen                   **
+   ** Kategorie hinzufügen                   **
    *******************************************/
   addItem(input: HTMLInputElement): void {
     const value = input.value;
@@ -232,6 +164,34 @@ export class ProductAddEditComponent implements OnInit {
   }
 
   /*******************************************
+   ** Produkt/Service wechsel               **
+   *******************************************/
+  clickService() {
+    this.disabledSKU = true;
+  }
+  
+  clickProduct() {
+    this.disabledSKU = false;
+  }
+
+  /*******************************************
+   ** Lade alle Locations von Datenbank     **
+   *******************************************/
+  getAllLocations() {
+    this.productService.getAllLocations().subscribe(
+      (data) => {
+        this.listOfLocation = data;
+
+        console.log(this.listOfLocation);
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
+
+
+  /*******************************************
    ** Standort hinzufügen                    **
    *******************************************/
   addRowLocation(): void {
@@ -244,11 +204,28 @@ export class ProductAddEditComponent implements OnInit {
     ];
   }
 
-  clickService() {
-    this.disabledSKU = true;
+  /*******************************************
+   ** Erstelle Produkt                      **
+   *******************************************/
+  createNewProdukt() {
+    var newProduct: IProductItem = {
+      id: 0,
+      productservice: 'string',
+      name: this.productForm.controls['productname'].value,
+      sku: this.productForm.controls['sku'].value,
+      category: this.listOfCategory,
+      location: this.listOfProductLocation,
+      property: this.listOfProperty,
+      price: this.productForm.controls['price'].value,
+    };
   }
+
+  /*******************************************
+   ** Speichern Button                       **
+   *******************************************/
+  submitForm() {
+    this.createNewProdukt();
+  }
+
   
-  clickProduct() {
-    this.disabledSKU = false;
-  }
 }
