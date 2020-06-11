@@ -50,7 +50,7 @@ Rest Request -->
             <nz-form-item>
                 <nz-form-control nzErrorTip="Bitte geben Sie die SKU an!">
                     <nz-input-group nzPrefixIcon="barcode">
-                        <input type="text" nz-input formControlName="sku" placeholder="SKU" [disabled]="disabledSKU" />
+                        <input type="text" nz-input formControlName="sku" placeholder="SKU" />
                     </nz-input-group>
                 </nz-form-control>
             </nz-form-item>
@@ -115,7 +115,7 @@ Rest Request -->
     <!----------------------------------------->
     <div id="product_location">
         <h3>Standorte</h3>
-        <nz-table #locationTable nzBordered [nzData]="listOfLocation" [nzNoResult]="null">
+        <nz-table #locationTable nzBordered [nzData]="listOfProductLocation" [nzNoResult]="null">
             <thead>
                 <tr>
                     <th nzSpan="12">Standort</th>
@@ -127,15 +127,15 @@ Rest Request -->
                     <td>
                         <div class="editable-cell" [hidden]="editIdLocation === data.id">
                         </div>
-                        <nz-select class="location">
-                            <nz-option *ngFor="let item of listOfLocation" [nzLabel]="item.name" [nzValue]="item.name"></nz-option>
+                        <nz-select class="location" [(ngModel)]="data.locationId">
+                            <nz-option *ngFor="let item of listOfLocation" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
                         </nz-select>
                     </td>
 
                     <td>
                         <div class="editable-cell" [hidden]="editIdLocation === data.id">
                         </div>
-                        <input type="number" nz-input [(ngModel)]="data.amount" />
+                        <input type="number" nz-input [(ngModel)]="data.quantity" />
                     </td>
                 </tr>
             </tbody>

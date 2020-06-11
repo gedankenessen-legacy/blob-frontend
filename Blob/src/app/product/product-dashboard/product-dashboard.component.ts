@@ -4,6 +4,9 @@ import { ProductService } from '../product.service';
 import { NzModalService } from 'ng-zorro-antd';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
+import { IProductLocationItem } from 'src/app/interfaces/IProductLocationItem';
+import { ILocationItem } from 'src/app/interfaces/ILocationItem';
+import { IProductDashboardItem } from 'src/app/interfaces/IProductDashboardItem';
 
 @Component({
   selector: 'app-product-dashboard',
@@ -18,7 +21,8 @@ export class ProductDashboardComponent implements OnInit {
   searchValue = '';
   visible = false;
   isLoading: boolean = true;
-  listOfData: Array<IProductItem> = [ ];
+  listOfData: Array<IProductDashboardItem> = [];
+  listOfLocation: ILocationItem[] = [];
 
   constructor(private productService: ProductService, private modal:NzModalService, private router: Router) {}
 
@@ -32,7 +36,7 @@ export class ProductDashboardComponent implements OnInit {
       (data) => {
         this.listOfData = data;
         this.listOfDisplayData = data;
-
+        this.getAllLocations();
         this.isLoading = false;
       },
       (error) => {
@@ -47,20 +51,25 @@ export class ProductDashboardComponent implements OnInit {
   }
 
 
-  getLocation(id: number) {
-    this.isLoading = true;
-    this.productService.getLocations(id).subscribe(
+  getAllLocations() {
+    this.productService.getAllLocations().subscribe(
       (data) => {
-        this.isLoading = false;
-        return of(data.name);
+        this.listOfLocation = data;        
+        for(let product of this.listOfData) {
+          let locs = "";
+          product.productsAtLocations.forEach(loc => {
+            let locId = loc.locationId;
+
+            let name = this.listOfLocation.filter(x => x.id == locId)[0].name;
+            let quantity = loc.quantity;
+
+            locs = locs + name + " - " + quantity + " Stück, ";
+          })
+          product.locationString = locs;
+        }
       },
       (error) => {
-        this.isLoading = false;
-
-        this.modal.error({
-          nzTitle: 'Fehler',
-          nzContent: 'Beim Laden der Produkte ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
-        });
+        console.error(error);
       }
     );
   }

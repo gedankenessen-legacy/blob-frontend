@@ -65,7 +65,7 @@ export class ProductService {
       productservice: 'product',
       name: 'Dunlop Sport Classic 195/65 R18 91V',
       sku: '5452000811332',
-      location: this.demoProductLocation,
+      productsAtLocations: this.demoProductLocation,
       category: this.demoCategory,
       property: this.demoProperty,
       price: 145.13,

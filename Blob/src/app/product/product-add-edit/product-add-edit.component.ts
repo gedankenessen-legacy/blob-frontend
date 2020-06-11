@@ -33,6 +33,7 @@ export class ProductAddEditComponent implements OnInit {
   indexCategory = 0;
   id: number;
   disabledSKU = false;
+  product: IProductItem;
 
   /*******************************************
    ** Formular Builder                       **
@@ -46,12 +47,12 @@ export class ProductAddEditComponent implements OnInit {
   ngOnInit(): void {
     this.getIDFromProduct();
     this.getAllCategorys();
-    this.getAllLocations();
+    
     this.productForm = this.fbp.group({
       selectProductService: new FormControl('', [Validators.required]),
       productname: new FormControl('', [Validators.required]),
       price: new FormControl('', [Validators.required]),
-      sku: new FormControl('', [Validators.required]),
+      sku: new FormControl({value:"", disable: this.disabledSKU}, Validators.required),
       category: new FormControl('', [Validators.required]),
     });
 
@@ -82,6 +83,8 @@ export class ProductAddEditComponent implements OnInit {
   getProductData() {
     this.productService.getProduct(this.id).subscribe(
       (data) => {
+        this.product = data;
+        console.log(data);
         if(data.sku != null) {
           this.selectProductService = "Product";
         } else {
@@ -94,8 +97,12 @@ export class ProductAddEditComponent implements OnInit {
         this.productForm.controls['category'].setValue(data.categories[0].name);
         
         this.listOfProperty = data.properties;
-        this.listOfProductLocation = data.productsAtLocations;
+
+        data.productsAtLocations;
+        
         console.log(data.productsAtLocations);
+
+        this.getAllLocations();
       },
       (error) => {
         console.error(error);
@@ -168,10 +175,12 @@ export class ProductAddEditComponent implements OnInit {
    *******************************************/
   clickService() {
     this.disabledSKU = true;
+    this.productForm.controls["sku"].disable();
   }
   
   clickProduct() {
     this.disabledSKU = false;
+    this.productForm.controls["sku"].enable();
   }
 
   /*******************************************
@@ -181,6 +190,17 @@ export class ProductAddEditComponent implements OnInit {
     this.productService.getAllLocations().subscribe(
       (data) => {
         this.listOfLocation = data;
+        this.listOfProductLocation = [];        
+
+        this.product.productsAtLocations.forEach(loc => {
+          let locId = loc.locationId;
+
+          let name = this.listOfLocation.filter(x => x.id == locId)[0].name;
+          let quantity = loc.quantity;
+
+          this.listOfProductLocation.push({locationId: locId, name: name, quantity: quantity});
+        })
+
 
         console.log(this.listOfLocation);
       },
@@ -195,11 +215,12 @@ export class ProductAddEditComponent implements OnInit {
    ** Standort hinzufügen                    **
    *******************************************/
   addRowLocation(): void {
-    this.listOfLocation = [
-      ...this.listOfLocation,
+    this.listOfProductLocation = [
+      ...this.listOfProductLocation,
       {
-        id: 0,
-        name: '',
+
+        locationId: 0,
+        quantity: 0,
       },
     ];
   }
@@ -214,7 +235,7 @@ export class ProductAddEditComponent implements OnInit {
       name: this.productForm.controls['productname'].value,
       sku: this.productForm.controls['sku'].value,
       category: this.listOfCategory,
-      location: this.listOfProductLocation,
+      productsAtLocations: this.listOfProductLocation,
       property: this.listOfProperty,
       price: this.productForm.controls['price'].value,
     };
