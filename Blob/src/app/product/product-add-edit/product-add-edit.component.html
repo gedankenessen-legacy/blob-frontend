@@ -2,20 +2,19 @@
 Spalte weg bekommen
 Rest Request -->
 <div id="product_form">
+    <!----------------------------------------->
+    <!-- Produkt oder Service Auswahl        -->
+    <!----------------------------------------->
+    <div id="product_productservice">
+        <h3>Produkt/Service</h3>
+        <nz-form-item>
+            <nz-radio-group [(ngModel)]="selectProductService">
+                <label nz-radio nzValue="Product">Produkt</label>
+                <label nz-radio nzValue="Service">Service</label>
+            </nz-radio-group>
+        </nz-form-item>
+    </div>
     <form nz-form [formGroup]="productForm" class="product-addedit-form">
-        <!----------------------------------------->
-        <!-- Produkt oder Service Auswahl        -->
-        <!----------------------------------------->
-        <div id="product_productservice">
-            <h3>Produkt/Service</h3>
-            <nz-form-item>
-                <nz-radio-group>
-                    <label nz-radio nzValue=0 formControlName="selectProductService">Produkt</label>
-                    <label nz-radio nzValue=1 formControlName="selectProductService">Service</label>
-                </nz-radio-group>
-            </nz-form-item>
-        </div>
-
         <!----------------------------------------->
         <!-- Produktname                         -->
         <!----------------------------------------->
@@ -62,13 +61,13 @@ Rest Request -->
         <!----------------------------------------->
         <div id="product_category">
             <h3>Kategorie</h3>
-            <nz-select nzShowSearch [nzDropdownRender]="renderTemplate" nzPlaceHolder="Kategorie" class="category">
+            <nz-select nzShowSearch [nzDropdownRender]="renderTemplate" nzPlaceHolder="Kategorie" class="category" formControlName="category">
                 <nz-option *ngFor="let item of listOfCategory" [nzLabel]="item.name" [nzValue]="item.name"></nz-option>
             </nz-select>
             <ng-template #renderTemplate>
                 <nz-divider></nz-divider>
                 <div class="container">
-                    <input type="text" nz-input #inputElement formControlName="category" />
+                    <input type="text" nz-input #inputElement />
                     <a class="add-item" (click)="addItem(inputElement)"><i nz-icon nzType="plus"></i> Neue Kategorie</a>
                 </div>
             </ng-template>

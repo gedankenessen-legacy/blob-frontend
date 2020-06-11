@@ -74,16 +74,20 @@ export class ProductAddEditComponent implements OnInit {
     if(this.id != -1) {
       this.productService.getProduct(this.id).subscribe(
         (data) => {
-          console.log(data);
           if(data.sku != null) {
-            //this.productForm.controls['selectProductService'].setValue('product');
+            this.selectProductService = "Product";
           } else {
-            //this.productForm.controls['selectProductService'].setValue('service');
+            this.selectProductService = "Service";
           }
           this.productForm.controls['productname'].setValue(data.name);
           this.productForm.controls['price'].setValue(data.price);
           this.productForm.controls['sku'].setValue(data.sku);
           
+          this.productForm.controls['category'].setValue(data.categories[0].name);
+          
+          this.listOfProperty = data.properties;
+          this.listOfProductLocation = data.productsAtLocations;
+
           
 
         },
