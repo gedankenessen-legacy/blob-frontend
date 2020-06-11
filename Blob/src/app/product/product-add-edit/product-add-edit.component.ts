@@ -32,6 +32,7 @@ export class ProductAddEditComponent implements OnInit {
   listOfCategory: ICategoryItem[] = [];
   indexCategory = 0;
   id: number;
+  disabledSKU = false;
 
   /*******************************************
    ** Formular Builder                       **
@@ -241,5 +242,13 @@ export class ProductAddEditComponent implements OnInit {
         name: '',
       },
     ];
+  }
+
+  clickService() {
+    this.disabledSKU = true;
+  }
+  
+  clickProduct() {
+    this.disabledSKU = false;
   }
 }

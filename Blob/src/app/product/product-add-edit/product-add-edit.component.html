@@ -9,8 +9,8 @@ Rest Request -->
         <h3>Produkt/Service</h3>
         <nz-form-item>
             <nz-radio-group [(ngModel)]="selectProductService">
-                <label nz-radio nzValue="Product">Produkt</label>
-                <label nz-radio nzValue="Service">Service</label>
+                <label nz-radio nzValue="Product" (click)="clickProduct()">Produkt</label>
+                <label nz-radio nzValue="Service" (click)="clickService()">Service</label>
             </nz-radio-group>
         </nz-form-item>
     </div>
@@ -50,7 +50,7 @@ Rest Request -->
             <nz-form-item>
                 <nz-form-control nzErrorTip="Bitte geben Sie die SKU an!">
                     <nz-input-group nzPrefixIcon="barcode">
-                        <input type="text" nz-input formControlName="sku" placeholder="SKU" />
+                        <input type="text" nz-input formControlName="sku" placeholder="SKU" [disabled]="disabledSKU" />
                     </nz-input-group>
                 </nz-form-control>
             </nz-form-item>
@@ -127,8 +127,6 @@ Rest Request -->
                     <td>
                         <div class="editable-cell" [hidden]="editIdLocation === data.id">
                         </div>
-                        <!-- <input type="text" nz-input [(ngModel)]="data.location" -->
-
                         <nz-select class="location">
                             <nz-option *ngFor="let item of listOfLocation" [nzLabel]="item.name" [nzValue]="item.name"></nz-option>
                         </nz-select>
