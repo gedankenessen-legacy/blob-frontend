@@ -6,7 +6,7 @@ import { HttpHeaders } from '@angular/common/http';
   providedIn: 'root',
 })
 export class BaseService {
-  private baseUrl: string = 'https://localhost:44383/api';
+  private baseUrl: string = 'https://localhost:5001/api';
 
   constructor() {}
 
