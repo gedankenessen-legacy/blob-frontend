@@ -1,5 +1,5 @@
-<nz-layout *ngIf="HideUiShell" class="nzLayout">
-  <nz-header>
+<nz-layout class="nzLayout">
+  <nz-header *ngIf="HideUiShell">
     <div class="logo">BLOB</div>
     <h1 class="header-title-name">{{ Title }}</h1>
     <ul nz-menu nzTheme="dark" nzMode="horizontal" class="header-menu">
@@ -12,7 +12,7 @@
     </ul>
   </nz-header>
   <nz-layout>
-    <nz-sider nzWidth="200px" nzTheme="dark">
+    <nz-sider *ngIf="HideUiShell" nzWidth="200px" nzTheme="dark">
       <ul nz-menu nzTheme="dark">
         <li [routerLink]="['/product']" routerLinkActive="router-link-active" nz-menu-item>
           <i nz-icon nzType="code-sandbox" nzTheme="outline"></i>Produkte
@@ -47,10 +47,10 @@
         </li>
       </ul>
     </nz-sider>
-    <nz-layout class="inner-layout">
-      <nz-content><router-outlet></router-outlet></nz-content>
+    <nz-layout [ngClass]="{'inner-layout': HideUiShell}">
+      <nz-content [ngClass]="{'removeFrame': !HideUiShell}"><router-outlet></router-outlet></nz-content>
     </nz-layout>
   </nz-layout>
 </nz-layout>
 
-<router-outlet *ngIf="!HideUiShell"></router-outlet>
+<!-- <router-outlet *ngIf="!HideUiShell"></router-outlet> -->

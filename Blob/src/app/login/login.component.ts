@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {}
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
         this.authService.willExpiresIn.setSeconds(data.expires_in);
 
         localStorage.setItem('token', data.access_token);
-        this.router.navigate(['/']);
+        this.router.navigate(['product']);
       },
       (error) => {}
     );

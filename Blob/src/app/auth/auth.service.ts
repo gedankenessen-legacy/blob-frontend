@@ -28,6 +28,10 @@ export class AuthService {
    * @returns   'true' if the token is still valid, otherwise 'false'.
    */
   private isTokenValid(): boolean {
+
+    //TODO: ONLY FOR DEBUGGING: IGNORE TOKEN
+    return true;
+
     // Check if the token is expired
     if (this.willExpiresIn > new Date()) {
       return true;

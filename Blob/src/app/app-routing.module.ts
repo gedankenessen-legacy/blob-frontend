@@ -4,36 +4,41 @@ import { LoginComponent } from './login/login.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ProductDashboardComponent } from './product/product-dashboard/product-dashboard.component'
 import { AuthGuard } from './auth/auth.guard';
+import { AppComponent } from './app.component';
 
 
 const routes: Routes = [
+/*   {
+    path: '',
+    component: AppComponent
+  }, */
   {
     path: 'login',
-    component: LoginComponent,
+    component: LoginComponent
   },
   {
     path: 'product',
-    canActivate: [AuthGuard],
+    canLoad: [AuthGuard],
     loadChildren: () => import("./product/product.module").then((m) => m.ProductModule),
   },
   {
     path: 'customer',
-    canActivate: [AuthGuard],
+    canLoad: [AuthGuard],
     loadChildren: () => import('./customer/customer.module').then((m) => m.CustomerModule),
   },
   {
     path: 'order',
-    canActivate: [AuthGuard],
+    canLoad: [AuthGuard],
     loadChildren: () => import('./order/order.module').then((m) => m.OrderModule),
   },
   {
     path: 'manage',
-    canActivate: [AuthGuard],
+    canLoad: [AuthGuard],
     loadChildren: () => import('./management/management.module').then((m) => m.ManagementModule),
   },
   {
     path: 'statistic',
-    canActivate: [AuthGuard],
+    canLoad: [AuthGuard],
     loadChildren: () => import('./statistic/statistic.module').then((m) => m.StatisticModule),
   },
   {
