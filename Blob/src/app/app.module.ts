@@ -4,7 +4,7 @@ import { NgModule, LOCALE_ID } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { de_DE } from 'ng-zorro-antd/i18n';
@@ -20,6 +20,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { StatisticDashboardComponent } from './statistic/statistic-dashboard/statistic-dashboard.component';
+import { AuthHttpInterceptor } from './auth/auth-http.interceptor';
 
 registerLocaleData(de);
 
@@ -43,6 +44,7 @@ registerLocaleData(de);
   providers: [
     { provide: NZ_I18N, useValue: de_DE },
     { provide: LOCALE_ID, useValue: 'de-DE' },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true}
   ],
   bootstrap: [AppComponent],
 })

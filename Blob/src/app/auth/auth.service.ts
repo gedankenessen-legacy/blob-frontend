@@ -39,6 +39,16 @@ export class AuthService {
     return false;
   }
 
+  public getToken()
+  {
+    return localStorage.getItem('token');
+  }
+
+  public setToken(token: string)
+  {
+    localStorage.setItem('token', token);
+  }
+
   /**
    * This method is used to authenticate a user and storing a token, which is need to call resources from the API.
    * @param username The username.

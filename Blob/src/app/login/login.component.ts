@@ -26,7 +26,8 @@ export class LoginComponent implements OnInit {
         this.authService.willExpiresIn = new Date();
         this.authService.willExpiresIn.setSeconds(data.expires_in);
 
-        localStorage.setItem('token', data.access_token);
+        this.authService.setToken(data.access_token);
+  
         this.router.navigate(['product']);
       },
       (error) => {}
