@@ -17,9 +17,11 @@ import {
   NzModalModule,
 } from 'ng-zorro-antd';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ManagementDashboardUsersComponent } from './management-dashboard-users/management-dashboard-users.component';
+import { ManagementDashboardLocationsComponent } from './management-dashboard-locations/management-dashboard-locations.component';
 
 @NgModule({
-  declarations: [ManagementDashboardComponent],
+  declarations: [ManagementDashboardComponent, ManagementDashboardUsersComponent, ManagementDashboardLocationsComponent],
   imports: [
     CommonModule,
     ManagementRoutingModule,

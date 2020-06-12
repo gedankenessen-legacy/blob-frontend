@@ -1,6 +1,7 @@
 export interface IUserItem {
   id: number;
-  firstname: string;
-  lastname: string;
-  username: string;
+  firstName: string;
+  lastName: string;
+  userName: string;
+  password: string;
 }
