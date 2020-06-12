@@ -127,7 +127,7 @@ Rest Request -->
                     <td>
                         <div class="editable-cell" [hidden]="editIdLocation === data.id">
                         </div>
-                        <nz-select class="location" [(ngModel)]="data.locationId">
+                        <nz-select class="location" [(ngModel)]="data.locationId" (ngModelChange)="onLocationChange(data.locationId)">
                             <nz-option *ngFor="let item of listOfLocation" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
                         </nz-select>
                     </td>

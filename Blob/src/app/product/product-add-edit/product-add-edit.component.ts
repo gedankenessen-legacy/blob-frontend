@@ -12,6 +12,7 @@ import { IProductItem } from 'src/app/interfaces/IProductItem';
 import { ILocationItem } from 'src/app/interfaces/ILocationItem';
 import { ICategoryItem } from 'src/app/interfaces/ICategoryItem';
 import { Router } from '@angular/router';
+import { NzModalService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-product-add-edit',
@@ -34,6 +35,7 @@ export class ProductAddEditComponent implements OnInit {
   id: number;
   disabledSKU = false;
   product: IProductItem;
+  isValide: boolean = true;
 
   /*******************************************
    ** Formular Builder                       **
@@ -41,33 +43,38 @@ export class ProductAddEditComponent implements OnInit {
   constructor(
     private fbp: FormBuilder,
     private productService: ProductService,
-    private router: Router
+    private router: Router,
+    private modal: NzModalService
   ) {}
 
   ngOnInit(): void {
     this.getIDFromProduct();
     this.getAllCategorys();
-    
+
+    this.selectProductService = 'Product';
     this.productForm = this.fbp.group({
       selectProductService: new FormControl('', [Validators.required]),
       productname: new FormControl('', [Validators.required]),
       price: new FormControl('', [Validators.required]),
-      sku: new FormControl({value:"", disable: this.disabledSKU}, Validators.required),
+      sku: new FormControl(
+        { value: ' ', disable: this.disabledSKU },
+        Validators.required
+      ),
       category: new FormControl('', [Validators.required]),
     });
 
-    console.log("ID:" + this.id);
+    console.log('ID:' + this.id);
   }
 
   /*******************************************
    ** ID von Produkt                         **
    *******************************************/
   getIDFromProduct() {
-    var str = this.router.url; 
-    var splitted = str.split("/"); 
-    if(splitted[4] != "copy") {
+    var str = this.router.url;
+    var splitted = str.split('/');
+    if (splitted[4] != 'copy') {
       this.id = Number(splitted[3]);
-      if(this.id != -1) {
+      if (this.id != -1) {
         this.getProductData();
       }
     } else {
@@ -85,22 +92,18 @@ export class ProductAddEditComponent implements OnInit {
       (data) => {
         this.product = data;
         console.log(data);
-        if(data.sku != null) {
-          this.selectProductService = "Product";
+        if (data.sku != null) {
+          this.selectProductService = 'Product';
         } else {
-          this.selectProductService = "Service";
+          this.selectProductService = 'Service';
         }
         this.productForm.controls['productname'].setValue(data.name);
         this.productForm.controls['price'].setValue(data.price);
         this.productForm.controls['sku'].setValue(data.sku);
-        
-        this.productForm.controls['category'].setValue(data.categories[0].name);
-        
-        this.listOfProperty = data.properties;
 
-        data.productsAtLocations;
-        
-        console.log(data.productsAtLocations);
+        this.productForm.controls['category'].setValue(data.categories[0].name);
+
+        this.listOfProperty = data.properties;
 
         this.getAllLocations();
       },
@@ -123,7 +126,6 @@ export class ProductAddEditComponent implements OnInit {
       }
     );
   }
-  
 
   /*******************************************
    ** Kategorie hinzufügen                   **
@@ -137,12 +139,14 @@ export class ProductAddEditComponent implements OnInit {
       }
     }
     if (isInList == 0) {
-      this.listOfCategory = [
-        ...this.listOfCategory,
-        {
-          name: input.value || `New item ${this.indexCategory++}`,
-        },
-      ];
+      if(value.length > 0) {
+        this.listOfCategory = [
+          ...this.listOfCategory,
+          {
+            name: input.value || `Kategorie ${this.indexCategory++}`,
+          },
+        ];
+      }
     }
   }
 
@@ -175,12 +179,12 @@ export class ProductAddEditComponent implements OnInit {
    *******************************************/
   clickService() {
     this.disabledSKU = true;
-    this.productForm.controls["sku"].disable();
+    this.productForm.controls['sku'].disable();
   }
-  
+
   clickProduct() {
     this.disabledSKU = false;
-    this.productForm.controls["sku"].enable();
+    this.productForm.controls['sku'].enable();
   }
 
   /*******************************************
@@ -190,17 +194,20 @@ export class ProductAddEditComponent implements OnInit {
     this.productService.getAllLocations().subscribe(
       (data) => {
         this.listOfLocation = data;
-        this.listOfProductLocation = [];        
+        this.listOfProductLocation = [];
 
-        this.product.productsAtLocations.forEach(loc => {
+        this.product.productsAtLocations.forEach((loc) => {
           let locId = loc.locationId;
 
-          let name = this.listOfLocation.filter(x => x.id == locId)[0].name;
+          let name = this.listOfLocation.filter((x) => x.id == locId)[0].name;
           let quantity = loc.quantity;
 
-          this.listOfProductLocation.push({locationId: locId, name: name, quantity: quantity});
-        })
-
+          this.listOfProductLocation.push({
+            locationId: locId,
+            name: name,
+            quantity: quantity,
+          });
+        });
 
         console.log(this.listOfLocation);
       },
@@ -210,43 +217,184 @@ export class ProductAddEditComponent implements OnInit {
     );
   }
 
-
   /*******************************************
    ** Standort hinzufügen                    **
    *******************************************/
   addRowLocation(): void {
-    this.listOfProductLocation = [
-      ...this.listOfProductLocation,
-      {
+    if (this.listOfProductLocation.length < this.listOfLocation.length) {
+      this.listOfProductLocation = [
+        ...this.listOfProductLocation,
+        {
+          locationId: 0,
+          quantity: 0,
+        },
+      ];
+    }
+  }
 
-        locationId: 0,
-        quantity: 0,
-      },
-    ];
+  onLocationChange(locationID: number) {
+    let count = 0;
+    for (let i = 0; i < this.listOfProductLocation.length; i++) {
+      if (this.listOfProductLocation[i].locationId == locationID) {
+        count++;
+      }
+    }
+    if (count > 1) {
+      this.modal.error({
+        nzTitle: 'Fehler',
+        nzContent: 'Der ausgewählte Standort wird bereits benutzt.',
+      });
+    }
   }
 
   /*******************************************
    ** Erstelle Produkt                      **
    *******************************************/
-  createNewProdukt() {
-    var newProduct: IProductItem = {
-      id: 0,
-      productservice: 'string',
-      name: this.productForm.controls['productname'].value,
-      sku: this.productForm.controls['sku'].value,
-      category: this.listOfCategory,
-      productsAtLocations: this.listOfProductLocation,
-      property: this.listOfProperty,
-      price: this.productForm.controls['price'].value,
-    };
+  createNewProdukt(newCategory: ICategoryItem[]) {
+    if (this.selectProductService == 'Product') {
+      var newProduct: IProductItem = {
+        name: this.productForm.controls['productname'].value,
+        price: this.productForm.controls['price'].value,
+        sku: this.productForm.controls['sku'].value,
+        category: newCategory,
+        productsAtLocations: this.listOfProductLocation,
+        property: this.listOfProperty,
+      };
+
+      console.log(newProduct);
+    } else if (this.selectProductService == 'Service') {
+      var newProduct: IProductItem = {
+        name: this.productForm.controls['productname'].value,
+        price: this.productForm.controls['price'].value,
+        category: newCategory,
+        productsAtLocations: this.listOfProductLocation,
+        property: this.listOfProperty,
+      };
+
+      console.log(newProduct);
+    } else {
+      this.modal.error({
+        nzTitle: 'Fehler',
+        nzContent:
+          'Beim Erstellen der Produkte ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.',
+      });
+    }
   }
 
   /*******************************************
    ** Speichern Button                       **
    *******************************************/
-  submitForm() {
-    this.createNewProdukt();
+  validProductData() {
+    if(this.selectProductService == "Product") {
+      if((this.productForm.controls['productname'].value.length > 0) &&
+      (this.productForm.controls['price'].value > 0) &&
+      (this.productForm.controls['sku'].value.length > 0)) {
+        return true;
+      } else {
+        this.modal.error({
+          nzTitle: 'Fehler',
+          nzContent:
+            'Bitte geben Sie alle Produktdaten an.',
+        });
+        return false;
+      }
+    } else if(this.selectProductService == "Service") {
+      if((this.productForm.controls['productname'].value.length > 0) &&
+      (this.productForm.controls['price'].value > 0)) {
+        return true;
+      } else {
+        this.modal.error({
+          nzTitle: 'Fehler',
+          nzContent:
+            'Bitte geben Sie alle Produktdaten an.',
+        });
+        return false;
+      }   
+    } else {
+      this.modal.error({
+        nzTitle: 'Fehler',
+        nzContent:
+          'Beim Erstellen der Produkte ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.',
+      });
+      return false;
+    }
   }
 
-  
+  validCategory() {
+    if (this.productForm.controls['category'].value.length > 0) {
+      return true;
+    } else {
+      this.modal.error({
+        nzTitle: 'Fehler',
+        nzContent: 'Bitte wählen Sie eine Kategorie aus.',
+      });
+      return false;
+    }
+  }
+
+  validProperties() {
+    let isValid = true;
+    for (let i = 0; i < this.listOfProperty.length; i++) {
+        if (this.listOfProperty[i].name.length <= 0 && this.listOfProperty[i].value.length <= 0) {
+          //Remove Element
+          isValid = false;
+        }
+     }
+     return isValid;
+  }
+
+  validLocation() {
+    let isValid = true;
+    for (let i = 0; i < this.listOfProductLocation.length; i++) {
+        if (this.listOfProductLocation[i].name.length <= 0 && this.listOfProductLocation[i].quantity <= 0) {
+          isValid = false;
+        }
+     }
+     return isValid;
+  }
+
+
+  submitForm() {
+    if (this.validProductData() && this.validCategory() && this.validProperties()) {
+
+      //Produkt Ketegorie
+      let selectedCategory: ICategoryItem[] = [];
+      let categoryName = this.productForm.controls['category'].value;
+      for (let i = 0; i < this.listOfCategory.length; i++) {
+        if (this.listOfCategory[i].name == categoryName) {
+          if (this.listOfCategory[i].id != null) {
+            let newCategory: ICategoryItem = {
+              id: this.listOfCategory[i].id,
+              name: this.listOfCategory[i].name,
+            };
+            selectedCategory.push(newCategory);
+          } else {
+            let newCategory: ICategoryItem = {
+              name: categoryName,
+            };
+            selectedCategory.push(newCategory);
+          }
+        }
+      }
+
+      //Produkt Eigenschaft
+      let selectedProperty: IPropertyItem[] = [];
+      for (let i = 0; i < this.listOfProperty.length; i++) {
+        if (this.listOfProperty[i].name != null && this.listOfProperty[i].value != null) {
+          let newCategory: ICategoryItem = {
+            id: this.listOfCategory[i].id,
+            name: this.listOfCategory[i].name,
+          };
+          selectedCategory.push(newCategory);
+        } else {
+          
+        }
+      }
+
+      if (this.id == -1) {
+        this.createNewProdukt(selectedCategory);
+      } else {
+      }
+    }
+  }
 }

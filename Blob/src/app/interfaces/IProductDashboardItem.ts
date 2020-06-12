@@ -5,7 +5,6 @@ import { IProductLocationItem } from './IProductLocationItem';
 
 export interface IProductDashboardItem {
     id: number;
-    productservice: string;
     name: string;
     sku?: string;
     category: ICategoryItem[];

@@ -62,7 +62,6 @@ export class ProductService {
   demoProducts: Array<IProductItem> = [
     {
       id: 1,
-      productservice: 'product',
       name: 'Dunlop Sport Classic 195/65 R18 91V',
       sku: '5452000811332',
       productsAtLocations: this.demoProductLocation,
