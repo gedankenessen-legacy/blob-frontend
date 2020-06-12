@@ -11,11 +11,11 @@ import { IPropertyItem } from '../interfaces/product/IPropertyItem';
 
 let isDebug: boolean = false;
 
+
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-
   demoLocations: Array<ILocationItem> = [
     {
       id: 1,
