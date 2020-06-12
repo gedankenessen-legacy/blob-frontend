@@ -42,11 +42,9 @@ export class CustomerService {
       'Content-Type': 'application/json',
     }),
   };
-
   constructor(private http: HttpClient, private baseService: BaseService) {
     /* this.getAllCustomer = this.getAllCustomerDev;
     this.getCustomer = this.getCustomerDev;
-
     this.createCustomer = this.createCustomerDev;
     this.deleteCustomer = this.deleteCustomerDev;
     this.updateCustomers = this.updateCustomersDev; */
@@ -82,7 +80,6 @@ export class CustomerService {
     );
     newCustomer.id = maxId + 1;
     this.demoCustomer = [...this.demoCustomer, newCustomer];
-
     return of(newCustomer).pipe(delay(2000));
   }
 
