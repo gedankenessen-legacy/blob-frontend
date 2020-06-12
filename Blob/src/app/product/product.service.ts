@@ -65,8 +65,8 @@ export class ProductService {
       name: 'Dunlop Sport Classic 195/65 R18 91V',
       sku: '5452000811332',
       productsAtLocations: this.demoProductLocation,
-      category: this.demoCategory,
-      property: this.demoProperty,
+      categories: this.demoCategory,
+      properties: this.demoProperty,
       price: 145.13,
     }
   ];
@@ -148,6 +148,13 @@ export class ProductService {
     newProduct.id = maxId+1;
     this.demoProducts = [...this.demoProducts, newProduct]
     return of(newProduct).pipe(delay(2000));
+  }
+
+  /*  Update Produkt */
+  updateProduct(newProduct:IProductItem[]): Observable<any> {
+    return this.http
+      .put<any>(this.baseService.getBaseUrl + "/product", newProduct, this.httpOptions)
+      .pipe(catchError(this.baseService.errorHandle));
   }
 
   /* Lösche Produkt mit ID */

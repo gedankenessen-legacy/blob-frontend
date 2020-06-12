@@ -7,8 +7,8 @@ export interface IProductItem {
     id?: number;
     name: string;
     sku?: string;
-    category: ICategoryItem[];
+    categories: ICategoryItem[];
     productsAtLocations: IProductLocationItem[];
-    property: IPropertyItem[];
+    properties: IPropertyItem[];
     price: number;
 }

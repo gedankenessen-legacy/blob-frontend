@@ -36,6 +36,11 @@ export class ProductDashboardComponent implements OnInit {
       (data) => {
         this.listOfData = data;
         this.listOfDisplayData = data;
+        this.listOfData.forEach(element => {
+          if(element.sku == "NO SKU DEFINED") {
+            element.sku = "Service";
+          }
+        });
         this.getAllLocations();
         this.isLoading = false;
       },
