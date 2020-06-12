@@ -250,34 +250,35 @@ export class ProductAddEditComponent implements OnInit {
   /*******************************************
    ** Erstelle Produkt                      **
    *******************************************/
-  createNewProdukt(newCategory: ICategoryItem[]) {
+  createNewProdukt(newCategory: ICategoryItem[], newLocation: IProductLocationItem[]) {
     if (this.selectProductService == 'Product') {
       var newProduct: IProductItem = {
         name: this.productForm.controls['productname'].value,
         price: this.productForm.controls['price'].value,
         sku: this.productForm.controls['sku'].value,
         category: newCategory,
-        productsAtLocations: this.listOfProductLocation,
+        productsAtLocations: newLocation,
         property: this.listOfProperty,
       };
 
-      console.log(newProduct);
+      return newProduct;
     } else if (this.selectProductService == 'Service') {
       var newProduct: IProductItem = {
         name: this.productForm.controls['productname'].value,
         price: this.productForm.controls['price'].value,
         category: newCategory,
-        productsAtLocations: this.listOfProductLocation,
+        productsAtLocations: newLocation,
         property: this.listOfProperty,
       };
 
-      console.log(newProduct);
+      return newProduct;
     } else {
       this.modal.error({
         nzTitle: 'Fehler',
         nzContent:
           'Beim Erstellen der Produkte ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.',
       });
+      return null;
     }
   }
 
@@ -336,8 +337,16 @@ export class ProductAddEditComponent implements OnInit {
     let isValid = true;
     for (let i = 0; i < this.listOfProperty.length; i++) {
         if (this.listOfProperty[i].name.length <= 0 && this.listOfProperty[i].value.length <= 0) {
-          //Remove Element
+          this.listOfProperty = this.listOfProperty.filter(x => x != this.listOfProperty[i]);
+        } else if(this.listOfProperty[i].name.length <= 0 || this.listOfProperty[i].value.length <= 0) {
+          this.modal.error({
+            nzTitle: 'Fehler',
+            nzContent:
+              'Bitte überprüfen Sie Ihre Eigenschaften.',
+          });
           isValid = false;
+        } else {
+          isValid = true;
         }
      }
      return isValid;
@@ -357,7 +366,7 @@ export class ProductAddEditComponent implements OnInit {
   submitForm() {
     if (this.validProductData() && this.validCategory() && this.validProperties()) {
 
-      //Produkt Ketegorie
+      //Produkt Kategorie
       let selectedCategory: ICategoryItem[] = [];
       let categoryName = this.productForm.controls['category'].value;
       for (let i = 0; i < this.listOfCategory.length; i++) {
@@ -377,22 +386,43 @@ export class ProductAddEditComponent implements OnInit {
         }
       }
 
-      //Produkt Eigenschaft
-      let selectedProperty: IPropertyItem[] = [];
-      for (let i = 0; i < this.listOfProperty.length; i++) {
-        if (this.listOfProperty[i].name != null && this.listOfProperty[i].value != null) {
-          let newCategory: ICategoryItem = {
-            id: this.listOfCategory[i].id,
-            name: this.listOfCategory[i].name,
-          };
-          selectedCategory.push(newCategory);
-        } else {
-          
+
+      //Produkt Location
+      let selectedLocations: IProductLocationItem[] = [];
+      for(let i = 0; i < this.listOfProductLocation.length; i++) {
+        if((this.listOfProductLocation[i].locationId > 0) &&
+        (this.listOfProductLocation[i].quantity > 0)) {
+          if(this.id > 0) {
+            let newLocation: IProductLocationItem = {
+              locationId: this.listOfProductLocation[i].locationId,
+              quantity: this.listOfProductLocation[i].quantity,
+              productId: this.id,
+            }
+            selectedLocations.push(newLocation);
+          } else {
+            let newLocation: IProductLocationItem = {
+              locationId: this.listOfProductLocation[i].locationId,
+              quantity: this.listOfProductLocation[i].quantity,
+            }
+            selectedLocations.push(newLocation);
+          }
         }
       }
 
+
       if (this.id == -1) {
-        this.createNewProdukt(selectedCategory);
+        let newProduct: IProductItem;
+        newProduct = this.createNewProdukt(selectedCategory, selectedLocations);  
+        this.productService.createProduct(newProduct).subscribe(
+          (data) => {
+            console.log(data);
+           this.router.navigateByUrl["/product"];
+          },
+          (error) => {
+            console.error(error);
+          }
+        );
+        
       } else {
       }
     }

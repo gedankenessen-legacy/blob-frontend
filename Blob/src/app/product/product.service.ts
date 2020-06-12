@@ -102,7 +102,7 @@ export class ProductService {
   /* Location mit ID */ 
   getLocations(id: number): Observable<ILocationItem> {
     return this.http
-    .get<any>(this.baseService.getBaseUrl + '/location'+id, this.httpOptions)
+    .get<any>(this.baseService.getBaseUrl + '/location/'+id, this.httpOptions)
     .pipe(catchError(this.baseService.errorHandle));
   }
 
@@ -153,14 +153,13 @@ export class ProductService {
   /* Lösche Produkt mit ID */
   deleteProduct(id: number):Observable<any>{
     return this.http
-      .delete(this.baseService.getBaseUrl + '/product'+id, this.httpOptions)
+      .delete(this.baseService.getBaseUrl + '/product/'+id, this.httpOptions)
       .pipe(catchError(this.baseService.errorHandle));
   }
 
   /* Lösche Demo Produkt mit ID */
   deleteProductDev(id: number): Observable<any>{
     this.demoProducts = this.demoProducts.filter(d => d.id !== id);
-
     return of(null).pipe(delay(2000));
   }
 
@@ -169,21 +168,4 @@ export class ProductService {
       .get<any>(this.baseService.getBaseUrl + '/product/categories', this.httpOptions)
       .pipe(catchError(this.baseService.errorHandle));
   }
-
-  /* TODO: Wie erstellt man eine Kategorie? */
-  createCategory(category: string): Observable<any> {
-    return this.http
-      .post<any>(this.baseService.getBaseUrl + "/product", this.httpOptions)
-      .pipe(catchError(this.baseService.errorHandle));
-  }
-
-  /* createCategoryDev(category: string): Observable<any> {
-    this.demoCategory = [
-      ...this.demoCategory,
-      {
-        name: category
-      },
-    ];
-    return of(this.demoCategory).pipe(delay(1000));
-  } */
 }
