@@ -1,55 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormGroup,
-  FormBuilder,
-  FormControl,
-  Validators,
-} from '@angular/forms';
-
-import { ILocationItem } from 'src/app/interfaces/manage/ILocationItem';
-import { IUserItem } from 'src/app/interfaces/manage/IUserItem';
-
-import { TitleService } from 'src/app/title.service';
-import { TagPlaceholder } from '@angular/compiler/src/i18n/i18n_ast';
-import { ManagementService } from '../management.service';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd';
+import { ManagementService } from '../management.service';
+import { ILocationItem } from 'src/app/interfaces/manage/ILocationItem';
 import { IAdress } from 'src/app/interfaces/iadress';
-import { MustMatch } from '../passwordValidation';
 
 @Component({
-  selector: 'app-management-dashboard',
-  templateUrl: './management-dashboard.component.html',
-  styleUrls: ['./management-dashboard.component.less'],
+  selector: 'app-management-dashboard-locations',
+  templateUrl: './management-dashboard-locations.component.html',
+  styleUrls: ['./management-dashboard-locations.component.less']
 })
-export class ManagementDashboardComponent implements OnInit {
-  //isLocationPopupVisible: boolean = false;
-  //isUserPopupVisible: boolean = false;
-  //isLocationLoading: boolean = false;
-  //isUserLoading: boolean = false;
-  //isSavingLocation: boolean = false;
-  //isSavingUser: boolean = false;
-  //addLocationForm: FormGroup;
-  //addUserForm: FormGroup;
+export class ManagementDashboardLocationsComponent implements OnInit {
+  isLocationPopupVisible: boolean = false;
+  isLocationLoading: boolean = false;
+  isSavingLocation: boolean = false;
+  addLocationForm: FormGroup;
 
-  constructor(private modal:NzModalService, private fb: FormBuilder, private titleService: TitleService, private managemantService: ManagementService) {
-    this.titleService.Title = 'Verwaltung';
-  }
+  listOfLocations: ILocationItem[] = [];
+  listOfDisplayLocations: ILocationItem[] = [];
+
+  constructor(private modal:NzModalService, private fb: FormBuilder, private managemantService: ManagementService) { }
 
   ngOnInit(): void {
-    // Add user
-    /* this.addUserForm = this.fb.group({
-      firstname: new FormControl(null, Validators.required),
-      lastname: new FormControl(null, Validators.required),
-      password: new FormControl('', Validators.compose([Validators.required, Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[1-9])(?=.*[#$^+=!*()@%&]).{1,30}$')])),
-      passwordConfirm: new FormControl('', [Validators.required]),
-    },
-    {
-      validator: MustMatch('password', 'passwordConfirm')
-    }
-    );
- */
-    // Add location
-   /*  this.addLocationForm = this.fb.group({
+    this.addLocationForm = this.fb.group({
       name: new FormControl(null, Validators.required),
       street: new FormControl(null, Validators.required),
       zip: new FormControl(null, Validators.required),
@@ -57,21 +30,10 @@ export class ManagementDashboardComponent implements OnInit {
       id: new FormControl(0, Validators.required),
     });
 
-    this.getAllLocations(); */
-    /* this.getAllUsers(); */
+    this.getAllLocations();
   }
 
-  /* get userFormControls(){
-    return this.addUserForm.controls
-  } */
-/* 
-  passwordTyping(){
-    console.log("Hier");
-    
-   //this.addUserForm.updateValueAndValidity();
-  } */
-
-  /* getAllLocations() {
+  getAllLocations() {
     this.isLocationLoading = true;
     this.managemantService.getAllLocations().subscribe(
       (data) => {
@@ -89,39 +51,9 @@ export class ManagementDashboardComponent implements OnInit {
         });
       }
     );
-  } */
+  }
 
-  /* getAllUsers() {
-    this.isUserLoading = true;
-    this.managemantService.getAllUsers().subscribe(
-      (data) => {
-        this.listOfUsers = data;
-        this.listOfDisplayUsers = data;
-
-        this.isUserLoading = false;
-      },
-      (error) => {
-        this.isUserLoading = false;
-
-        this.modal.error({
-          nzTitle: 'Fehler',
-          nzContent: 'Beim Laden der Benutzer ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
-        });
-      }
-    );
-  } */
-
-/*   listOfUsers: IUserItem[] = [];
-  listOfDisplayUsers: IUserItem[] = []; */
-
-  /* listOfLocations: ILocationItem[] = [];
-  listOfDisplayLocations: ILocationItem[] = []; */
-
-  /********************************************
-   ** Daten behandeln                        **
-   ********************************************/
-
-  /* changeLocation(id: number): void {
+  changeLocation(id: number): void {
     var locations: ILocationItem[] = this.listOfLocations.filter(
       (item: ILocationItem) => item.id == id
     );
@@ -151,27 +83,9 @@ export class ManagementDashboardComponent implements OnInit {
         });
       }
     );
-  } */
-
-  /********************************************
-   ** Popup aktionen                          **
-   ********************************************/
-
-  /* showUserPopup(): void {
-    this.isUserPopupVisible = true;
-  }
-  handleUserPopupOk(): void {
-    this.isUserPopupVisible = false;
-  }
-  handleUserPopupCancel(): void {
-    this.isUserPopupVisible = false;
   }
 
-  submitUserAddForm(): void {
-    this.addNewUser()
-  } */
-
-  /* showLocationPopup(): void {
+  showLocationPopup(): void {
     this.addLocationForm.controls['id'].setValue(0);
     this.isLocationPopupVisible = true;
   }
@@ -220,39 +134,9 @@ export class ManagementDashboardComponent implements OnInit {
         });
       }
     );
-  } */
+  }
 
-  /* addNewUser() {
-    this.isSavingUser = true;
-    var newUserItem: IUserItem = {
-      id: 0,
-      firstName: this.addUserForm.controls['firstname'].value,
-      lastName: this.addUserForm.controls['lastname'].value,
-      userName: null,
-      password: this.addUserForm.controls['password'].value,
-    };
-    delete newUserItem.id;
-
-    this.managemantService.createUser(newUserItem).subscribe(
-      (data) => {
-        console.log(data);
-        this.isUserPopupVisible = false;
-        this.isSavingUser = false;
-        this.isUserLoading = true;
-        this.getAllUsers();
-      },
-      (error) => {
-        this.isSavingUser = false;
-
-        this.modal.error({
-          nzTitle: 'Fehler',
-          nzContent: 'Beim Anlegen des Benutzers ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
-        });
-      }
-    );
-  } */
-
-  /* updateLocation(id: number) {
+  updateLocation(id: number) {
     this.isSavingLocation = true;
 
     var locations: ILocationItem[] = this.listOfLocations.filter(
@@ -292,5 +176,6 @@ export class ManagementDashboardComponent implements OnInit {
         });
       }
     );
-  } */
+  }
+
 }

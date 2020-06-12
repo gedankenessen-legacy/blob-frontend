@@ -1,0 +1,150 @@
+<div id="location-panel">
+
+    <h1>Standorte</h1>
+  
+    <!----------------------------------------->
+    <!-- Standort hinzufügen Button          -->
+    <!----------------------------------------->
+    <div class="button-wrapper">
+      <button
+        nz-button
+        nzType="primary"
+        class="element-add-button"
+        (click)="showLocationPopup()"
+      >
+        <i nz-icon nzType="plus" nzTheme="outline"></i> Standort hinzufügen
+      </button>
+    </div>
+  
+  
+    <!----------------------------------------->
+    <!-- Standort Tabelle                    -->
+    <!----------------------------------------->
+    <nz-table #nzTableLocation [nzData]="listOfLocations" nzTableLayout="fixed" [nzLoading]="isLocationLoading">
+      <thead>
+        <!-- nzCustomFilter -->
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Stadt</th>
+          <th>PLZ</th>
+          <th>Straße</th>
+          <th>Quickactions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of nzTableLocation.data">
+          <td>{{ data.id }}</td>
+          <td>{{ data.name }}</td>
+          <td>{{ data.address.city }}</td>
+          <td>{{ data.address.zip }}</td>
+          <td>{{ data.address.street }}</td>
+          <td>
+          <button
+            nz-button
+            nzType="primary"
+            [nzSize]="4"
+            class="quickaction-button"
+            (click)="changeLocation(data.id)"
+          >
+            <i nz-icon nzType="edit" nzTheme="outline"></i>
+          </button>
+          <button
+            nz-button
+            nzType="primary"
+            [nzSize]="4"
+            class="quickaction-button"
+            (click)="deleteLocation(data.id)"
+          >
+            <i nz-icon nzType="delete" nzTheme="outline"></i>
+          </button>
+        </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  
+  <!----------------------------------------->
+  <!-- Popup um Standort hinzuzufügen      -->
+  <!----------------------------------------->
+  <nz-modal
+    nzWrapClassName="vertical-center-modal"
+    [(nzVisible)]="isLocationPopupVisible"
+    nzTitle="Standort hinzufügen"
+    [nzContent]="modalContentLocation"
+    [nzFooter]="modalFooterLocation"
+    (nzOnCancel)="handleLocationPopupCancel()"
+  >
+    <ng-template #modalContentLocation>
+      <form
+        nz-form
+        [formGroup]="addLocationForm"
+        class="login-form"
+        (ngSubmit)="submitLocationAddForm()"
+      >
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Bitte geben Sie einen Namen ein!">
+            <nz-input-group>
+              <input
+                type="text"
+                nz-input
+                formControlName="name"
+                placeholder="Name"
+              />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Bitte geben Sie eine Straße ein!">
+            <nz-input-group>
+              <input
+                type="text"
+                nz-input
+                formControlName="street"
+                placeholder="Straße"
+              />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Bitte geben Sie eine PLZ ein!">
+            <nz-input-group>
+              <input
+                type="text"
+                nz-input
+                formControlName="zip"
+                placeholder="plz"
+              />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Bitte bestätigen Sie eine Stadt an!">
+            <nz-input-group>
+              <input
+                type="text"
+                nz-input
+                formControlName="city"
+                placeholder="Stadt"
+              />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <!-- <button
+          nz-button
+          class="addButton"
+          [nzType]="'primary'"
+          nzBlock
+        >
+          Speichern
+        </button> -->
+      </form>
+    </ng-template>
+    <ng-template #modalFooterLocation>
+      <button nz-button nzType="primary" (click)="submitLocationAddForm()" [disabled]="!addLocationForm.valid" [nzLoading]="isSavingLocation" nzBlock>
+        Speichern
+      </button>
+    </ng-template>
+  </nz-modal>
+  
+  </div>
+  

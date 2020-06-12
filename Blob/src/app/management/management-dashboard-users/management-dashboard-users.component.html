@@ -1,0 +1,139 @@
+<div id="user-panel">
+
+    <h1>Benutzer</h1>
+    <!----------------------------------------->
+    <!-- Benutzer hinzufügen Button          -->
+    <!----------------------------------------->
+    <div class="button-wrapper">
+      <button
+        nz-button
+        nzType="primary"
+        class="element-add-button"
+        (click)="showUserPopup()"
+      >
+        <i nz-icon nzType="plus" nzTheme="outline"></i> Benutzer hinzufügen
+      </button>
+    </div>
+  </div>
+  
+  <!----------------------------------------->
+  <!-- Benutzer Tabelle                    -->
+  <!----------------------------------------->
+  <nz-table #nzTableUser [nzData]="listOfUsers" nzTableLayout="fixed" [nzLoading]="isUserLoading">
+    <thead>
+      <!-- TODO: nzCustomFilter (?) -->
+      <tr>
+        <th>Id</th>
+        <th>Vorname</th>
+        <th>Nachname</th>
+        <th>Benutzername</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of nzTableUser.data">
+        <td>{{ data.id }}</td>
+        <td>{{ data.firstName }}</td>
+        <td>{{ data.lastName }}</td>
+        <td>{{ data.userName }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+  
+  <!----------------------------------------->
+  <!-- Popup um Benutzer hinzuzufügen      -->
+  <!----------------------------------------->
+  <nz-modal
+    nzWrapClassName="vertical-center-modal"
+    [(nzVisible)]="isUserPopupVisible"
+    nzTitle="Benutzer hinzufügen"
+    [nzContent]="modalContentUser"
+    [nzFooter]="modalFooterUser"
+    (nzOnCancel)="handleUserPopupCancel()"
+  >
+    <ng-template #modalContentUser>
+      <form
+        nz-form
+        [formGroup]="addUserForm"
+        class="login-form"
+        (ngSubmit)="submitUserAddForm()"
+      >
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Bitte geben Sie einen Vorname ein!">
+            <nz-input-group>
+              <input
+                type="text"
+                nz-input
+                formControlName="firstname"
+                placeholder="Vorname"
+              />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Bitte geben Sie einen Nachname ein!">
+            <nz-input-group>
+              <input
+                type="text"
+                nz-input
+                formControlName="lastname"
+                placeholder="Nachname"
+              />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control [nzErrorTip]="pwError">
+            <nz-input-group>
+              <input
+                type="password"
+                nz-input
+                formControlName="password"
+                placeholder="Passwort"
+              />
+              <ng-template #pwError let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  Bitte gib ein Passwort
+                </ng-container>
+                <ng-container *ngIf="control.hasError('pattern')">
+                  Das Passwort muss mindestens 1 Großbuchstaben, einen Kleinbuchstaben sowie ein Sonderzeichen und eine Zahl enthalten
+                </ng-container>
+              </ng-template>
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control [nzErrorTip]="pwConfirmError">
+            <nz-input-group>
+              <input
+                type="password"
+                nz-input
+                formControlName="passwordConfirm"
+                placeholder="Passwort bestätigen"
+              />
+              <ng-template #pwConfirmError let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  Bitte bestätige dein Passwort
+                </ng-container>
+                <ng-container *ngIf="control.hasError('mustMatch')">
+                  Die Passwörter stimmen nicht überein
+                </ng-container>
+              </ng-template>
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <!-- <button
+          nz-button
+          class="addButton"
+          [nzType]="'primary'"
+          nzBlock
+        >
+          Speichern
+        </button> -->
+      </form>
+    </ng-template>
+    <ng-template #modalFooterUser>
+      <button nz-button nzType="primary" (click)="submitUserAddForm()" [disabled]="!addUserForm.valid" [nzLoading]="isSavingUser" nzBlock>
+        Speichern
+      </button>
+    </ng-template>
+  </nz-modal>
