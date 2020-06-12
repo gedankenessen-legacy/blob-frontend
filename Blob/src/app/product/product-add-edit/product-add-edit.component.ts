@@ -13,6 +13,7 @@ import { ILocationItem } from 'src/app/interfaces/ILocationItem';
 import { ICategoryItem } from 'src/app/interfaces/ICategoryItem';
 import { Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd';
+import { TitleService } from 'src/app/title.service';
 
 @Component({
   selector: 'app-product-add-edit',
@@ -44,8 +45,11 @@ export class ProductAddEditComponent implements OnInit {
     private fbp: FormBuilder,
     private productService: ProductService,
     private router: Router,
-    private modal: NzModalService
-  ) {}
+    private modal: NzModalService,
+    private titleService: TitleService
+  ) {
+    this.titleService.Title = 'Produkt Erstellen/Bearbeiten';
+  }
 
   ngOnInit(): void {
     this.getIDFromProduct();

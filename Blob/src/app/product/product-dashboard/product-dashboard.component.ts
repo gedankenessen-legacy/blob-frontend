@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { IProductLocationItem } from 'src/app/interfaces/IProductLocationItem';
 import { ILocationItem } from 'src/app/interfaces/ILocationItem';
 import { IProductDashboardItem } from 'src/app/interfaces/IProductDashboardItem';
+import { TitleService } from 'src/app/title.service';
 
 @Component({
   selector: 'app-product-dashboard',
@@ -24,7 +25,9 @@ export class ProductDashboardComponent implements OnInit {
   listOfData: Array<IProductDashboardItem> = [];
   listOfLocation: ILocationItem[] = [];
 
-  constructor(private productService: ProductService, private modal:NzModalService, private router: Router) {}
+  constructor(private productService: ProductService, private modal:NzModalService, private router: Router,private titleService: TitleService) {
+      this.titleService.Title = 'Produkt';
+    }
 
   ngOnInit(): void {
     this.getAllProducts();
