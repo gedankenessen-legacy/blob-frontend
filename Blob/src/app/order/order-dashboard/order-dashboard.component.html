@@ -29,15 +29,15 @@
         <nz-table #nzTable [nzData]="listOfDisplayData" nzTableLayout="fixed" [nzLoading]="isOrdersLoading">
             <thead>
             <tr>
-                <th nzCustomFilter>
+                <th>
                 Bestellungsnummer
-                <nz-filter-trigger
+                <!-- <nz-filter-trigger
                     [(nzVisible)]="visible"
                     [nzActive]="searchValue.length > 0"
                     [nzDropdownMenu]="menu"
                 >
                     <i nz-icon nzType="search" nzTheme="outline"></i>
-                </nz-filter-trigger>
+                </nz-filter-trigger> -->
                 </th>
                 <th>Kunde</th>
                 <th>Adresse</th>
@@ -86,7 +86,7 @@
   <!----------------------------------------->
   <!-- Bestellung Suche Dropdown                -->
   <!----------------------------------------->
-  <nz-dropdown-menu #menu="nzDropdownMenu">
+  <!-- <nz-dropdown-menu #menu="nzDropdownMenu">
     <div class="ant-table-filter-dropdown">
       <div class="search-box">
         <input
@@ -107,5 +107,5 @@
         <button nz-button nzSize="small" (click)="reset()">Reset</button>
       </div>
     </div>
-  </nz-dropdown-menu>
+  </nz-dropdown-menu> -->
   
