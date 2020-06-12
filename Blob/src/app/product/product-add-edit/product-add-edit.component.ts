@@ -52,6 +52,9 @@ export class ProductAddEditComponent implements OnInit {
     this.titleService.Title = 'Produkt Erstellen/Bearbeiten';
   }
 
+  /*******************************************
+   ** OnInit                                 *
+   *******************************************/
   ngOnInit(): void {
     this.getIDFromProduct();
     this.getAllCategorys();
@@ -232,7 +235,7 @@ export class ProductAddEditComponent implements OnInit {
   }
 
   /*******************************************
-   ** Standort hinzufügen                    **
+   ** Standort hinzufügen                    *
    *******************************************/
   addRowLocation(): void {
     if (this.listOfProductLocation.length < this.listOfLocation.length) {
@@ -296,6 +299,9 @@ export class ProductAddEditComponent implements OnInit {
     }
   }
 
+  /*******************************************
+   ** Update Produkt                         *
+   *******************************************/
   updateProdukt(id: number, newCategory: ICategoryItem[], newLocation: IProductLocationItem[]) {
     if (this.selectProductService == 'Product') {
       var newProduct: IProductItem = {
@@ -368,6 +374,9 @@ export class ProductAddEditComponent implements OnInit {
     }
   }
 
+  /*******************************************
+   ** Validiere Kategorien                   *
+   *******************************************/
   validCategory() {
     if (this.productForm.controls['category'].value.length > 0) {
       return true;
@@ -380,6 +389,9 @@ export class ProductAddEditComponent implements OnInit {
     }
   }
 
+  /*******************************************
+   ** Validiere Eigenschaften                *
+   *******************************************/
   validProperties() {
     let isValid = true;
     for (let i = 0; i < this.listOfProperty.length; i++) {
@@ -399,6 +411,9 @@ export class ProductAddEditComponent implements OnInit {
      return isValid;
   }
 
+  /*******************************************
+   ** Validiere Location                     *
+   *******************************************/
   validLocation() {
     let isValid = true;
     for (let i = 0; i < this.listOfProductLocation.length; i++) {
@@ -419,11 +434,16 @@ export class ProductAddEditComponent implements OnInit {
      return isValid;
   }
 
-
+  /*******************************************
+   ** Sende Formulare                        *
+   *******************************************/
   submitForm() {
     if (this.validProductData() && this.validCategory() && this.validProperties() && this.validLocation()) {
       this.isLoading = true;
-      //Produkt Kategorie
+
+      /*******************************************
+       ** Erstelle Kategorie                     *
+       *******************************************/
       let selectedCategory: ICategoryItem[] = [];
       let categoryName = this.productForm.controls['category'].value;
       for (let i = 0; i < this.listOfCategory.length; i++) {
@@ -444,7 +464,9 @@ export class ProductAddEditComponent implements OnInit {
       }
 
 
-      //Produkt Location
+      /*******************************************
+       ** Erstelle Standort                      *
+       *******************************************/
       let selectedLocations: IProductLocationItem[] = [];
       for(let i = 0; i < this.listOfProductLocation.length; i++) {
         if((this.listOfProductLocation[i].locationId > 0) &&
@@ -466,9 +488,9 @@ export class ProductAddEditComponent implements OnInit {
         }
       }
 
-
-
-
+      /*******************************************
+       ** Sende neues Produkt                    *
+       *******************************************/
       if (this.id == -1) {
         let newProduct: IProductItem;
         newProduct = this.createNewProdukt(selectedCategory, selectedLocations);  
@@ -481,9 +503,11 @@ export class ProductAddEditComponent implements OnInit {
           (error) => {
             console.error(error);
           }
-        );
-        
+        );        
       } else {
+        /*******************************************
+         ** Update Produkt                         *
+         *******************************************/
         let updateProduct: IProductItem;
         let updateProductList: IProductItem[] = [];
         updateProductList.push(this.updateProdukt(this.id, selectedCategory, selectedLocations));
