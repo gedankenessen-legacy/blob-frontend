@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { IProductItem } from '../../interfaces/IProductItem';
+import { IProductItem } from '../../interfaces/product/IProductItem';
 import { ProductService } from '../product.service';
 import { NzModalService } from 'ng-zorro-antd';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
-import { IProductLocationItem } from 'src/app/interfaces/IProductLocationItem';
-import { ILocationItem } from 'src/app/interfaces/ILocationItem';
-import { IProductDashboardItem } from 'src/app/interfaces/IProductDashboardItem';
+import { IProductLocationItem } from 'src/app/interfaces/product/IProductLocationItem';
+import { ILocationItem } from 'src/app/interfaces/product/ILocationItem';
+import { IProductDashboardItem } from 'src/app/interfaces/product/IProductDashboardItem';
 import { TitleService } from 'src/app/title.service';
 
 @Component({

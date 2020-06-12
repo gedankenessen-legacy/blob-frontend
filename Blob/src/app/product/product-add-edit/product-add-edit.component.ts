@@ -5,12 +5,12 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { IPropertyItem } from 'src/app/interfaces/IPropertyItem';
-import { IProductLocationItem } from 'src/app/interfaces/IProductLocationItem';
+import { IPropertyItem } from 'src/app/interfaces/product/IPropertyItem';
+import { IProductLocationItem } from 'src/app/interfaces/product/IProductLocationItem';
 import { ProductService } from '../product.service';
-import { IProductItem } from 'src/app/interfaces/IProductItem';
-import { ILocationItem } from 'src/app/interfaces/ILocationItem';
-import { ICategoryItem } from 'src/app/interfaces/ICategoryItem';
+import { IProductItem } from 'src/app/interfaces/product/IProductItem';
+import { ILocationItem } from 'src/app/interfaces/product/ILocationItem';
+import { ICategoryItem } from 'src/app/interfaces/product/ICategoryItem';
 import { Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd';
 import { TitleService } from 'src/app/title.service';
@@ -37,6 +37,7 @@ export class ProductAddEditComponent implements OnInit {
   disabledSKU = false;
   product: IProductItem;
   isValide: boolean = true;
+  isLoading: boolean = false;
 
   /*******************************************
    ** Formular Builder                       **
@@ -405,6 +406,9 @@ export class ProductAddEditComponent implements OnInit {
         this.listOfProductLocation = this.listOfProductLocation.filter(x => x != this.listOfProductLocation[i]);
       }
      }
+     if(this.listOfProductLocation.length < 1) {
+       isValid = false;
+     }
      if(!isValid) {
       this.modal.error({
         nzTitle: 'Fehler',
@@ -418,7 +422,7 @@ export class ProductAddEditComponent implements OnInit {
 
   submitForm() {
     if (this.validProductData() && this.validCategory() && this.validProperties() && this.validLocation()) {
-
+      this.isLoading = true;
       //Produkt Kategorie
       let selectedCategory: ICategoryItem[] = [];
       let categoryName = this.productForm.controls['category'].value;
@@ -470,8 +474,9 @@ export class ProductAddEditComponent implements OnInit {
         newProduct = this.createNewProdukt(selectedCategory, selectedLocations);  
         console.log(newProduct);
         this.productService.createProduct(newProduct).subscribe(
-          (data) => {
-            console.log(data);
+          (data) => { 
+            this.isLoading = false;
+            this.router.navigate(["/product"]);
           },
           (error) => {
             console.error(error);
@@ -484,6 +489,8 @@ export class ProductAddEditComponent implements OnInit {
         updateProductList.push(this.updateProdukt(this.id, selectedCategory, selectedLocations));
         this.productService.updateProduct(updateProductList).subscribe(
           (data) => {
+            this.isLoading = false;
+            this.router.navigate(["/product"]);
           },
           (error) => {
             console.error(error);

@@ -3,11 +3,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BaseService } from '../base.service';
 import { Observable, of } from 'rxjs';
 import { catchError, delay } from 'rxjs/operators';
-import { IProductItem } from '../interfaces/IProductItem';
-import { IProductLocationItem } from '../interfaces/IProductLocationItem';
-import { ICategoryItem } from '../interfaces/ICategoryItem';
-import { ILocationItem } from '../interfaces/ILocationItem';
-import { IPropertyItem } from '../interfaces/IPropertyItem';
+import { IProductItem } from '../interfaces/product/IProductItem';
+import { IProductLocationItem } from '../interfaces/product/IProductLocationItem';
+import { ICategoryItem } from '../interfaces/product/ICategoryItem';
+import { ILocationItem } from '../interfaces/product/ILocationItem';
+import { IPropertyItem } from '../interfaces/product/IPropertyItem';
 
 let isDebug: boolean = false;
 
