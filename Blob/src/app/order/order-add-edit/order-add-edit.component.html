@@ -1,40 +1,35 @@
 <ng-container>
     <nz-spin [nzSpinning]="isLoading">
-        <form
-            nz-form
-            [formGroup]="addForm"
-            class="login-form"
-            (ngSubmit)="submitAddForm()"
-            >
+        <form nz-form [formGroup]="addForm" class="login-form" (ngSubmit)="submitAddForm()">
 
             <nz-form-item>
                 <nz-form-control *ngIf="!isEditing()" nzErrorTip="Bitte wählen Sie einen Kunden aus um die Bestellung zu speichern.">
                     <nz-select formControlName="customerId" nzShowSearch nzAllowClear nzPlaceHolder="Wähle einen Kunden" (ngModelChange)="customerChanged()">
                         <nz-option *ngFor="let customer of customers" [nzValue]="customer.id" [nzLabel]="customer.firstname+' '+customer.lastname"></nz-option>
-                        </nz-select>
+                    </nz-select>
                 </nz-form-control>
-                <nz-form-control  *ngIf="isEditing()">
+                <nz-form-control *ngIf="isEditing()">
                     <nz-input-group>
-                        <input formControlName="customerName" nz-input placeholder="Kunde"/>
+                        <input formControlName="customerName" nz-input placeholder="Kunde" />
                     </nz-input-group>
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
                 <nz-form-control>
                     <nz-input-group>
-                        <input formControlName="street" nz-input placeholder="Straße"/>
+                        <input formControlName="street" nz-input placeholder="Straße" />
                     </nz-input-group>
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
                 <nz-form-control>
                     <nz-input-group>
-                        <input formControlName="city" nz-input placeholder="PLZ, Ort"/>
+                        <input formControlName="city" nz-input placeholder="PLZ, Ort" />
                     </nz-input-group>
                 </nz-form-control>
             </nz-form-item>
             <h2 nz-typography>Produkte</h2>
-            
+
             <div class="order-products-title-wrapper">
                 <h4 nz-typography>Produkt</h4>
                 <h4 nz-typography>Menge</h4>
@@ -50,21 +45,21 @@
                         <nz-form-item>
                             <nz-form-control nzErrorTip="Bitte wähle ein Produkt aus">
                                 <nz-input-group>
-                                    <input nz-input formControlName="productName" placeholder="Preis"/>
-                                    </nz-input-group>
+                                    <input nz-input formControlName="productName" placeholder="Preis" />
+                                </nz-input-group>
                             </nz-form-control>
                         </nz-form-item>
                         <nz-form-item>
                             <nz-form-control nzErrorTip="Bitte wähle eine Menge aus">
                                 <nz-input-group>
-                                <nz-input-number formControlName="quantity" [nzMin]="1" [nzStep]="1" (ngModelChange)="calcInvoiceMount()"></nz-input-number>
+                                    <nz-input-number formControlName="quantity" [nzMin]="1" [nzStep]="1" (ngModelChange)="calcInvoiceMount()"></nz-input-number>
                                 </nz-input-group>
                             </nz-form-control>
                         </nz-form-item>
                         <nz-form-item>
                             <nz-form-control>
                                 <nz-input-group>
-                                <input nz-input formControlName="price" placeholder="Preis"/>
+                                    <input nz-input formControlName="price" placeholder="Preis" />
                                 </nz-input-group>
                             </nz-form-control>
                         </nz-form-item>
@@ -72,7 +67,7 @@
                     <i nz-icon nzType="delete" nzTheme="outline" class="dynamic-delete-button" (click)="removeOrderedProduct(i)"></i>
                 </div>
             </ng-container>
-                <ng-container formArrayName="products">
+            <ng-container formArrayName="products">
                 <!----------------------------------------------- 
                 -- Neue Produkte                               --
                 <------------------------------------------------>
@@ -81,21 +76,21 @@
                         <nz-form-item>
                             <nz-form-control nzErrorTip="Bitte wähle ein Produkt aus">
                                 <nz-select formControlName="product" nzShowSearch nzAllowClear nzPlaceHolder="Produkt auswählen" (ngModelChange)="productChanged(i)">
-                                    <nz-option *ngFor="let product of products" [nzValue]="product.id" [nzLabel]="product.product"></nz-option>
+                                    <nz-option *ngFor="let product of products" [nzValue]="product.id" [nzLabel]="product.name"></nz-option>
                                 </nz-select>
                             </nz-form-control>
                         </nz-form-item>
                         <nz-form-item>
                             <nz-form-control nzErrorTip="Bitte wähle eine Menge aus">
                                 <nz-input-group>
-                                <nz-input-number formControlName="quantity" [nzMin]="1" [nzStep]="1" (ngModelChange)="calcInvoiceMount()"></nz-input-number>
+                                    <nz-input-number formControlName="quantity" [nzMin]="1" [nzStep]="1" (ngModelChange)="calcInvoiceMount()"></nz-input-number>
                                 </nz-input-group>
                             </nz-form-control>
                         </nz-form-item>
                         <nz-form-item>
                             <nz-form-control>
                                 <nz-input-group>
-                                <input nz-input formControlName="price" placeholder="Preis"/>
+                                    <input nz-input formControlName="price" placeholder="Preis" />
                                 </nz-input-group>
                             </nz-form-control>
                         </nz-form-item>
@@ -105,26 +100,15 @@
             </ng-container>
 
             <div class="button-wrapper">
-                <button 
-                    nz-button
-                    nzType="primary"
-                    class="element-add-button"
-                    (click)="addProduct($event)"
-                >
+                <button nz-button nzType="primary" class="element-add-button" (click)="addProduct($event)">
                     <i nz-icon nzType="plus" nzTheme="outline"></i> Produkt hinzufügen
                 </button>
             </div>
-            
+
             <div class="order-add-lastLine-wrapper">
-                <button
-                nz-button
-                class="addButton"
-                nzType="primary"
-                nzBlock
-                [disabled]="!addForm.valid"
-                >
+                <button nz-button class="addButton" nzType="primary" nzBlock [disabled]="!addForm.valid">
                 Speichern
-                </button> 
+                </button>
                 <h3 nz-typography>Gesamtbetrag: {{currentInvoiceMount}}€</h3>
             </div>
         </form>
