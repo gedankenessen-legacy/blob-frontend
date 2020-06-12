@@ -9,9 +9,9 @@ import { error } from 'protractor';
   providedIn: 'root',
 })
 export class AuthService {
-  private debuggee = true;
-  
+
   willExpiresIn: Date;
+
 
   /**
    * Checks if the user is Authenticated.

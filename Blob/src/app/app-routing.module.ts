@@ -2,7 +2,9 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { ProductDashboardComponent } from './product/product-dashboard/product-dashboard.component'
 import { AuthGuard } from './auth/auth.guard';
+
 
 const routes: Routes = [
   {
@@ -10,14 +12,29 @@ const routes: Routes = [
     component: LoginComponent,
   },
   {
-    path: "customer",
+    path: 'product',
     canActivate: [AuthGuard],
-    loadChildren: () => import("./customer/customer.module").then((m) => m.CustomerModule),
+    loadChildren: () => import("./product/product.module").then((m) => m.ProductModule),
   },
   {
-    path: 'products',
+    path: 'customer',
     canActivate: [AuthGuard],
-    loadChildren: () => import('./product/product.module').then(m => m.ProductModule)
+    loadChildren: () => import('./customer/customer.module').then((m) => m.CustomerModule),
+  },
+  {
+    path: 'order',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./order/order.module').then((m) => m.OrderModule),
+  },
+  {
+    path: 'manage',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./management/management.module').then((m) => m.ManagementModule),
+  },
+  {
+    path: 'statistic',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./statistic/statistic.module').then((m) => m.StatisticModule),
   },
   {
     path: '**',
@@ -26,7 +43,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: "login",
+    redirectTo: 'login',
   },
 ];
 

@@ -3,18 +3,18 @@
     <div class="logo">BLOB</div>
     <h1 class="header-title-name">{{ Title }}</h1>
     <ul nz-menu nzTheme="dark" nzMode="horizontal" class="header-menu">
-      <li nz-menu-item>
+      <li nz-menu-item [routerLink]="['/manage']">
         <i nz-icon nzType="setting" nzTheme="outline"></i>Verwaltung
       </li>
       <li nz-menu-item (click)="signOut()" >
-        <i nz-iconnzType="export" nzTheme="outline"></i>Logout
+        <i nz-icon nzType="logout" nzTheme="outline"></i>Logout
       </li>
     </ul>
   </nz-header>
   <nz-layout>
     <nz-sider nzWidth="200px" nzTheme="dark">
       <ul nz-menu nzTheme="dark">
-        <li [routerLink]="['/products']" routerLinkActive="active" nz-menu-item>
+        <li [routerLink]="['/product']" routerLinkActive="router-link-active" nz-menu-item>
           <i nz-icon nzType="code-sandbox" nzTheme="outline"></i>Produkte
         </li>
         <li

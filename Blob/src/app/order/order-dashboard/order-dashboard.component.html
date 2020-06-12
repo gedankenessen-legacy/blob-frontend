@@ -1,0 +1,111 @@
+<!----------------------------------------->
+<!-- Bestellung hinzufügen Button           -->
+<!----------------------------------------->
+<div class="button-wrapper">
+    <button
+      nz-button
+      nzType="primary"
+      class="element-add-button"
+      [routerLink]="['/order/addedit',0]"
+    >
+      <i nz-icon nzType="plus" nzTheme="outline"></i> Bestellung hinzufügen
+    </button>
+
+    <button
+    nz-button
+    nzType="primary"
+    class="element-add-button"
+    (click)="getAllOrders()"
+  >
+  <i nz-icon nzType="reload" nzTheme="outline"></i> Neu laden
+  </button>
+  </div>
+  
+  <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'" [nzSelectedIndex]="currentState-1">
+    <nz-tab *ngFor="let tab of tabs" [nzTitle]="tab.value" (nzClick)="tabChanged(tab.id)"> 
+        <!----------------------------------------->
+        <!-- Bestellungtabelle                   -->
+        <!----------------------------------------->
+        <nz-table #nzTable [nzData]="listOfDisplayData" nzTableLayout="fixed" [nzLoading]="isOrdersLoading">
+            <thead>
+            <tr>
+                <th>
+                Bestellungsnummer
+                <!-- <nz-filter-trigger
+                    [(nzVisible)]="visible"
+                    [nzActive]="searchValue.length > 0"
+                    [nzDropdownMenu]="menu"
+                >
+                    <i nz-icon nzType="search" nzTheme="outline"></i>
+                </nz-filter-trigger> -->
+                </th>
+                <th>Kunde</th>
+                <th>Adresse</th>
+                <th>Datum</th>
+                <th>Quickactions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let data of nzTable.data">
+                <td>{{ data.id }}</td>
+                <td *ngIf="data.customer">{{ data.customer.firstname }} {{ data.customer.lastname }}</td>
+                <td *ngIf="!data.customer"></td>
+                <td *ngIf="data.customer">{{ data.customer.address.street }}, {{ data.customer.address.zip }} {{ data.customer.address.city }}</td>
+                <td *ngIf="!data.customer"></td>
+                <td>{{ data.createdAt }}</td>
+                <td>
+                <nz-select [(ngModel)]="currentState" (ngModelChange)="selectChanged($event, data.id)">
+                    <nz-option *ngFor="let tab of tabs" [nzLabel]="tab.value" [nzValue]="tab.id"></nz-option>
+                </nz-select>
+                <button
+                    nz-button
+                    nzType="primary"
+                    [nzSize]="4"
+                    class="quickaction-button"
+                    [routerLink]="['/order/addedit',data.id]"
+                >
+                    <i nz-icon nzType="edit" nzTheme="outline"></i>
+                </button>
+                <!-- <button
+                    nz-button
+                    nzType="primary"
+                    [nzSize]="4"
+                    class="quickaction-button"
+                >
+                    <i nz-icon nzType="delete" nzTheme="outline"></i>
+                </button> -->
+                </td>
+            </tr>
+            </tbody>
+        </nz-table>
+
+    </nz-tab>
+  </nz-tabset>
+
+  
+  <!----------------------------------------->
+  <!-- Bestellung Suche Dropdown                -->
+  <!----------------------------------------->
+  <!-- <nz-dropdown-menu #menu="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input
+          type="text"
+          nz-input
+          placeholder="Bestellungsnummer"
+          [(ngModel)]="searchValue"
+        />
+        <button
+          nz-button
+          nzSize="small"
+          nzType="primary"
+          (click)="search()"
+          class="search-button"
+        >
+          Suchen
+        </button>
+        <button nz-button nzSize="small" (click)="reset()">Reset</button>
+      </div>
+    </div>
+  </nz-dropdown-menu> -->
+  

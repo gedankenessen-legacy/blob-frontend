@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,20 +15,16 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzGridModule } from 'ng-zorro-antd/grid';
+import { StatisticDashboardComponent } from './statistic/statistic-dashboard/statistic-dashboard.component';
 
 registerLocaleData(de);
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    NotFoundComponent
-  ],
+  declarations: [AppComponent, LoginComponent, NotFoundComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -39,13 +35,15 @@ registerLocaleData(de);
     NzLayoutModule,
     NzButtonModule,
     NzMenuModule,
-    NzBreadCrumbModule,
     NzIconModule,
     NzFormModule,
     NzInputModule,
-    NzGridModule
+    NzGridModule,
   ],
-  providers: [{ provide: NZ_I18N, useValue: de_DE }],
-  bootstrap: [AppComponent]
+  providers: [
+    { provide: NZ_I18N, useValue: de_DE },
+    { provide: LOCALE_ID, useValue: 'de-DE' },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
