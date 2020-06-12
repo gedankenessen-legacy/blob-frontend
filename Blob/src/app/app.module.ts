@@ -15,7 +15,6 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -36,7 +35,6 @@ registerLocaleData(de);
     NzLayoutModule,
     NzButtonModule,
     NzMenuModule,
-    NzBreadCrumbModule,
     NzIconModule,
     NzFormModule,
     NzInputModule,

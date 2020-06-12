@@ -1,4 +1,5 @@
 export interface ILocationItem {
-    location: string;
-    amount: number;
+    id: number;
+    name: string;
+    value?: number;
 }

@@ -2,7 +2,9 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { ProductDashboardComponent } from './product/product-dashboard/product-dashboard.component'
 import { AuthGuard } from './auth/auth.guard';
+
 
 const routes: Routes = [
   {
@@ -10,14 +12,14 @@ const routes: Routes = [
     component: LoginComponent,
   },
   {
+    path: 'product',
+    canActivate: [AuthGuard],
+    loadChildren: () => import("./product/product.module").then((m) => m.ProductModule),
+  },
+  {
     path: 'customer',
     canActivate: [AuthGuard],
     loadChildren: () => import('./customer/customer.module').then((m) => m.CustomerModule),
-  },
-  {
-    path: 'products',
-    canActivate: [AuthGuard],
-    loadChildren: () => import('./product/product.module').then((m) => m.ProductModule),
   },
   {
     path: 'order',
