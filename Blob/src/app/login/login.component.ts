@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -13,20 +9,27 @@ import { AuthService } from '../auth/auth.service';
   styleUrls: ['./login.component.less'],
 })
 export class LoginComponent implements OnInit {
- 
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {}
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      username: new FormControl("", [Validators.required]),
-      password: new FormControl("", [Validators.required])
-    }); 
+      username: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required]),
+    });
   }
 
   submitForm() {
-    // TODO: only debugging here..
-    this.authService.signIn("myUsername", "myPassword"); //! DEBUG
+    this.authService.signIn(this.loginForm.controls['username'].value, this.loginForm.controls['password'].value).subscribe(
+      (data) => {
+        this.authService.willExpiresIn = new Date();
+        this.authService.willExpiresIn.setSeconds(data.expires_in);
+
+        localStorage.setItem('token', data.access_token);
+        this.router.navigate(['/']);
+      },
+      (error) => {}
+    );
   }
 }

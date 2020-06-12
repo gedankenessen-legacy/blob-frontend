@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { throwError } from 'rxjs';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,11 @@ export class BaseService {
 
   public get getBaseUrl(): string {
     return this.baseUrl;
+  }
+
+  public appendAuthorizationHeader(httpHeaders: HttpHeaders): HttpHeaders {
+    httpHeaders.append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+    return httpHeaders;
   }
 
   /**
