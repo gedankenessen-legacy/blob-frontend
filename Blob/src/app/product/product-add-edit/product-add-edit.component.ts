@@ -38,6 +38,7 @@ export class ProductAddEditComponent implements OnInit {
   product: IProductItem;
   isValide: boolean = true;
   isLoading: boolean = false;
+  isCopied: boolean = false;
 
   /*******************************************
    ** Formular Builder                       **
@@ -89,6 +90,7 @@ export class ProductAddEditComponent implements OnInit {
       }
     } else {
       this.id = Number(splitted[3]);
+      this.isCopied = true;
       this.getProductData();
       this.id = -1;
     }
@@ -119,7 +121,21 @@ export class ProductAddEditComponent implements OnInit {
 
         this.productForm.controls['category'].setValue(data.categories[0].name);
 
-        this.listOfProperty = data.properties;
+        if(this.isCopied) {
+          
+          this.listOfProperty = data.properties;
+          let props: IPropertyItem[] = [];
+          for(let prop of data.properties) {
+            let newProperty: IPropertyItem = {
+              name: prop.name,
+              value: prop.value,
+            }
+            props.push(newProperty);
+          }
+          this.listOfProperty = props;
+        } else {
+          this.listOfProperty = data.properties;
+        }
 
         this.getAllLocations();
       },
