@@ -213,6 +213,7 @@ export class CutomerDashboardComponent implements OnInit {
     this.addForm.controls['street'].setValue(customer.address.street);
     this.addForm.controls['zip'].setValue(customer.address.zip);
     this.addForm.controls['city'].setValue(customer.address.city);
+    this.addForm.controls['id'].setValue(0);
 
     this.isPopupVisible = true;
   }

@@ -11,21 +11,21 @@ import { IProductItem } from '../interfaces/product/IProductItem';
 export class ProductService {
   demoProducts: Array<IProductItem> = [
     {
-      id: 1,
+      id: 18,
       product: 'Produkt 1',
       sku: 'asdfasfg',
       stock: '10',
       price: 50,
     },
     {
-      id: 2,
+      id: 22,
       product: 'Produkt 2',
       sku: 'asdfasfg',
       stock: '10',
       price: 50,
     },
     {
-      id: 3,
+      id: 16,
       product: 'Produkt 3',
       sku: 'asdfasfg',
       stock: '10',
