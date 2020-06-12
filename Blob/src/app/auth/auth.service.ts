@@ -10,6 +10,7 @@ import { error } from 'protractor';
 })
 export class AuthService {
   private debuggee = true;
+  
   willExpiresIn: Date;
 
   /**
