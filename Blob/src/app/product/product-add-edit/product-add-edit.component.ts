@@ -72,7 +72,6 @@ export class ProductAddEditComponent implements OnInit {
       category: new FormControl('', [Validators.required]),
     });
     this.productForm.controls['sku'].setValue("");
-    console.log('ID:' + this.id);
   }
 
   /*******************************************
@@ -103,7 +102,6 @@ export class ProductAddEditComponent implements OnInit {
     this.productService.getProduct(this.id).subscribe(
       (data) => {
         this.product = data;
-        console.log(data);
         if (data.sku != "NO SKU DEFINED") {
           this.selectProductService = 'Product';
         } else {
@@ -112,7 +110,6 @@ export class ProductAddEditComponent implements OnInit {
         }
         this.productForm.controls['productname'].setValue(data.name);
         this.productForm.controls['price'].setValue(data.price);
-        console.log(data.sku);
         if(data.sku != "NO SKU DEFINED") {
           this.productForm.controls['sku'].setValue(data.sku);
         } else {
@@ -242,7 +239,6 @@ export class ProductAddEditComponent implements OnInit {
             });
           });
         }
-        console.log(this.listOfLocation);
       },
       (error) => {
         console.error(error);
@@ -333,6 +329,7 @@ export class ProductAddEditComponent implements OnInit {
       return newProduct;
     } else if (this.selectProductService == 'Service') {
       var newProduct: IProductItem = {
+        id: id,
         name: this.productForm.controls['productname'].value,
         price: this.productForm.controls['price'].value,
         categories: newCategory,
@@ -504,13 +501,13 @@ export class ProductAddEditComponent implements OnInit {
         }
       }
 
+
       /*******************************************
        ** Sende neues Produkt                    *
        *******************************************/
       if (this.id == -1) {
         let newProduct: IProductItem;
         newProduct = this.createNewProdukt(selectedCategory, selectedLocations);  
-        console.log(newProduct);
         this.productService.createProduct(newProduct).subscribe(
           (data) => { 
             this.isLoading = false;
