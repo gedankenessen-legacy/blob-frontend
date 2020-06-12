@@ -30,7 +30,6 @@
     <!----------------------------------------->
     <nz-table #nzTableLocation [nzData]="listOfLocations" nzTableLayout="fixed" [nzLoading]="isLocationLoading">
       <thead>
-        <!-- nzCustomFilter -->
         <tr>
           <th>Id</th>
           <th>Name</th>
@@ -108,7 +107,7 @@
                 type="text"
                 nz-input
                 formControlName="street"
-                placeholder="Straße"
+                placeholder="Straße + Hausnummer"
               />
             </nz-input-group>
           </nz-form-control>
@@ -120,7 +119,7 @@
                 type="text"
                 nz-input
                 formControlName="zip"
-                placeholder="plz"
+                placeholder="PLZ"
               />
             </nz-input-group>
           </nz-form-control>
@@ -137,14 +136,6 @@
             </nz-input-group>
           </nz-form-control>
         </nz-form-item>
-        <!-- <button
-          nz-button
-          class="addButton"
-          [nzType]="'primary'"
-          nzBlock
-        >
-          Speichern
-        </button> -->
       </form>
     </ng-template>
     <ng-template #modalFooterLocation>

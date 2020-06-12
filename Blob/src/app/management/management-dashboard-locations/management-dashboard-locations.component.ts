@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd';
-import { ManagementService } from '../management.service';
 import { ILocationItem } from 'src/app/interfaces/manage/ILocationItem';
 import { IAdress } from 'src/app/interfaces/iadress';
+import { LocationService } from '../location.service';
 
 @Component({
   selector: 'app-management-dashboard-locations',
@@ -16,10 +16,13 @@ export class ManagementDashboardLocationsComponent implements OnInit {
   isSavingLocation: boolean = false;
   addLocationForm: FormGroup;
 
+  /***************************************
+   ** Daten der Standorte               **
+   ***************************************/
   listOfLocations: ILocationItem[] = [];
   listOfDisplayLocations: ILocationItem[] = [];
 
-  constructor(private modal:NzModalService, private fb: FormBuilder, private managemantService: ManagementService) { }
+  constructor(private modal:NzModalService, private fb: FormBuilder, private locationService: LocationService) { }
 
   ngOnInit(): void {
     this.addLocationForm = this.fb.group({
@@ -33,9 +36,12 @@ export class ManagementDashboardLocationsComponent implements OnInit {
     this.getAllLocations();
   }
 
+  /***************************************
+   ** Laden aller Standorte             **
+   ***************************************/
   getAllLocations() {
     this.isLocationLoading = true;
-    this.managemantService.getAllLocations().subscribe(
+    this.locationService.getAllLocations().subscribe(
       (data) => {
         this.listOfLocations = data;
         this.listOfDisplayLocations = data;
@@ -53,6 +59,9 @@ export class ManagementDashboardLocationsComponent implements OnInit {
     );
   }
 
+  /***************************************
+   ** Ändern eines Standortes           **
+   ***************************************/
   changeLocation(id: number): void {
     var locations: ILocationItem[] = this.listOfLocations.filter(
       (item: ILocationItem) => item.id == id
@@ -69,10 +78,13 @@ export class ManagementDashboardLocationsComponent implements OnInit {
     this.isLocationPopupVisible = true;
   }
 
+  /***************************************
+   ** Löschen eines Standortes          **
+   ***************************************/
   deleteLocation(id: number): void {
     this.isLocationLoading = true;
 
-    this.managemantService.deleteLocation(id).subscribe(
+    this.locationService.deleteLocation(id).subscribe(
       (data) => {
         this.getAllLocations();
       },
@@ -103,6 +115,9 @@ export class ManagementDashboardLocationsComponent implements OnInit {
     }
   }
 
+  /***************************************
+   ** Hinzufügen eines Standortes       **
+   ***************************************/
   addNewLocation() {
     this.isSavingLocation = true;
     var address: IAdress = {
@@ -117,7 +132,7 @@ export class ManagementDashboardLocationsComponent implements OnInit {
       address: address,
     };
 
-    this.managemantService.createLocation(newLocationItem).subscribe(
+    this.locationService.createLocation(newLocationItem).subscribe(
       (data) => {
         console.log(data);
         this.isLocationPopupVisible = false;
@@ -136,6 +151,9 @@ export class ManagementDashboardLocationsComponent implements OnInit {
     );
   }
 
+  /***************************************
+   ** Änderen eines Standortes          **
+   ***************************************/
   updateLocation(id: number) {
     this.isSavingLocation = true;
 
@@ -158,7 +176,7 @@ export class ManagementDashboardLocationsComponent implements OnInit {
       address: address,
     };
     
-    this.managemantService.updateLocations([newLocationItem]).subscribe(
+    this.locationService.updateLocations([newLocationItem]).subscribe(
       (data) => {
         console.log(data);
         

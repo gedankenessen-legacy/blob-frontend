@@ -6,9 +6,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd';
-import { ManagementService } from '../management.service';
 import { MustMatch } from '../passwordValidation';
 import { IUserItem } from 'src/app/interfaces/manage/IUserItem';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-management-dashboard-users',
@@ -21,10 +21,13 @@ export class ManagementDashboardUsersComponent implements OnInit {
   isSavingUser: boolean = false;
   addUserForm: FormGroup;
 
+  /***************************************
+   ** Daten der Benutzer                **
+   ***************************************/
   listOfUsers: IUserItem[] = [];
   listOfDisplayUsers: IUserItem[] = [];
 
-  constructor(private modal:NzModalService, private fb: FormBuilder, private managemantService: ManagementService) { }
+  constructor(private modal:NzModalService, private fb: FormBuilder, private userService: UserService) { }
 
   ngOnInit(): void {
     this.addUserForm = this.fb.group({
@@ -41,13 +44,12 @@ export class ManagementDashboardUsersComponent implements OnInit {
     this.getAllUsers();
   }
 
-  get userFormControls(){
-    return this.addUserForm.controls
-  }
-
+  /***************************************
+   ** Laden aller Benutzer              **
+   ***************************************/
   getAllUsers() {
     this.isUserLoading = true;
-    this.managemantService.getAllUsers().subscribe(
+    this.userService.getAllUsers().subscribe(
       (data) => {
         this.listOfUsers = data;
         this.listOfDisplayUsers = data;
@@ -79,6 +81,9 @@ export class ManagementDashboardUsersComponent implements OnInit {
     this.addNewUser()
   }
 
+  /***************************************
+   ** Hinzufügen eines Benutzers        **
+   ***************************************/
   addNewUser() {
     this.isSavingUser = true;
     var newUserItem: IUserItem = {
@@ -90,7 +95,7 @@ export class ManagementDashboardUsersComponent implements OnInit {
     };
     delete newUserItem.id;
 
-    this.managemantService.createUser(newUserItem).subscribe(
+    this.userService.createUser(newUserItem).subscribe(
       (data) => {
         console.log(data);
         this.isUserPopupVisible = false;
