@@ -159,6 +159,9 @@ export class OrderAddEditComponent implements OnInit {
       }
     }
 
+    //alert(JSON.stringify(newOrderItem))
+    
+
     /* alert(JSON.stringify(newOrderItem)); */
 
     if(this.orderId>0){
