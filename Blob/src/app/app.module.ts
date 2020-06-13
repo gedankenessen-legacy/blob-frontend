@@ -21,6 +21,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { StatisticDashboardComponent } from './statistic/statistic-dashboard/statistic-dashboard.component';
 import { AuthHttpInterceptor } from './auth/auth-http.interceptor';
+import { NzModalModule } from 'ng-zorro-antd';
 
 registerLocaleData(de);
 
@@ -40,6 +41,7 @@ registerLocaleData(de);
     NzFormModule,
     NzInputModule,
     NzGridModule,
+    NzModalModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: de_DE },

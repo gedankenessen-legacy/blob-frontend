@@ -35,8 +35,10 @@
       </nz-form-item>
       <button
         nz-button
+        [nzLoading]="isLoading"
         class="login-form-button login-form-margin"
         [nzType]="'primary'"
+        [disabled]="!loginForm.valid"
       >
         Login
       </button>
