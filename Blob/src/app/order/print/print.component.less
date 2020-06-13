@@ -3,8 +3,56 @@
   height: 29.7cm;
   background-color: white;
   border: solid 1px #f0f0f0;
-  padding: 50px;
   box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
     0 22.3px 17.9px rgba(0, 0, 0, 0.072);
   margin: 24px 0 0 0;
+  font-size: 11pt;
+}
+
+#print-section > div {
+  /* margin-left: 96px;
+  margin-top: 96px;
+  margin-right: 96px; */
+  font-size: 11pt;
+}
+
+#print-section > div > p {
+  margin-bottom: 10px;
+}
+
+#address p {
+  margin-bottom: 0px;
+}
+
+.ant-table-cell {
+  font-size: 9pt;
+}
+
+.pheader {
+  padding-top: 0px;
+  padding-left: 0px;
+  padding-bottom: 48px;
+}
+
+.pheader:hover {
+  cursor: pointer;
+  color: #40a9ff !important;
+}
+
+@media print {
+  #print-section {
+    width: auto;
+    height: auto;
+    border: none;
+    box-shadow: none;
+    margin: 0;
+  }
+
+  #print-section > div > p {
+    margin-bottom: 0;
+  }
+
+  #address p {
+    margin-bottom: 0;
+  }
 }
