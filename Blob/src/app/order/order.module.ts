@@ -3,11 +3,25 @@ import { CommonModule } from '@angular/common';
 
 import { OrderRoutingModule } from './order-routing.module';
 import { OrderDashboardComponent } from './order-dashboard/order-dashboard.component';
-import { NzTableModule, NzButtonModule, NzDropDownModule, NzIconModule, NzFormModule, NzInputModule, NzSelectModule, NzDividerModule, NzRadioModule, NzModalModule, NzTabsModule, NzSpinModule, NzInputNumberModule} from 'ng-zorro-antd';
+import {
+  NzTableModule,
+  NzButtonModule,
+  NzDropDownModule,
+  NzIconModule,
+  NzFormModule,
+  NzInputModule,
+  NzSelectModule,
+  NzDividerModule,
+  NzRadioModule,
+  NzModalModule,
+  NzTabsModule,
+  NzSpinModule,
+  NzInputNumberModule,
+} from 'ng-zorro-antd';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OrderAddEditComponent } from './order-add-edit/order-add-edit.component';
 import { PrintComponent } from './print/print.component';
-
+import { NgxPrintModule } from 'ngx-print';
 
 @NgModule({
   declarations: [OrderDashboardComponent, OrderAddEditComponent, PrintComponent],
@@ -29,7 +43,8 @@ import { PrintComponent } from './print/print.component';
     NzModalModule,
     NzTabsModule,
     NzSpinModule,
-    NzInputNumberModule
-  ]
+    NzInputNumberModule,
+    NgxPrintModule,
+  ],
 })
-export class OrderModule { }
+export class OrderModule {}
