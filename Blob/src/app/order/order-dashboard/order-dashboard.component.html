@@ -66,14 +66,16 @@
                 >
                     <i nz-icon nzType="edit" nzTheme="outline"></i>
                 </button>
-                <!-- <button
+                <button 
+                    *ngIf="isShipping()"
                     nz-button
                     nzType="primary"
                     [nzSize]="4"
                     class="quickaction-button"
+                    [routerLink]="['/order/print',data.id]"
                 >
-                    <i nz-icon nzType="delete" nzTheme="outline"></i>
-                </button> -->
+                <i nz-icon nzType="printer" nzTheme="outline"></i>
+                </button>
                 </td>
             </tr>
             </tbody>

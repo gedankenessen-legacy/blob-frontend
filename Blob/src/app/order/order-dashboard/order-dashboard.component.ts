@@ -48,6 +48,10 @@ export class OrderDashboardComponent implements OnInit {
     this.getAllOrders();
   }
 
+  isShipping(): boolean{
+    return this.currentState == EOrderState.shipping;
+  }
+
   getAllOrders() {
     this.isOrdersLoading = true;
     this.orderService.getAllOrders().subscribe(
