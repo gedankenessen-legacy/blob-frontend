@@ -8,7 +8,7 @@
     <nz-page-header-title>Zu den Bestellungen</nz-page-header-title>
   </nz-page-header>
 
-  <button nz-button nzType="primary" [useExistingCss]="true" printSectionId="print-section" ngxPrint>Drucken</button>
+  <button nz-button nzType="primary" useExistingCss="true" printSectionId="print-section" ngxPrint>Drucken</button>
 
   <div id="print-section">
     <div style="margin-left: 80px; margin-top: 96px; margin-right: 80px; font-size: 9pt;">
@@ -28,7 +28,7 @@
       <h2>Lieferschein</h2>
       <span>&nbsp;</span><br />
       <span>Sehr geehrte Damen und Herren,</span><br />
-      <p>vielen Dank für Ihre Zusammenarbeit. Vereinbarungsmäßig Liefern wir Ihnen folge Waren:</p>
+      <p>vielen Dank für Ihre Zusammenarbeit. Vereinbarungsmäßig Liefern wir Ihnen folgende Waren:</p>
       <span>&nbsp;</span><br />
       <span>&nbsp;</span><br />
       <nz-table #basicTable [nzData]="dataSet" [nzShowPagination]="false" [nzSize]="tableSize">
