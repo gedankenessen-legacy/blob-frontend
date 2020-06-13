@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { OrderDashboardComponent } from './order-dashboard/order-dashboard.component';
 import { OrderAddEditComponent } from './order-add-edit/order-add-edit.component';
+import { PrintComponent } from './print/print.component';
 
 
 const routes: Routes = [
@@ -12,6 +13,10 @@ const routes: Routes = [
   {
     path: "addedit/:id",
     component: OrderAddEditComponent
+  },
+  {
+    path: "print/:id",
+    component: PrintComponent
   }
 ];
 

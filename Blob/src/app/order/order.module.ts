@@ -6,10 +6,11 @@ import { OrderDashboardComponent } from './order-dashboard/order-dashboard.compo
 import { NzTableModule, NzButtonModule, NzDropDownModule, NzIconModule, NzFormModule, NzInputModule, NzSelectModule, NzDividerModule, NzRadioModule, NzModalModule, NzTabsModule, NzSpinModule, NzInputNumberModule} from 'ng-zorro-antd';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OrderAddEditComponent } from './order-add-edit/order-add-edit.component';
+import { PrintComponent } from './print/print.component';
 
 
 @NgModule({
-  declarations: [OrderDashboardComponent, OrderAddEditComponent],
+  declarations: [OrderDashboardComponent, OrderAddEditComponent, PrintComponent],
   imports: [
     CommonModule,
     OrderRoutingModule,
