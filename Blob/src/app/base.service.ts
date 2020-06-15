@@ -8,7 +8,7 @@ import { HttpHeaders } from '@angular/common/http';
 export class BaseService {
   private baseUrl: string = 'https://localhost:5001/api';
   //private baseUrl: string = 'https://localhost:44383/api';
-  
+
   constructor() {}
 
   public get getBaseUrl(): string {

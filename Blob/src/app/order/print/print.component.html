@@ -1,0 +1,52 @@
+<div *ngIf="isLoading" style="height: 100vh;">
+  <ng-template #indicatorTemplate><i style="font-size: 100px;" nz-icon nzType="loading"></i></ng-template>
+  <nz-spin style="text-align: center; padding-top: 24px;" nzSimple [nzIndicator]="indicatorTemplate"> </nz-spin>
+</div>
+
+<div *ngIf="!isLoading">
+  <nz-page-header class="pheader" (nzBack)="goBack()" nzBackIcon [routerLink]="['/order']">
+    <nz-page-header-title>Zu den Bestellungen</nz-page-header-title>
+  </nz-page-header>
+
+  <button nz-button nzType="primary" useExistingCss="true" printSectionId="print-section" ngxPrint>Drucken</button>
+
+  <div id="print-section">
+    <div style="margin-left: 80px; margin-top: 96px; margin-right: 80px; font-size: 9pt;">
+      <span>&nbsp;</span><br />
+      <span>&nbsp;</span><br />
+      <span>&nbsp;</span><br />
+      <div id="address" style="font-size: 11pt;">
+        <p>{{ customer.firstname + ' ' + customer.lastname }}</p>
+        <p>{{ customer.address.street }}</p>
+        <p>{{ customer.address.zip + ' ' + customer.address.city }}</p>
+      </div>
+      <span>&nbsp;</span><br />
+      <span>&nbsp;</span><br />
+      <span style="float: right;">{{ date }}</span>
+      <span>&nbsp;</span><br />
+      <span>&nbsp;</span><br />
+      <h2>Lieferschein</h2>
+      <span>&nbsp;</span><br />
+      <span>Sehr geehrte Damen und Herren,</span><br />
+      <p>vielen Dank für Ihre Zusammenarbeit. Vereinbarungsmäßig Liefern wir Ihnen folgende Waren:</p>
+      <span>&nbsp;</span><br />
+      <span>&nbsp;</span><br />
+      <nz-table #basicTable [nzData]="dataSet" [nzShowPagination]="false" [nzSize]="tableSize">
+        <thead>
+          <tr>
+            <th>Pos.</th>
+            <th>Bezeichnung</th>
+            <th>Anzahl</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicTable.data">
+            <td>{{ data.pos }}</td>
+            <td>{{ data.name }}</td>
+            <td>{{ data.quantity }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>
