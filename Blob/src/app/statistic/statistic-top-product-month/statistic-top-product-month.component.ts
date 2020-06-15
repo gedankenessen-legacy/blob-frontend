@@ -44,5 +44,8 @@ export class StatisticTopProductMonthComponent implements OnInit {
         }
       });
     });
+
+    // Sort quantity
+    this.topProducts.sort((one, two) => (one.count > two.count ? -1 : 1));
   }
 }
