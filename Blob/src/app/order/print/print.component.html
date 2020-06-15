@@ -51,6 +51,12 @@
           </tr>
         </tbody>
       </nz-table>
+
+      <span>&nbsp;</span><br />
+      <span>&nbsp;</span><br />
+      <span>&nbsp;</span><br />
+      <p>Wir bedanken uns für Ihren Auftrag und freuen uns auf die weitere Zusammenarbeit.</p>
+      <span>&nbsp;</span><br />
     </div>
   </div>
 
@@ -79,7 +85,7 @@
       <h2>Rechnung</h2>
       <span>&nbsp;</span><br />
       <span>Sehr geehrte Damen und Herren,</span><br />
-      <p>vielen Dank für Ihre Zusammenarbeit. Vereinbarungsmäßig Liefern wir Ihnen folgende Waren:</p>
+      <p>vielen Dank für Ihre Zusammenarbeit. Nachfolgend berechnen wir Ihnen wie vereinbart:</p>
       <span>&nbsp;</span><br />
       <span>&nbsp;</span><br />
       <nz-table #basicTable [nzFooter]="invoiceFooter" [nzData]="dataSet" [nzShowPagination]="false" [nzSize]="tableSize">
@@ -102,6 +108,14 @@
           </tr>
         </tbody>
       </nz-table>
+
+      <span>&nbsp;</span><br />
+      <span>&nbsp;</span><br />
+      <span>&nbsp;</span><br />
+      <p>Zahlbar innerhalb von 14 Tagen nach Erhalt der Rechnung.</p>
+      <p>Wir bedanken uns für Ihren Auftrag und freuen uns auf die weitere Zusammenarbeit.</p>
+      <span>&nbsp;</span><br />
+
       <ng-template #invoiceFooter>
         <div *ngIf="isInvoice" style="font-size: 9pt;">
           <div nz-row class="tableFooterListing">
@@ -116,12 +130,6 @@
             <div nz-col nzSpan="20"><b>Rechnungsbetrag: </b></div>
             <div nz-col nzSpan="4">{{ totalPrice | currency: 'EUR' }}</div>
           </div>
-          <!--          <span style="float: right;">Summe Netto: {{ totalPrice - totalPrice * 0.19 | currency: 'EUR' }}</span
-          ><br />
-          <span style="float: right;">Umsatzsteuer 19.00%: {{ totalPrice * 0.19 | currency: 'EUR' }}</span
-          ><br />
-          <span style="float: right;"><b>Rechnungsbetrag: </b>{{ totalPrice | currency: 'EUR' }}</span
-          ><br /> -->
         </div>
       </ng-template>
     </div>
