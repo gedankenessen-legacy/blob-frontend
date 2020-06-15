@@ -429,14 +429,17 @@ export class ProductAddEditComponent implements OnInit {
    *******************************************/
   validLocation() {
     let isValid = true;
-    for (let i = 0; i < this.listOfProductLocation.length; i++) {
-      if(this.listOfProductLocation[i].quantity <= 0) {
-        this.listOfProductLocation = this.listOfProductLocation.filter(x => x != this.listOfProductLocation[i]);
-      }
+    let size = this.listOfProductLocation.length;
+    let locations: IProductLocationItem[] = [];
+    for (let i = 0; i < size; i++) {
+      if(this.listOfProductLocation[i].quantity > 0) {
+        locations.push(this.listOfProductLocation[i]);
+      } 
      }
-     if(this.listOfProductLocation.length < 1) {
-       isValid = false;
-     }
+    this.listOfProductLocation = locations;
+    if(this.listOfProductLocation.length < 1) {
+      isValid = false;
+    }
      if(!isValid) {
       this.modal.error({
         nzTitle: 'Fehler',
