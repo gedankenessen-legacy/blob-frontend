@@ -48,8 +48,8 @@ export class OrderDashboardComponent implements OnInit {
     this.getAllOrders();
   }
 
-  isShipping(): boolean{
-    return this.currentState == EOrderState.shipping;
+  isPrintButtonVisible(): boolean{
+    return this.currentState == EOrderState.shipping || this.currentState == EOrderState.inProcessing || this.currentState == EOrderState.archived;
   }
 
   getAllOrders() {
