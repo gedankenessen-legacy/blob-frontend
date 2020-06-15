@@ -21,6 +21,7 @@ import {
   NzLayoutModule,
   NzOverlayModule,
   NzPageHeaderModule,
+  NzSwitchModule,
 } from 'ng-zorro-antd';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OrderAddEditComponent } from './order-add-edit/order-add-edit.component';
@@ -50,6 +51,7 @@ import { NgxPrintModule } from 'ngx-print';
     NzInputNumberModule,
     NgxPrintModule,
     NzPageHeaderModule,
+    NzSwitchModule,
   ],
 })
 export class OrderModule {}

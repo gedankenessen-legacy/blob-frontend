@@ -40,6 +40,7 @@ export class PrintComponent implements OnInit {
     },
   ];
   isLoading = false;
+  isInvoice = false;
   date = new Date().toLocaleDateString('de-DE');
   tableSize = 'small';
 
