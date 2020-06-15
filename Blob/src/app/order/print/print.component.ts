@@ -32,16 +32,22 @@ export class PrintComponent implements OnInit {
       pos: 1,
       name: 'Reifen',
       quantity: 3,
+      price: 50,
+      priceTotal: 150,
     },
     {
       pos: 2,
       name: 'Reifen',
       quantity: 6,
+      price: 500,
+      priceTotal: 3000,
     },
   ];
   isLoading = false;
+  isInvoice = false;
   date = new Date().toLocaleDateString('de-DE');
   tableSize = 'small';
+  totalPrice: number;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -77,6 +83,8 @@ export class PrintComponent implements OnInit {
         this.setDataSet();
         this.customer = data.customer;
 
+        this.totalPrice = this.order?.orderedProducts.reduce((total, num) => num.price * num.quantity + total, 0);
+
         this.isLoading = false;
       },
       (error) => {
@@ -93,7 +101,10 @@ export class PrintComponent implements OnInit {
     this.dataSet = [];
     let id = 1;
     this.order.orderedProducts.forEach((order) => {
-      this.dataSet = [...this.dataSet, { pos: id, name: order.name, quantity: order.quantity }];
+      this.dataSet = [
+        ...this.dataSet,
+        { pos: id, name: order.name, quantity: order.quantity, price: order.price, priceTotal: order.price * order.quantity },
+      ];
       id++;
     });
   }
