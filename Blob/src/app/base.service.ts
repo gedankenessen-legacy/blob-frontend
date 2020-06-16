@@ -6,9 +6,11 @@ import { HttpHeaders } from '@angular/common/http';
   providedIn: 'root',
 })
 export class BaseService {
-  private baseUrl: string = 'https://localhost:5001/api';
+  //private baseUrl: string = 'https://localhost:5001/api';
   //private baseUrl: string = 'https://localhost:44383/api';
-
+  // Prod Docker
+  private baseUrl: string = 'http://10.10.10.2/api';
+  
   constructor() {}
 
   public get getBaseUrl(): string {
