@@ -1,9 +1,9 @@
 # Build
 FROM node:12.18-alpine3.12 AS build
 WORKDIR /usr/src/app
-COPY ["Blob/package.json", "Blob/package-lock.json", "Blob/./"]
+COPY ["Blob/package.json", "Blob/package-lock.json", "./"]
 RUN npm install
-COPY . .
+COPY Blob/ .
 RUN npm run build
 
 # Run
