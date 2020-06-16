@@ -9,9 +9,7 @@ import { error } from 'protractor';
   providedIn: 'root',
 })
 export class AuthService {
-
   willExpiresIn: Date;
-
 
   /**
    * Checks if the user is Authenticated.
@@ -28,9 +26,8 @@ export class AuthService {
    * @returns   'true' if the token is still valid, otherwise 'false'.
    */
   private isTokenValid(): boolean {
-
-    //TODO: ONLY FOR DEBUGGING: IGNORE TOKEN
-    return true;
+    /* //TODO: ONLY FOR DEBUGGING: IGNORE TOKEN
+    return true; */
 
     // Check if the token is expired
     if (this.willExpiresIn > new Date()) {
@@ -39,13 +36,11 @@ export class AuthService {
     return false;
   }
 
-  public getToken()
-  {
+  public getToken() {
     return localStorage.getItem('token');
   }
 
-  public setToken(token: string)
-  {
+  public setToken(token: string) {
     localStorage.setItem('token', token);
   }
 
