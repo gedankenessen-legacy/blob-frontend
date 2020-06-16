@@ -1,5 +1,4 @@
-import { IAdress } from '../iadress';
-
+import { IAdress } from '../IAdress';
 
 export interface ILocationItem {
   id: number;

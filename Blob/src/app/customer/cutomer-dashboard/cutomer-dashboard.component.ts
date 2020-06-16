@@ -3,7 +3,7 @@ import { ICustomerItem } from 'src/app/interfaces/customer/ICustomerItem';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { TitleService } from 'src/app/title.service';
 import { CustomerService } from '../customer.service';
-import { IAdress } from 'src/app/interfaces/iadress';
+import { IAdress } from 'src/app/interfaces/IAdress';
 import { NzModalService } from 'ng-zorro-antd';
 
 @Component({
@@ -19,7 +19,7 @@ export class CutomerDashboardComponent implements OnInit {
   isSaving: boolean = false;
   addForm: FormGroup;
 
-  constructor(private modal:NzModalService, private fb: FormBuilder, private titleService: TitleService, private customerService: CustomerService) {
+  constructor(private modal: NzModalService, private fb: FormBuilder, private titleService: TitleService, private customerService: CustomerService) {
     this.titleService.Title = 'Kunden';
   }
 
@@ -50,7 +50,7 @@ export class CutomerDashboardComponent implements OnInit {
 
         this.modal.error({
           nzTitle: 'Fehler',
-          nzContent: 'Beim Laden der Kunden ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
+          nzContent: 'Beim Laden der Kunden ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.',
         });
       }
     );
@@ -66,8 +66,8 @@ export class CutomerDashboardComponent implements OnInit {
     };
     var newCustomerItem: ICustomerItem = {
       id: 0,
-      firstname: this.addForm.controls["firstname"].value,
-      lastname: this.addForm.controls["lastname"].value,
+      firstname: this.addForm.controls['firstname'].value,
+      lastname: this.addForm.controls['lastname'].value,
       address: address,
       createdAt: null,
     };
@@ -85,7 +85,7 @@ export class CutomerDashboardComponent implements OnInit {
 
         this.modal.error({
           nzTitle: 'Fehler',
-          nzContent: 'Beim Anlegen des Kunden ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
+          nzContent: 'Beim Anlegen des Kunden ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.',
         });
       }
     );
@@ -94,11 +94,9 @@ export class CutomerDashboardComponent implements OnInit {
   updateCustomer(id: number) {
     this.isSaving = true;
 
-    var customers: ICustomerItem[] = this.listOfData.filter(
-      (item: ICustomerItem) => item.id == id
-    );
+    var customers: ICustomerItem[] = this.listOfData.filter((item: ICustomerItem) => item.id == id);
 
-    var customer:ICustomerItem = customers[0];
+    var customer: ICustomerItem = customers[0];
 
     var address: IAdress = {
       id: customer.address.id,
@@ -114,11 +112,11 @@ export class CutomerDashboardComponent implements OnInit {
       address: address,
       createdAt: customer.createdAt,
     };
-    
+
     this.customerService.updateCustomers([newCustomerItem]).subscribe(
       (data) => {
         console.log(data);
-        
+
         this.isLoading = true;
         this.isPopupVisible = false;
         this.isSaving = false;
@@ -129,7 +127,7 @@ export class CutomerDashboardComponent implements OnInit {
 
         this.modal.error({
           nzTitle: 'Fehler',
-          nzContent: 'Beim Bearbeiten des Kunden ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
+          nzContent: 'Beim Bearbeiten des Kunden ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.',
         });
       }
     );
@@ -145,9 +143,7 @@ export class CutomerDashboardComponent implements OnInit {
   listOfDisplayData = [...this.listOfData];
   search() {
     this.visible = false;
-    this.listOfDisplayData = this.listOfData.filter(
-      (item: ICustomerItem) => (item.firstname +" "+item.lastname).indexOf(this.searchValue) !== -1
-    );
+    this.listOfDisplayData = this.listOfData.filter((item: ICustomerItem) => (item.firstname + ' ' + item.lastname).indexOf(this.searchValue) !== -1);
   }
 
   /********************************************
@@ -181,12 +177,10 @@ export class CutomerDashboardComponent implements OnInit {
   editButtonClicked(id: number): void {
     console.log('Edit clicked');
 
-    var customers: ICustomerItem[] = this.listOfData.filter(
-      (item: ICustomerItem) => item.id == id
-    );
+    var customers: ICustomerItem[] = this.listOfData.filter((item: ICustomerItem) => item.id == id);
 
-    var customer:ICustomerItem = customers[0];
-    
+    var customer: ICustomerItem = customers[0];
+
     this.addForm.controls['firstname'].setValue(customer.firstname);
     this.addForm.controls['lastname'].setValue(customer.lastname);
     this.addForm.controls['street'].setValue(customer.address.street);
@@ -202,11 +196,9 @@ export class CutomerDashboardComponent implements OnInit {
 
     this.isLoading = true;
 
-    var customers: ICustomerItem[] = this.listOfData.filter(
-      (item: ICustomerItem) => item.id == id
-    );
+    var customers: ICustomerItem[] = this.listOfData.filter((item: ICustomerItem) => item.id == id);
 
-    var customer:ICustomerItem = customers[0];
+    var customer: ICustomerItem = customers[0];
 
     this.addForm.controls['firstname'].setValue(customer.firstname);
     this.addForm.controls['lastname'].setValue(customer.lastname);

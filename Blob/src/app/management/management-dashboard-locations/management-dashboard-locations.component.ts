@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd';
 import { ILocationItem } from 'src/app/interfaces/manage/ILocationItem';
-import { IAdress } from 'src/app/interfaces/iadress';
+import { IAdress } from 'src/app/interfaces/IAdress';
 import { LocationService } from '../location.service';
 
 @Component({
   selector: 'app-management-dashboard-locations',
   templateUrl: './management-dashboard-locations.component.html',
-  styleUrls: ['./management-dashboard-locations.component.less']
+  styleUrls: ['./management-dashboard-locations.component.less'],
 })
 export class ManagementDashboardLocationsComponent implements OnInit {
   isLocationPopupVisible: boolean = false;
@@ -22,7 +22,7 @@ export class ManagementDashboardLocationsComponent implements OnInit {
   listOfLocations: ILocationItem[] = [];
   listOfDisplayLocations: ILocationItem[] = [];
 
-  constructor(private modal:NzModalService, private fb: FormBuilder, private locationService: LocationService) { }
+  constructor(private modal: NzModalService, private fb: FormBuilder, private locationService: LocationService) {}
 
   ngOnInit(): void {
     this.addLocationForm = this.fb.group({
@@ -53,7 +53,7 @@ export class ManagementDashboardLocationsComponent implements OnInit {
 
         this.modal.error({
           nzTitle: 'Fehler',
-          nzContent: 'Beim Laden der Standorte ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
+          nzContent: 'Beim Laden der Standorte ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.',
         });
       }
     );
@@ -63,12 +63,10 @@ export class ManagementDashboardLocationsComponent implements OnInit {
    ** Ändern eines Standortes           **
    ***************************************/
   changeLocation(id: number): void {
-    var locations: ILocationItem[] = this.listOfLocations.filter(
-      (item: ILocationItem) => item.id == id
-    );
+    var locations: ILocationItem[] = this.listOfLocations.filter((item: ILocationItem) => item.id == id);
 
-    var location:ILocationItem = locations[0];
-    
+    var location: ILocationItem = locations[0];
+
     this.addLocationForm.controls['name'].setValue(location.name);
     this.addLocationForm.controls['street'].setValue(location.address.street);
     this.addLocationForm.controls['zip'].setValue(location.address.zip);
@@ -91,7 +89,7 @@ export class ManagementDashboardLocationsComponent implements OnInit {
       (error) => {
         this.modal.error({
           nzTitle: 'Fehler',
-          nzContent: 'Beim Löschen des Standortes ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
+          nzContent: 'Beim Löschen des Standortes ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.',
         });
       }
     );
@@ -128,7 +126,7 @@ export class ManagementDashboardLocationsComponent implements OnInit {
     };
     var newLocationItem: ILocationItem = {
       id: 0,
-      name: this.addLocationForm.controls["name"].value,
+      name: this.addLocationForm.controls['name'].value,
       address: address,
     };
 
@@ -145,7 +143,7 @@ export class ManagementDashboardLocationsComponent implements OnInit {
 
         this.modal.error({
           nzTitle: 'Fehler',
-          nzContent: 'Beim Anlegen des Standortes ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
+          nzContent: 'Beim Anlegen des Standortes ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.',
         });
       }
     );
@@ -157,11 +155,9 @@ export class ManagementDashboardLocationsComponent implements OnInit {
   updateLocation(id: number) {
     this.isSavingLocation = true;
 
-    var locations: ILocationItem[] = this.listOfLocations.filter(
-      (item: ILocationItem) => item.id == id
-    );
+    var locations: ILocationItem[] = this.listOfLocations.filter((item: ILocationItem) => item.id == id);
 
-    var location:ILocationItem = locations[0];
+    var location: ILocationItem = locations[0];
 
     var address: IAdress = {
       id: location.address.id,
@@ -175,11 +171,11 @@ export class ManagementDashboardLocationsComponent implements OnInit {
       name: this.addLocationForm.controls['name'].value,
       address: address,
     };
-    
+
     this.locationService.updateLocations([newLocationItem]).subscribe(
       (data) => {
         console.log(data);
-        
+
         this.isLocationLoading = true;
         this.isLocationPopupVisible = false;
         this.isSavingLocation = false;
@@ -190,10 +186,9 @@ export class ManagementDashboardLocationsComponent implements OnInit {
 
         this.modal.error({
           nzTitle: 'Fehler',
-          nzContent: 'Beim Bearbeiten des Standortes ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
+          nzContent: 'Beim Bearbeiten des Standortes ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.',
         });
       }
     );
   }
-
 }
