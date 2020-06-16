@@ -10,9 +10,9 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v2
       - name: debug
-        run: ls -all /home/runner/work/
+        run: ls -all /home/runner/work/blob-frontend
       - name: debug
-        run: ls -all /home/runner/work/Blob
+        run: ls -all /home/runner/work/blob-frontend/Blob
       #- name: Push to Docker Hub
       #  uses: docker/build-push-action@v1
       #  with:
