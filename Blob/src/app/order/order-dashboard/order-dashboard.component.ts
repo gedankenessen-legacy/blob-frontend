@@ -9,37 +9,37 @@ import { NzModalService } from 'ng-zorro-antd';
 @Component({
   selector: 'app-order-dashboard',
   templateUrl: './order-dashboard.component.html',
-  styleUrls: ['./order-dashboard.component.less']
+  styleUrls: ['./order-dashboard.component.less'],
 })
 export class OrderDashboardComponent implements OnInit {
   searchValue: string = '';
   visible: boolean = false;
   isOrdersLoading = true;
   currentState: EOrderState = EOrderState.notPaid;
-  tabs:IOrderState[] = [
+  tabs: IOrderState[] = [
     {
-      value: "Nicht Bezahlt",
+      value: 'Nicht Bezahlt',
       id: EOrderState.notPaid,
-    }, 
+    },
     {
-      value: "Bezahlt",
+      value: 'Bezahlt',
       id: EOrderState.paid,
     },
     {
-      value: "In-Bearbeitung",
+      value: 'In-Bearbeitung',
       id: EOrderState.inProcessing,
-    }, 
+    },
     {
-      value: "Versand",
+      value: 'Versand',
       id: EOrderState.shipping,
-    }, 
+    },
     {
-      value: "Archiviert",
+      value: 'Archiviert',
       id: EOrderState.archived,
     },
   ];
 
-  constructor(private modal:NzModalService,private titleService:TitleService, private orderService: OrderService) {
+  constructor(private modal: NzModalService, private titleService: TitleService, private orderService: OrderService) {
     this.titleService.Title = 'Bestellungen';
   }
 
@@ -48,7 +48,11 @@ export class OrderDashboardComponent implements OnInit {
     this.getAllOrders();
   }
 
-  isPrintButtonVisible(): boolean{
+  convertString(dateString: string): Date {
+    return new Date(Date.parse(dateString));
+  }
+
+  isPrintButtonVisible(): boolean {
     return this.currentState == EOrderState.shipping || this.currentState == EOrderState.inProcessing || this.currentState == EOrderState.archived;
   }
 
@@ -60,7 +64,7 @@ export class OrderDashboardComponent implements OnInit {
         
         console.log(data);
          */
-        
+
         this.listOfData = data;
         this.updateListOfDisplayData();
         this.isOrdersLoading = false;
@@ -71,7 +75,7 @@ export class OrderDashboardComponent implements OnInit {
         this.isOrdersLoading = false;
         this.modal.error({
           nzTitle: 'Fehler',
-          nzContent: 'Beim laden der Bestellungen ist es zu einem Fehler gekommen, bitte benachrichtigen Sie den Administrator.'
+          nzContent: 'Beim laden der Bestellungen ist es zu einem Fehler gekommen, bitte benachrichtigen Sie den Administrator.',
         });
       }
     );
@@ -82,23 +86,17 @@ export class OrderDashboardComponent implements OnInit {
    *******************************************/
   listOfData: IOrderItem[] = [];
 
-  tabChanged(state:EOrderState):void{
+  tabChanged(state: EOrderState): void {
     this.currentState = state;
     this.updateListOfDisplayData();
   }
 
-  updateListOfDisplayData():void{
-    
-    this.listOfDisplayData = this.listOfData.filter(
-      (item: IOrderItem) => item.state.id == this.currentState
-    );
+  updateListOfDisplayData(): void {
+    this.listOfDisplayData = this.listOfData.filter((item: IOrderItem) => item.state.id == this.currentState);
   }
 
-  selectChanged(newState: EOrderState, id: number): void{
-    
-    var index: number = this.listOfData.findIndex(
-      (item: IOrderItem) => item.id == id
-    );
+  selectChanged(newState: EOrderState, id: number): void {
+    var index: number = this.listOfData.findIndex((item: IOrderItem) => item.id == id);
 
     this.listOfData[index].state.id = newState;
 
@@ -106,7 +104,7 @@ export class OrderDashboardComponent implements OnInit {
     this.orderService.updateOrders([this.listOfData[index]]).subscribe(
       (data) => {
         this.currentState = newState;
-        
+
         this.updateListOfDisplayData();
         this.isOrdersLoading = false;
       },
@@ -117,12 +115,12 @@ export class OrderDashboardComponent implements OnInit {
 
         this.isOrdersLoading = false;
 
-          this.modal.error({
-            nzTitle: 'Fehler',
-            nzContent: 'Beim ändern des Statuses ist es zu einem Fehler gekommen, bitte benachrichtigen Sie den Administrator.'
-          });
+        this.modal.error({
+          nzTitle: 'Fehler',
+          nzContent: 'Beim ändern des Statuses ist es zu einem Fehler gekommen, bitte benachrichtigen Sie den Administrator.',
+        });
       }
-    ); 
+    );
   }
 
   /********************************************
@@ -133,7 +131,7 @@ export class OrderDashboardComponent implements OnInit {
     this.visible = false;
     this.listOfDisplayData = this.listOfData.filter(
       //TODO Suche fixen auch reset
-      (item: IOrderItem) => item.id == Number(this.searchValue) && item.state.id==this.currentState
+      (item: IOrderItem) => item.id == Number(this.searchValue) && item.state.id == this.currentState
     );
   }
 
