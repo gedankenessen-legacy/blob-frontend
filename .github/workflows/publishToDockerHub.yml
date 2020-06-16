@@ -7,17 +7,11 @@ jobs:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the repo
-        uses: actions/checkout@v2
-      - name: debug
-        run: ls -all /home/runner/work/blob-frontend/blob-frontend
-      - name: debug
-        run: ls -all /home/runner/work/blob-frontend/blob-frontend/Blob
-      #- name: Push to Docker Hub
-      #  uses: docker/build-push-action@v1
-      #  with:
-      #    username: ${{ secrets.DOCKERHUBUN }}
-      #    password: ${{ secrets.DOCKERHUBPW }}
-      #    repository: blobcd/blob
-      #    dockerfile: /home/runner/work/blob-backend/blob-backend/Blob_API/Dockerfile
-      #    tag_with_ref: true
+      - name: Push to Docker Hub
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUBUN }}
+          password: ${{ secrets.DOCKERHUBPW }}
+          repository: blobcd/blob
+          dockerfile: /home/runner/work/blob-frontend/blob-frontend/Blob/Dockerfile
+          tag_with_ref: true
