@@ -9,4 +9,4 @@ RUN npm run build
 # Run
 FROM nginx:alpine
 # COPY nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /usr/src/app/dist/blob /usr/share/nginx/html
+COPY --from=build /usr/src/app/dist/Blob /usr/share/nginx/html
