@@ -10,16 +10,16 @@ def main():
     if len(sys.argv) > 1:
         disableQuestions = sys.argv[1]
 
-    containerName = "blob_backend"
+    containerName = "blob_frontend"
     
     # Ask for custom tag.
     tag = askInput("Specifiy Tag [latest]: ", "latest")
-
+    
     # Print create cmd to validate
-    dockerCMD = f"docker run --restart always -d -p 5001:80 --ip 10.10.10.2 --name {containerName} --network blob blobcd/blob:{tag}"
+    dockerCMD = f"docker run --restart always -d -p 80:80 --name {containerName} --network blob blobcd/blob:{tag}"
     print(dockerCMD)
 
-    # Validate cmd and create new container, pull latest image:tag 
+    # Validate cmd and create new container, pull latest image:tag
     if askYesOrNo("Befehl korrekt? [j, N]: "):
         # Remove old container if any.
         oldContainerExists = os.system(f"docker ps | grep {containerName}")
@@ -27,7 +27,7 @@ def main():
             removeOld = askYesOrNo("Remove old container? [j, N]: ")
             if removeOld is True:
                 os.system(f"docker rm -f {containerName}")
-                
+
         os.system(f"docker pull blobcd/blob:{tag}")
         os.system(dockerCMD)
 
@@ -57,7 +57,7 @@ def askInput(question, default="latest"):
         else:
             return answer
     else:
-        return "b_latest"
+        return "f_latest"
 
 if __name__ == "__main__":
     main()
