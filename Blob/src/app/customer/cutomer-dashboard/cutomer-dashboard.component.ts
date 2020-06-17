@@ -143,7 +143,7 @@ export class CutomerDashboardComponent implements OnInit {
   listOfDisplayData = [...this.listOfData];
   search() {
     this.visible = false;
-    this.listOfDisplayData = this.listOfData.filter((item: ICustomerItem) => (item.firstname + ' ' + item.lastname).indexOf(this.searchValue) !== -1);
+    this.listOfDisplayData = this.listOfData.filter((item: ICustomerItem) => (item.firstname.toLocaleLowerCase() + ' ' + item.lastname.toLocaleLowerCase()).indexOf(this.searchValue.toLocaleLowerCase()) !== -1);
   }
 
   /********************************************
