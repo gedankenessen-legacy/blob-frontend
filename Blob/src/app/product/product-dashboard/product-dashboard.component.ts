@@ -89,7 +89,7 @@ export class ProductDashboardComponent implements OnInit {
   search() {
     this.visible = false;
     this.listOfDisplayData = this.listOfData.filter(
-      (item: IProductItem) => item.name.indexOf(this.searchValue) !== -1
+      (item: IProductItem) => item.name.toLocaleLowerCase().indexOf(this.searchValue.toLocaleLowerCase()) !== -1
     );
   }
 
