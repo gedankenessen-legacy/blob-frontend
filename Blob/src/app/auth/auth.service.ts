@@ -26,7 +26,6 @@ export class AuthService {
    * @returns   'true' if the token is still valid, otherwise 'false'.
    */
   private isTokenValid(): boolean {
-    return true;
     /* //TODO: ONLY FOR DEBUGGING: IGNORE TOKEN
     return true; */
 
