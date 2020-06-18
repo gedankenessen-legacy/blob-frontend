@@ -24,7 +24,7 @@ export class OrderAddEditComponent implements OnInit {
   products: IProductItem[];
   displayProducts: [];
   isLoading: boolean = true;
-  currentInvoiceMount: number = 0;
+  currentInvoiceMount: string = "0";
   orderId: number;
   currentOrder: IOrderItem = null;
 
@@ -159,11 +159,6 @@ export class OrderAddEditComponent implements OnInit {
       }
     }
 
-    //alert(JSON.stringify(newOrderItem))
-    
-
-    /* alert(JSON.stringify(newOrderItem)); */
-
     if(this.orderId>0){
 
       this.orderService.updateOrders([newOrderItem]).subscribe(
@@ -201,7 +196,6 @@ export class OrderAddEditComponent implements OnInit {
     var products: IOrderProduct[] = [];
     for (let product of this.orderProducts.controls) {
       var currentQuantity: number = product["controls"]["quantity"].value;
-      //var currentPrice: number = Number(product["controls"]["price"].value);
 
       var currentProduct: IProductItem[] = this.products.filter(
         (item: IProductItem) => item.id == product["controls"]["product"].value
@@ -285,7 +279,7 @@ export class OrderAddEditComponent implements OnInit {
       var currentPrice: number = Number(product["controls"]["price"].value);
       mount += currentQuantity*currentPrice;
     }
-    this.currentInvoiceMount = mount;
+    this.currentInvoiceMount = mount.toFixed(2);
   }
 
   customerChanged(): void{
