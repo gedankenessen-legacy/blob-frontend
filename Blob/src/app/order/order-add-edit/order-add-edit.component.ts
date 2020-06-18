@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CustomerService } from 'src/app/customer/customer.service';
 import { TitleService } from 'src/app/title.service';
-import { FormBuilder, FormGroup, FormControl, Validators, FormArray, ValidatorFn } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators, FormArray, ValidatorFn, ValidationErrors } from '@angular/forms';
 import { OrderService } from '../order.service';
 import { ICustomerItem } from 'src/app/interfaces/customer/ICustomerItem';
 import { NzTableCellDirective, NzModalService } from 'ng-zorro-antd';
@@ -40,9 +40,11 @@ export class OrderAddEditComponent implements OnInit {
       customerName: new FormControl({value: null, disabled:true}),
       street: new FormControl({value: null, disabled:true}),
       city: new FormControl({value: null, disabled:true}),
-      products: this.fb.array([]),
-      productsOrdered: this.fb.array([]),
-    })
+      //allProducts: this.fb.group({
+        products: this.fb.array([]),
+        productsOrdered: this.fb.array([]),
+      //}, Validators.required),
+    },{ validators: productValidation })
   
     this.route.paramMap.subscribe(params => {
       this.orderId = Number(params.get('id'));
@@ -316,3 +318,11 @@ export class OrderAddEditComponent implements OnInit {
     this.calcInvoiceMount();
   }
 }
+
+export const productValidation: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
+  const products = control.get('products');
+  const productsOrdered = control.get('productsOrdered');
+
+  
+  return !(products.value.length>0 || productsOrdered.value.length>0) ? { 'productInvalid': true } : null;
+};
