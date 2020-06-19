@@ -87,10 +87,18 @@ export class ManagementDashboardLocationsComponent implements OnInit {
         this.getAllLocations();
       },
       (error) => {
-        this.modal.error({
-          nzTitle: 'Fehler',
-          nzContent: 'Beim Löschen des Standortes ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.',
-        });
+        if(error.Error.error == "Es darf kein Produkt mehr an diesem Standort vorhanden sein bevor es gelöscht werden kann") {
+          this.modal.error({
+            nzTitle: 'Fehler',
+            nzContent: 'Es darf kein Produkt mehr an diesem Standort vorhanden sein, bevor er gelöscht werden kann.',
+          });
+          this.isLocationLoading = false;
+        } else {
+          this.modal.error({
+            nzTitle: 'Fehler',
+            nzContent: 'Beim Löschen des Standortes ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.',
+          });
+        }        
       }
     );
   }
