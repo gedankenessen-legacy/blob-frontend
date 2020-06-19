@@ -60,7 +60,6 @@ export class ProductAddEditComponent implements OnInit {
   ngOnInit(): void {
     this.getIDFromProduct();
     this.getAllCategorys();
-    this.getAllProducts();
 
     this.selectProductService = 'Product';
     this.productForm = this.fbp.group({
@@ -75,21 +74,6 @@ export class ProductAddEditComponent implements OnInit {
     });
     this.productForm.controls['sku'].setValue("");
   }
-
-  /*******************************************
-   ** Lade alle Produkte                    **
-   *******************************************/
-  getAllProducts() {
-    this.productService.getAllProducts().subscribe(
-      (data) => {
-        this.listOfProducts = data;
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
-  }
-
 
   /*******************************************
    ** ID von Produkt                         **
@@ -152,6 +136,7 @@ export class ProductAddEditComponent implements OnInit {
         }
 
         this.getAllLocations();
+        this.createUniqueProduct();
       },
       (error) => {
         console.error(error);
@@ -407,6 +392,44 @@ export class ProductAddEditComponent implements OnInit {
   /*******************************************
    ** Validiere SKU und Name                 *
    *******************************************/
+  createUniqueProduct() {
+    let i = 1;
+    let isNotUnique = true;
+    let currentName = this.productForm.controls['productname'].value;
+    let currentSKU = this.productForm.controls['sku'].value;
+    this.productService.getAllProducts().subscribe(
+      (data) => {
+        this.listOfProducts = data;
+        for(let i = 0; i < this.listOfProducts.length; i++) {
+          if(this.productForm.controls['productname'].value == this.listOfProducts[i].name ||
+          this.productForm.controls['sku'].value == this.listOfProducts[i].sku) {
+            isNotUnique = false;
+          }
+        }
+        while(!isNotUnique) {
+          this.productForm.controls['productname'].setValue(currentName + "" + i);
+          if(this.productForm.controls['sku'].value != "Service") {
+            this.productForm.controls['sku'].setValue(currentSKU + "" + i);
+          }
+          isNotUnique = true;
+          for(let i = 0; i < this.listOfProducts.length; i++) {
+            if(this.productForm.controls['productname'].value == this.listOfProducts[i].name ||
+            this.productForm.controls['sku'].value == this.listOfProducts[i].sku) {
+              isNotUnique = false;
+            }
+          }
+          if(!isNotUnique) {
+            i++;
+          }
+        }
+      },
+      (error) => {
+        console.error(error);
+        return false;
+      }
+    );
+  }
+
   validUniqueProduct() {
     let isValid = true;
     for(let i = 0; i < this.listOfProducts.length; i++) {
@@ -418,10 +441,10 @@ export class ProductAddEditComponent implements OnInit {
     if(!isValid) {
       this.modal.error({
         nzTitle: 'Fehler',
-        nzContent: 'Dieses Produkt existiert bereits schon.',
+        nzContent: 'Dieses Produkt existiert bereits.',
       });
     }
-    return false;
+    return isValid;
   }
 
   /*******************************************
