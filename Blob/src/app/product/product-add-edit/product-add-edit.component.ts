@@ -431,10 +431,20 @@ export class ProductAddEditComponent implements OnInit {
     let isValid = true;
     let size = this.listOfProductLocation.length;
     let locations: IProductLocationItem[] = [];
+    let count = 0;
     for (let i = 0; i < size; i++) {
       if(this.listOfProductLocation[i].quantity > 0) {
         locations.push(this.listOfProductLocation[i]);
       } 
+      for (let j = 0; j < this.listOfProductLocation.length; j++) {
+        if (this.listOfProductLocation[i].locationId == this.listOfProductLocation[j].locationId) {
+          count++;
+        }
+      }
+      if (count > 1) {
+        isValid = false;
+      }
+      count = 0;
      }
     this.listOfProductLocation = locations;
     if(this.listOfProductLocation.length < 1) {
