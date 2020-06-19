@@ -271,6 +271,19 @@ export class ProductAddEditComponent implements OnInit {
       }
     }
     if (count > 1) {
+      let productLocationTemp: IProductLocationItem[] = [];
+      let first = true;
+      for(let i = 0; i < this.listOfProductLocation.length; i++) {
+        if (this.listOfProductLocation[i].locationId == locationID) {
+          if(first) {
+            first = false;
+            productLocationTemp.push(this.listOfProductLocation[i]);
+          }
+        } else {
+          productLocationTemp.push(this.listOfProductLocation[i]);
+        }
+      }
+      this.listOfProductLocation = productLocationTemp;
       this.modal.error({
         nzTitle: 'Fehler',
         nzContent: 'Der ausgewählte Standort wird bereits benutzt.',
@@ -393,41 +406,43 @@ export class ProductAddEditComponent implements OnInit {
    ** Validiere SKU und Name                 *
    *******************************************/
   createUniqueProduct() {
-    let i = 1;
-    let isNotUnique = true;
-    let currentName = this.productForm.controls['productname'].value;
-    let currentSKU = this.productForm.controls['sku'].value;
-    this.productService.getAllProducts().subscribe(
-      (data) => {
-        this.listOfProducts = data;
-        for(let i = 0; i < this.listOfProducts.length; i++) {
-          if(this.productForm.controls['productname'].value == this.listOfProducts[i].name ||
-          this.productForm.controls['sku'].value == this.listOfProducts[i].sku) {
-            isNotUnique = false;
-          }
-        }
-        while(!isNotUnique) {
-          this.productForm.controls['productname'].setValue(currentName + "" + i);
-          if(this.productForm.controls['sku'].value != "Service") {
-            this.productForm.controls['sku'].setValue(currentSKU + "" + i);
-          }
-          isNotUnique = true;
+    if(this.id == -1) {
+      let i = 1;
+      let isNotUnique = true;
+      let currentName = this.productForm.controls['productname'].value;
+      let currentSKU = this.productForm.controls['sku'].value;
+      this.productService.getAllProducts().subscribe(
+        (data) => {
+          this.listOfProducts = data;
           for(let i = 0; i < this.listOfProducts.length; i++) {
             if(this.productForm.controls['productname'].value == this.listOfProducts[i].name ||
             this.productForm.controls['sku'].value == this.listOfProducts[i].sku) {
               isNotUnique = false;
             }
           }
-          if(!isNotUnique) {
-            i++;
+          while(!isNotUnique) {
+            this.productForm.controls['productname'].setValue(currentName + "" + i);
+            if(this.productForm.controls['sku'].value != "Service") {
+              this.productForm.controls['sku'].setValue(currentSKU + "" + i);
+            }
+            isNotUnique = true;
+            for(let i = 0; i < this.listOfProducts.length; i++) {
+              if(this.productForm.controls['productname'].value == this.listOfProducts[i].name ||
+              this.productForm.controls['sku'].value == this.listOfProducts[i].sku) {
+                isNotUnique = false;
+              }
+            }
+            if(!isNotUnique) {
+              i++;
+            }
           }
+        },
+        (error) => {
+          console.error(error);
+          return false;
         }
-      },
-      (error) => {
-        console.error(error);
-        return false;
-      }
-    );
+      );
+    }
   }
 
   validUniqueProduct() {
