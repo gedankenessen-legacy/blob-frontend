@@ -32,6 +32,7 @@ export class ProductAddEditComponent implements OnInit {
   listOfLocation: ILocationItem[] = [];
   listOfProductLocation: IProductLocationItem[] = [];
   listOfCategory: ICategoryItem[] = [];
+  listOfProducts: IProductItem[] = [];
   indexCategory = 0;
   id: number;
   disabledSKU = false;
@@ -59,6 +60,7 @@ export class ProductAddEditComponent implements OnInit {
   ngOnInit(): void {
     this.getIDFromProduct();
     this.getAllCategorys();
+    this.getAllProducts();
 
     this.selectProductService = 'Product';
     this.productForm = this.fbp.group({
@@ -73,6 +75,21 @@ export class ProductAddEditComponent implements OnInit {
     });
     this.productForm.controls['sku'].setValue("");
   }
+
+  /*******************************************
+   ** Lade alle Produkte                    **
+   *******************************************/
+  getAllProducts() {
+    this.productService.getAllProducts().subscribe(
+      (data) => {
+        this.listOfProducts = data;
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
+
 
   /*******************************************
    ** ID von Produkt                         **
@@ -388,6 +405,26 @@ export class ProductAddEditComponent implements OnInit {
   }
 
   /*******************************************
+   ** Validiere SKU und Name                 *
+   *******************************************/
+  validUniqueProduct() {
+    let isValid = true;
+    for(let i = 0; i < this.listOfProducts.length; i++) {
+      if(this.productForm.controls['productname'].value == this.listOfProducts[i].name ||
+      this.productForm.controls['sku'].value == this.listOfProducts[i].sku) {
+        isValid = false;
+      }
+    }
+    if(!isValid) {
+      this.modal.error({
+        nzTitle: 'Fehler',
+        nzContent: 'Dieses Produkt existiert bereits schon.',
+      });
+    }
+    return false;
+  }
+
+  /*******************************************
    ** Validiere Kategorien                   *
    *******************************************/
   validCategory() {
@@ -464,7 +501,7 @@ export class ProductAddEditComponent implements OnInit {
    ** Sende Formulare                        *
    *******************************************/
   submitForm() {
-    if (this.validProductData() && this.validCategory() && this.validProperties() && this.validLocation()) {
+    if (this.validProductData() && this.validCategory() && this.validProperties() && this.validLocation() && this.validUniqueProduct()) {
       this.isLoading = true;
 
       /*******************************************
