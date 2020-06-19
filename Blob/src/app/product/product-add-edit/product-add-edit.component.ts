@@ -271,6 +271,19 @@ export class ProductAddEditComponent implements OnInit {
       }
     }
     if (count > 1) {
+      let productLocationTemp: IProductLocationItem[] = [];
+      let first = true;
+      for(let i = 0; i < this.listOfProductLocation.length; i++) {
+        if (this.listOfProductLocation[i].locationId == locationID) {
+          if(first) {
+            first = false;
+            productLocationTemp.push(this.listOfProductLocation[i]);
+          }
+        } else {
+          productLocationTemp.push(this.listOfProductLocation[i]);
+        }
+      }
+      this.listOfProductLocation = productLocationTemp;
       this.modal.error({
         nzTitle: 'Fehler',
         nzContent: 'Der ausgewählte Standort wird bereits benutzt.',
