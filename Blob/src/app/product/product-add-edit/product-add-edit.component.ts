@@ -32,6 +32,7 @@ export class ProductAddEditComponent implements OnInit {
   listOfLocation: ILocationItem[] = [];
   listOfProductLocation: IProductLocationItem[] = [];
   listOfCategory: ICategoryItem[] = [];
+  listOfProducts: IProductItem[] = [];
   indexCategory = 0;
   id: number;
   disabledSKU = false;
@@ -135,6 +136,7 @@ export class ProductAddEditComponent implements OnInit {
         }
 
         this.getAllLocations();
+        this.createUniqueProduct();
       },
       (error) => {
         console.error(error);
@@ -388,6 +390,64 @@ export class ProductAddEditComponent implements OnInit {
   }
 
   /*******************************************
+   ** Validiere SKU und Name                 *
+   *******************************************/
+  createUniqueProduct() {
+    let i = 1;
+    let isNotUnique = true;
+    let currentName = this.productForm.controls['productname'].value;
+    let currentSKU = this.productForm.controls['sku'].value;
+    this.productService.getAllProducts().subscribe(
+      (data) => {
+        this.listOfProducts = data;
+        for(let i = 0; i < this.listOfProducts.length; i++) {
+          if(this.productForm.controls['productname'].value == this.listOfProducts[i].name ||
+          this.productForm.controls['sku'].value == this.listOfProducts[i].sku) {
+            isNotUnique = false;
+          }
+        }
+        while(!isNotUnique) {
+          this.productForm.controls['productname'].setValue(currentName + "" + i);
+          if(this.productForm.controls['sku'].value != "Service") {
+            this.productForm.controls['sku'].setValue(currentSKU + "" + i);
+          }
+          isNotUnique = true;
+          for(let i = 0; i < this.listOfProducts.length; i++) {
+            if(this.productForm.controls['productname'].value == this.listOfProducts[i].name ||
+            this.productForm.controls['sku'].value == this.listOfProducts[i].sku) {
+              isNotUnique = false;
+            }
+          }
+          if(!isNotUnique) {
+            i++;
+          }
+        }
+      },
+      (error) => {
+        console.error(error);
+        return false;
+      }
+    );
+  }
+
+  validUniqueProduct() {
+    let isValid = true;
+    for(let i = 0; i < this.listOfProducts.length; i++) {
+      if(this.productForm.controls['productname'].value == this.listOfProducts[i].name ||
+      this.productForm.controls['sku'].value == this.listOfProducts[i].sku) {
+        isValid = false;
+      }
+    }
+    if(!isValid) {
+      this.modal.error({
+        nzTitle: 'Fehler',
+        nzContent: 'Dieses Produkt existiert bereits.',
+      });
+    }
+    return isValid;
+  }
+
+  /*******************************************
    ** Validiere Kategorien                   *
    *******************************************/
   validCategory() {
@@ -431,10 +491,20 @@ export class ProductAddEditComponent implements OnInit {
     let isValid = true;
     let size = this.listOfProductLocation.length;
     let locations: IProductLocationItem[] = [];
+    let count = 0;
     for (let i = 0; i < size; i++) {
       if(this.listOfProductLocation[i].quantity > 0) {
         locations.push(this.listOfProductLocation[i]);
       } 
+      for (let j = 0; j < this.listOfProductLocation.length; j++) {
+        if (this.listOfProductLocation[i].locationId == this.listOfProductLocation[j].locationId) {
+          count++;
+        }
+      }
+      if (count > 1) {
+        isValid = false;
+      }
+      count = 0;
      }
     this.listOfProductLocation = locations;
     if(this.listOfProductLocation.length < 1) {
@@ -454,7 +524,7 @@ export class ProductAddEditComponent implements OnInit {
    ** Sende Formulare                        *
    *******************************************/
   submitForm() {
-    if (this.validProductData() && this.validCategory() && this.validProperties() && this.validLocation()) {
+    if (this.validProductData() && this.validCategory() && this.validProperties() && this.validLocation() && this.validUniqueProduct()) {
       this.isLoading = true;
 
       /*******************************************
