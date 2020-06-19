@@ -10,7 +10,7 @@ export class BaseService {
   //private baseUrl: string = 'https://localhost:44383/api';
   // Prod Docker
   private baseUrl: string = 'http://176.31.26.11:5001/api';
-  
+
   constructor() {}
 
   public get getBaseUrl(): string {
@@ -22,13 +22,13 @@ export class BaseService {
    * @param error The error obj.
    */
   public errorHandle(error) {
-    let errorMessage = '';
+    let errorMessage;
     if (error.error instanceof ErrorEvent) {
       // Get client-side error
       errorMessage = error.error.message;
     } else {
       // Get server-side error
-      errorMessage = `Error Code: ${error.status} Message: ${error.message}`;
+      errorMessage = { 'Error Code': error.status, Message: error.message, Error: error };
     }
     return throwError(errorMessage);
   }
