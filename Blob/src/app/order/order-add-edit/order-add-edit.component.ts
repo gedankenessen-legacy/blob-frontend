@@ -99,10 +99,6 @@ export class OrderAddEditComponent implements OnInit {
   getOrder() {
     this.orderService.getOrder(this.orderId).subscribe(
       (data) => {
-
-        console.log("GetOrder");
-        console.log(data);
-
         this.currentOrder = data;
         if(this.currentOrder.customer){
           this.addForm.controls["customerId"].setValue(this.currentOrder.customer.id);
@@ -116,9 +112,6 @@ export class OrderAddEditComponent implements OnInit {
             this.orderedProducts.push(this.createItemOrdered(orderProduct.id,orderProduct.name,orderProduct.quantity, orderProduct.price));
           }
         }
-
-        console.log("after add");
-        
         
         this.calcInvoiceMount();
         this.isLoading = false
@@ -179,7 +172,6 @@ export class OrderAddEditComponent implements OnInit {
     }else{
       this.orderService.createOrder(newOrderItem).subscribe(
         (data) => {
-          console.log(data);
           this.router.navigate(['/order']);
         },
         (error) => {
