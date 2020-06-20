@@ -76,7 +76,7 @@
                         <nz-form-item>
                             <nz-form-control nzErrorTip="Bitte wähle ein Produkt aus">
                                 <nz-select formControlName="product" nzShowSearch nzAllowClear nzPlaceHolder="Produkt auswählen" (ngModelChange)="productChanged(i)">
-                                    <nz-option *ngFor="let product of products" [nzValue]="product.id" [nzLabel]="product.name"></nz-option>
+                                    <nz-option *ngFor="let product of displayProducts" [nzValue]="product.id" [nzLabel]="product.name"></nz-option>
                                 </nz-select>
                             </nz-form-control>
                         </nz-form-item>

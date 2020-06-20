@@ -22,7 +22,7 @@ export class OrderAddEditComponent implements OnInit {
   addForm: FormGroup;
   customers: ICustomerItem[];
   products: IProductItem[];
-  displayProducts: [];
+  displayProducts: IProductItem[];
   isLoading: boolean = true;
   currentInvoiceMount: string = "0";
   orderId: number;
@@ -84,6 +84,7 @@ export class OrderAddEditComponent implements OnInit {
     this.productService.getAllProducts().subscribe(
       (data) => {
         this.products = data;
+        this.updateDisplayedProducts();
       },
       (error) => {
         this.isLoading = false;
@@ -176,7 +177,8 @@ export class OrderAddEditComponent implements OnInit {
         },
         (error) => {
           this.isLoading = false;
-
+          //console.log(error.Error.error.split(":"));
+          
           this.modal.error({
             nzTitle: 'Fehler beim Anlegen',
             nzContent: 'Beim Anlegen der Bestellung ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
@@ -248,16 +250,19 @@ export class OrderAddEditComponent implements OnInit {
     
     this.orderProducts.push(this.createItem());
     this.calcInvoiceMount();
+    this.updateDisplayedProducts();
   }
 
   removeProduct(index: number) {
     this.orderProducts.removeAt(index);
     this.calcInvoiceMount();
+    this.updateDisplayedProducts();
   }
 
   removeOrderedProduct(index: number) {
     this.orderedProducts.removeAt(index);
     this.calcInvoiceMount();
+    this.updateDisplayedProducts();
   }
 
   calcInvoiceMount(): void{
@@ -308,6 +313,34 @@ export class OrderAddEditComponent implements OnInit {
 
     this.orderProducts.controls[index]["controls"]["price"].setValue(product[0].price);
     this.calcInvoiceMount();
+    this.updateDisplayedProducts();
+  }
+
+  updateDisplayedProducts(){
+    var ids: number[] = [];
+    for (let product of this.orderProducts.controls) {
+      var currentProduct: IProductItem[] = this.products.filter(
+        (item: IProductItem) => item.id == product["controls"]["product"].value
+      );
+      
+      if(currentProduct.length<=0){
+        continue;
+      }
+      
+      ids = [
+        ...ids, currentProduct[0].id
+      ];
+    }
+
+    for (let product of this.orderedProducts.controls) {
+      ids = [
+        ...ids, product["controls"]["product"].value
+      ];
+    }
+    
+    this.displayProducts = this.products.filter(
+      (item: IProductItem) => !ids.includes(item.id)
+    )
   }
 }
 
