@@ -177,12 +177,25 @@ export class OrderAddEditComponent implements OnInit {
         },
         (error) => {
           this.isLoading = false;
-          //console.log(error.Error.error.split(":"));
+
+          var errorSplit = error.Error.error.split(":");
           
-          this.modal.error({
-            nzTitle: 'Fehler beim Anlegen',
-            nzContent: 'Beim Anlegen der Bestellung ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
-          });
+          if(errorSplit.length>0&&errorSplit[0] == "Not enough quantity for productId"){
+            var id:number = errorSplit[1];
+            var currentProduct: IProductItem[] = this.products.filter(
+              (item: IProductItem) => item.id == id
+            );
+            var name:string = currentProduct.length>0?currentProduct[0].name:"";
+            this.modal.error({
+              nzTitle: 'Bestellung konnte nicht gespeichert werden',
+              nzContent: 'Das Produkt "'+name+'" ist nicht in der gewünschten Menge verfügbar.'
+            });
+          }else{
+            this.modal.error({
+              nzTitle: 'Fehler',
+              nzContent: 'Beim Anlegen der Bestellung ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
+            });
+          }
         }
       );
     }
@@ -287,10 +300,6 @@ export class OrderAddEditComponent implements OnInit {
     );
 
     if(customer.length<= 0){
-      /* this.modal.error({
-        nzTitle: 'Fehler',
-        nzContent: 'Der zur Bestellung gespeicherte Kunde existiert nicht mehr.'
-      }); */
       return;
     }
     this.addForm.controls["street"].setValue(customer[0].address.street);
@@ -304,10 +313,6 @@ export class OrderAddEditComponent implements OnInit {
     );
 
     if(product.length<= 0){
-      /* this.modal.error({
-        nzTitle: 'Fehler',
-        nzContent: 'Es ist zu einem internen Fehler gekommen. Bitte wenden Sie sich an den Administrator.'
-      }); */
       return;
     }
 
