@@ -82,7 +82,7 @@ export class CutomerDashboardComponent implements OnInit {
       },
       (error) => {
         this.isSaving = false;
-        this.addForm.reset();
+
         this.modal.error({
           nzTitle: 'Fehler',
           nzContent: 'Beim Anlegen des Kunden ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.',
@@ -123,7 +123,7 @@ export class CutomerDashboardComponent implements OnInit {
       },
       (error) => {
         this.isSaving = false;
-        this.addForm.reset();
+
         this.modal.error({
           nzTitle: 'Fehler',
           nzContent: 'Beim Bearbeiten des Kunden ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.',
@@ -215,7 +215,10 @@ export class CutomerDashboardComponent implements OnInit {
         this.getAllCustomer();
       },
       (error) => {
-        console.error(error);
+        this.modal.error({
+          nzTitle: 'Fehler',
+          nzContent: 'Beim Löschen des Kunden ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.',
+        });
       }
     );
   }
