@@ -74,11 +74,11 @@ export class CutomerDashboardComponent implements OnInit {
 
     this.customerService.createCustomer(newCustomerItem).subscribe(
       (data) => {
-        console.log(data);
         this.isPopupVisible = false;
         this.isSaving = false;
         this.isLoading = true;
         this.getAllCustomer();
+        this.addForm.reset();
       },
       (error) => {
         this.isSaving = false;
@@ -115,12 +115,11 @@ export class CutomerDashboardComponent implements OnInit {
 
     this.customerService.updateCustomers([newCustomerItem]).subscribe(
       (data) => {
-        console.log(data);
-
         this.isLoading = true;
         this.isPopupVisible = false;
         this.isSaving = false;
         this.getAllCustomer();
+        this.addForm.reset();
       },
       (error) => {
         this.isSaving = false;
@@ -164,10 +163,10 @@ export class CutomerDashboardComponent implements OnInit {
   handlePopupCancel(): void {
     this.isPopupVisible = false;
     this.isLoading = false;
+    this.addForm.reset();
   }
 
   submitAddForm(): void {
-    console.log('Add clicked');
     if (this.addForm.controls['id'].value == 0) {
       this.addNewCustomer();
     } else {
@@ -176,7 +175,6 @@ export class CutomerDashboardComponent implements OnInit {
   }
 
   editButtonClicked(id: number): void {
-    console.log('Edit clicked');
 
     var customers: ICustomerItem[] = this.listOfData.filter((item: ICustomerItem) => item.id == id);
 
@@ -193,8 +191,6 @@ export class CutomerDashboardComponent implements OnInit {
   }
 
   copyButtonClicked(id: number): void {
-    console.log('copy clicked');
-
     this.isLoading = true;
 
     var customers: ICustomerItem[] = this.listOfData.filter((item: ICustomerItem) => item.id == id);
@@ -212,17 +208,17 @@ export class CutomerDashboardComponent implements OnInit {
   }
 
   deleteButtonClicked(id: number): void {
-    console.log('delete clicked');
-
     this.isLoading = true;
 
     this.customerService.deleteCustomer(id).subscribe(
       (data) => {
-        console.log(data);
         this.getAllCustomer();
       },
       (error) => {
-        console.error(error);
+        this.modal.error({
+          nzTitle: 'Fehler',
+          nzContent: 'Beim Löschen des Kunden ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.',
+        });
       }
     );
   }

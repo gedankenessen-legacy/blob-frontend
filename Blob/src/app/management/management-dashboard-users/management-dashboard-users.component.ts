@@ -97,11 +97,11 @@ export class ManagementDashboardUsersComponent implements OnInit {
 
     this.userService.createUser(newUserItem).subscribe(
       (data) => {
-        console.log(data);
         this.isUserPopupVisible = false;
         this.isSavingUser = false;
         this.isUserLoading = true;
         this.getAllUsers();
+        this.addUserForm.reset();
       },
       (error) => {
         this.isSavingUser = false;

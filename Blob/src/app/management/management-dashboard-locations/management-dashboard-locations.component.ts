@@ -140,11 +140,11 @@ export class ManagementDashboardLocationsComponent implements OnInit {
 
     this.locationService.createLocation(newLocationItem).subscribe(
       (data) => {
-        console.log(data);
         this.isLocationPopupVisible = false;
         this.isSavingLocation = false;
         this.isLocationLoading = true;
         this.getAllLocations();
+        this.addLocationForm.reset();
       },
       (error) => {
         this.isSavingLocation = false;
@@ -182,12 +182,12 @@ export class ManagementDashboardLocationsComponent implements OnInit {
 
     this.locationService.updateLocations([newLocationItem]).subscribe(
       (data) => {
-        console.log(data);
 
         this.isLocationLoading = true;
         this.isLocationPopupVisible = false;
         this.isSavingLocation = false;
         this.getAllLocations();
+        this.addLocationForm.reset();
       },
       (error) => {
         this.isSavingLocation = false;
