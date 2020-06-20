@@ -22,7 +22,7 @@ export class OrderAddEditComponent implements OnInit {
   addForm: FormGroup;
   customers: ICustomerItem[];
   products: IProductItem[];
-  displayProducts: [];
+  displayProducts: IProductItem[];
   isLoading: boolean = true;
   currentInvoiceMount: string = "0";
   orderId: number;
@@ -84,6 +84,7 @@ export class OrderAddEditComponent implements OnInit {
     this.productService.getAllProducts().subscribe(
       (data) => {
         this.products = data;
+        this.updateDisplayedProducts();
       },
       (error) => {
         this.isLoading = false;
@@ -99,10 +100,6 @@ export class OrderAddEditComponent implements OnInit {
   getOrder() {
     this.orderService.getOrder(this.orderId).subscribe(
       (data) => {
-
-        console.log("GetOrder");
-        console.log(data);
-
         this.currentOrder = data;
         if(this.currentOrder.customer){
           this.addForm.controls["customerId"].setValue(this.currentOrder.customer.id);
@@ -116,9 +113,6 @@ export class OrderAddEditComponent implements OnInit {
             this.orderedProducts.push(this.createItemOrdered(orderProduct.id,orderProduct.name,orderProduct.quantity, orderProduct.price));
           }
         }
-
-        console.log("after add");
-        
         
         this.calcInvoiceMount();
         this.isLoading = false
@@ -179,16 +173,29 @@ export class OrderAddEditComponent implements OnInit {
     }else{
       this.orderService.createOrder(newOrderItem).subscribe(
         (data) => {
-          console.log(data);
           this.router.navigate(['/order']);
         },
         (error) => {
           this.isLoading = false;
 
-          this.modal.error({
-            nzTitle: 'Fehler beim Anlegen',
-            nzContent: 'Beim Anlegen der Bestellung ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
-          });
+          var errorSplit = error.Error.error.split(":");
+          
+          if(errorSplit.length>0&&errorSplit[0] == "Not enough quantity for productId"){
+            var id:number = errorSplit[1];
+            var currentProduct: IProductItem[] = this.products.filter(
+              (item: IProductItem) => item.id == id
+            );
+            var name:string = currentProduct.length>0?currentProduct[0].name:"";
+            this.modal.error({
+              nzTitle: 'Bestellung konnte nicht gespeichert werden',
+              nzContent: 'Das Produkt "'+name+'" ist nicht in der gewünschten Menge verfügbar.'
+            });
+          }else{
+            this.modal.error({
+              nzTitle: 'Fehler',
+              nzContent: 'Beim Anlegen der Bestellung ist ein Fehler aufgetreten, bitte benachrichtigen Sie den Administrator.'
+            });
+          }
         }
       );
     }
@@ -256,16 +263,19 @@ export class OrderAddEditComponent implements OnInit {
     
     this.orderProducts.push(this.createItem());
     this.calcInvoiceMount();
+    this.updateDisplayedProducts();
   }
 
   removeProduct(index: number) {
     this.orderProducts.removeAt(index);
     this.calcInvoiceMount();
+    this.updateDisplayedProducts();
   }
 
   removeOrderedProduct(index: number) {
     this.orderedProducts.removeAt(index);
     this.calcInvoiceMount();
+    this.updateDisplayedProducts();
   }
 
   calcInvoiceMount(): void{
@@ -290,10 +300,6 @@ export class OrderAddEditComponent implements OnInit {
     );
 
     if(customer.length<= 0){
-      /* this.modal.error({
-        nzTitle: 'Fehler',
-        nzContent: 'Der zur Bestellung gespeicherte Kunde existiert nicht mehr.'
-      }); */
       return;
     }
     this.addForm.controls["street"].setValue(customer[0].address.street);
@@ -307,15 +313,39 @@ export class OrderAddEditComponent implements OnInit {
     );
 
     if(product.length<= 0){
-      /* this.modal.error({
-        nzTitle: 'Fehler',
-        nzContent: 'Es ist zu einem internen Fehler gekommen. Bitte wenden Sie sich an den Administrator.'
-      }); */
       return;
     }
 
     this.orderProducts.controls[index]["controls"]["price"].setValue(product[0].price);
     this.calcInvoiceMount();
+    this.updateDisplayedProducts();
+  }
+
+  updateDisplayedProducts(){
+    var ids: number[] = [];
+    for (let product of this.orderProducts.controls) {
+      var currentProduct: IProductItem[] = this.products.filter(
+        (item: IProductItem) => item.id == product["controls"]["product"].value
+      );
+      
+      if(currentProduct.length<=0){
+        continue;
+      }
+      
+      ids = [
+        ...ids, currentProduct[0].id
+      ];
+    }
+
+    for (let product of this.orderedProducts.controls) {
+      ids = [
+        ...ids, product["controls"]["product"].value
+      ];
+    }
+    
+    this.displayProducts = this.products.filter(
+      (item: IProductItem) => !ids.includes(item.id)
+    )
   }
 }
 

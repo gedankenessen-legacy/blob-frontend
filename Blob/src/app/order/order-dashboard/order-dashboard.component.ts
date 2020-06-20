@@ -60,18 +60,11 @@ export class OrderDashboardComponent implements OnInit {
     this.isOrdersLoading = true;
     this.orderService.getAllOrders().subscribe(
       (data) => {
-        /* console.log("GetAllOrders");
-        
-        console.log(data);
-         */
-
         this.listOfData = data;
         this.updateListOfDisplayData();
         this.isOrdersLoading = false;
       },
       (error) => {
-        console.error(error);
-
         this.isOrdersLoading = false;
         this.modal.error({
           nzTitle: 'Fehler',
@@ -109,7 +102,6 @@ export class OrderDashboardComponent implements OnInit {
         this.isOrdersLoading = false;
       },
       (error) => {
-        console.error(error);
 
         this.listOfData[index].state.id = this.currentState;
 
