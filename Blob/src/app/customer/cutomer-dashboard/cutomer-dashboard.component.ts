@@ -163,6 +163,7 @@ export class CutomerDashboardComponent implements OnInit {
 
   handlePopupCancel(): void {
     this.isPopupVisible = false;
+    this.isLoading = false;
   }
 
   submitAddForm(): void {
