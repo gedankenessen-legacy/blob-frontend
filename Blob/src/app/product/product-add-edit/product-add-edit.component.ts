@@ -388,7 +388,9 @@ export class ProductAddEditComponent implements OnInit {
       (this.productForm.controls['sku'].value.length > 0)) && 
       ((this.productForm.controls['productname'].value.length < 100) &&
       (this.productForm.controls['price'].value < 100000000) &&
-      (this.productForm.controls['sku'].value.length < 100))) {
+      (this.productForm.controls['sku'].value.length < 100)) &&
+      (this.productForm.controls['productname'].value.replace(/\s/g, "").length > 0 &&
+      this.productForm.controls['sku'].value.replace(/\s/g, "").length > 0)) {
         return true;
       } else {
         this.modal.error({
@@ -402,7 +404,9 @@ export class ProductAddEditComponent implements OnInit {
       if(((this.productForm.controls['productname'].value.length > 0) &&
       (this.productForm.controls['price'].value > 0)) && 
       ((this.productForm.controls['productname'].value.length < 100) &&
-      (this.productForm.controls['price'].value < 100000000))) {
+      (this.productForm.controls['price'].value < 100000000)) &&
+      (this.productForm.controls['productname'].value.replace(/\s/g, "").length > 0 &&
+      this.productForm.controls['sku'].value.replace(/\s/g, "").length > 0)) {
         return true;
       } else {
         this.modal.error({
@@ -492,7 +496,15 @@ export class ProductAddEditComponent implements OnInit {
    *******************************************/
   validCategory() {
     if (this.productForm.controls['category'].value.length > 0 && this.productForm.controls['category'].value.length < 100) {
-      return true;
+      if(this.productForm.controls['category'].value.replace(/\s/g, "").length > 0) {
+        return true;
+      } else {
+        this.modal.error({
+          nzTitle: 'Fehler',
+          nzContent: 'Die ausgewählte Kategorie ist nicht zulässig.',
+        });
+        return false;
+      }
     } else {
       this.modal.error({
         nzTitle: 'Fehler',
@@ -511,7 +523,8 @@ export class ProductAddEditComponent implements OnInit {
         if (this.listOfProperty[i].name.length <= 0 && this.listOfProperty[i].value.length <= 0) {
           this.listOfProperty = this.listOfProperty.filter(x => x != this.listOfProperty[i]);
         } else if(this.listOfProperty[i].name.length <= 0 || this.listOfProperty[i].value.length <= 0 || 
-        this.listOfProperty[i].name.length > 100 || this.listOfProperty[i].value.length > 100) {
+        this.listOfProperty[i].name.length > 100 || this.listOfProperty[i].value.length > 100 ||
+        this.listOfProperty[i].name.replace(/\s/g, "").length <= 0 || this.listOfProperty[i].value.replace(/\s/g, "").length <= 0) {
           this.modal.error({
             nzTitle: 'Fehler',
             nzContent:
@@ -542,7 +555,7 @@ export class ProductAddEditComponent implements OnInit {
           count++;
         }
       }
-      if(this.listOfProductLocation[i].quantity < 100000000) {
+      if(this.listOfProductLocation[i].quantity > 100000000) {
         isValid = false;
       }
       if (count > 1) {
