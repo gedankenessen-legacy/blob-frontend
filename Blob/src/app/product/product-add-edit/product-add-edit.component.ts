@@ -387,7 +387,7 @@ export class ProductAddEditComponent implements OnInit {
       (this.productForm.controls['price'].value > 0) &&
       (this.productForm.controls['sku'].value.length > 0)) && 
       ((this.productForm.controls['productname'].value.length < 100) &&
-      (this.productForm.controls['price'].value < 10000000) &&
+      (this.productForm.controls['price'].value < 100000000) &&
       (this.productForm.controls['sku'].value.length < 100))) {
         return true;
       } else {
@@ -402,7 +402,7 @@ export class ProductAddEditComponent implements OnInit {
       if(((this.productForm.controls['productname'].value.length > 0) &&
       (this.productForm.controls['price'].value > 0)) && 
       ((this.productForm.controls['productname'].value.length < 100) &&
-      (this.productForm.controls['price'].value < 10000000))) {
+      (this.productForm.controls['price'].value < 100000000))) {
         return true;
       } else {
         this.modal.error({
@@ -542,7 +542,7 @@ export class ProductAddEditComponent implements OnInit {
           count++;
         }
       }
-      if(this.listOfProductLocation[i].quantity < 10000000) {
+      if(this.listOfProductLocation[i].quantity < 100000000) {
         isValid = false;
       }
       if (count > 1) {
